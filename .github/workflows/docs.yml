@@ -1,0 +1,75 @@
+# The documentation site: build on every change, deploy when enabled.
+#
+# check runs on every push and pull request: it regenerates the site from
+# site.yaml and refuses a broken build (missing pages, broken links). a11y
+# scans every built page with axe-core against WCAG 2.2 AA. deploy
+# publishes to GitHub Pages once the repository variable DOCS_DEPLOY is set
+# to "true" (Settings, Secrets and variables, Actions, Variables) and Pages
+# is enabled; until then nothing deploys.
+name: docs
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-docs.txt
+      - run: python tools/build_docs.py
+      - run: mkdocs build --strict -f docs-site/mkdocs.yml
+  a11y:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-docs.txt -r requirements-a11y.txt
+      - run: python tools/build_docs.py
+      - run: mkdocs build --strict -f docs-site/mkdocs.yml
+      - run: playwright install chromium --with-deps
+      - run: python tools/a11y_scan.py --axe-core
+      - name: report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: docs-site/a11y/
+          if-no-files-found: ignore
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && vars.DOCS_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-docs.txt
+      - run: python tools/build_docs.py ${SITE_URL:+--site-url "$SITE_URL"}
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+      - run: mkdocs build --strict -f docs-site/mkdocs.yml
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-site/site
+      - id: deployment
+        uses: actions/deploy-pages@v4

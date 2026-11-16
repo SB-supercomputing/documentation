@@ -1,0 +1,2 @@
+# axe-core ships vendored as tools/axe.min.js; this scanner only drives a browser.
+playwright==1.62.0

@@ -1,0 +1,93 @@
+# What publishes, and in what order.
+pages:
+- title: Documentation
+  pages:
+  - title: Notices
+    source: guide/notices.md
+  - title: Introduction
+    source: guide/introduction.md
+  - title: System Architecture
+    source: guide/system-architecture.md
+  - title: Accessing the System
+    source: guide/accessing-the-system.md
+  - title: Account Administration
+    source: guide/account-administration.md
+  - title: Managing Your Files
+    source: guide/managing-your-files.md
+  - title: Running Jobs
+    source: guide/running-jobs.md
+  - title: Launching Applications
+    source: guide/launching-applications.md
+  - title: Building Software
+    source: guide/building-software.md
+  - title: Job Scripts
+    source: guide/job-scripts.md
+  - title: Job Management
+    source: guide/job-management.md
+  - title: Programming and Performance
+    source: guide/programming-and-performance.md
+  - title: Machine Learning
+    source: guide/machine-learning.md
+  - title: Python
+    source: guide/python.md
+  - title: Help Desk
+    source: guide/help-desk.md
+  - title: References
+    source: guide/references.md
+  - title: Tutorials
+    source: tutorials/README.md
+    pages:
+    - group: Getting started
+      pages:
+      - title: Start an OnDemand session
+        source: tutorials/visualization/start/ondemand-session.md
+        menu: Start a session
+      - title: Get your data where the app can see it
+        source: tutorials/visualization/start/your-data.md
+        menu: Get your data
+    - title: ParaView lessons
+      source: tutorials/visualization/maps/paraview.md
+      menu: ParaView
+      pages:
+      - title: Start ParaView on OnDemand
+        source: tutorials/visualization/tools/paraview.md
+        menu: Start ParaView
+      - title: Draw streamlines in ParaView
+        source: tutorials/visualization/vectors/streamlines/paraview.md
+        menu: Streamlines
+      - title: See orbitals and electron density in ParaView
+        source: tutorials/visualization/densities/orbitals-and-density/paraview.md
+        menu: Orbitals and electron density
+    - group: Topics
+      pages:
+      - title: Draw streamlines through a flow field
+        source: tutorials/visualization/vectors/streamlines/README.md
+        menu: Streamlines (all programs)
+      - title: See orbitals and electron density from a cube file
+        source: tutorials/visualization/densities/orbitals-and-density/README.md
+        menu: Orbitals (all programs)
+    - title: Curriculum
+      source: modules/README.md
+      pages:
+      - group: A. Onboarding
+        pages:
+        - group: Open OnDemand
+          pages:
+          - link: tutorials/visualization/start/ondemand-session.md
+            menu: Start a session
+          - link: tutorials/visualization/start/your-data.md
+            menu: Get your data
+      - group: B. Productivity & Data
+        pages:
+        - title: 'B5: Visualization'
+          source: modules/B5-visualization.md
+          menu: Visualization
+          pages:
+          - link: tutorials/visualization/tools/paraview.md
+            menu: Start ParaView
+          - link: tutorials/visualization/vectors/streamlines/paraview.md
+            menu: Streamlines
+          - link: tutorials/visualization/densities/orbitals-and-density/paraview.md
+            menu: Orbitals and electron density
+  - title: Glossary
+    source: reference/glossary.md
