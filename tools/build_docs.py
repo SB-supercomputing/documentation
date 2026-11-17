@@ -8,8 +8,9 @@ into an MkDocs (Material) site under docs-site/:
 
 GitHub alerts ("> [!NOTE]") become Material admonitions, and a link whose
 target never publishes keeps its words and loses the link, so the strict
-build never fails on a page still being written. The feeds come from git
-history (mkdocs-rss-plugin), so build from a checkout, not an export.
+build never fails on a page still being written. The RSS feed dates come
+from each source file's git history, stamped onto the generated copy as
+frontmatter, because the copies themselves are never tracked.
 """
 from __future__ import annotations
 
@@ -17,6 +18,7 @@ import argparse
 import pathlib
 import re
 import shutil
+import subprocess
 
 import yaml
 
@@ -66,6 +68,87 @@ def all_pages(nodes):
 def page_url(page):
     parts = page.rel.parts
     return "/" + "/".join(parts[:-1] + (parts[-1][:-3],)) + "/"
+
+
+def git_dates():
+    """Each source file's newest and oldest commit date, from one pass
+    over the git log. The pages mkdocs compiles are generated copies that
+    git never tracks, so their history is read here, from the sources, and
+    stamped onto the copies as frontmatter for the feed plugin."""
+    log = subprocess.run(
+        ["git", "log", "--format=%x1e%aI", "--name-only", "--no-renames"],
+        cwd=ROOT, capture_output=True, text=True)
+    dates = {}
+    if log.returncode != 0:
+        return dates
+    for chunk in log.stdout.split("\x1e")[1:]:
+        lines = chunk.strip().splitlines()
+        if not lines:
+            continue
+        iso = lines[0].strip()
+        for path in lines[1:]:
+            if path.strip():
+                # The log runs newest first: the first sighting of a path
+                # fixes its newest date, and the oldest wins the other slot.
+                entry = dates.setdefault(path.strip(), [iso, iso])
+                entry[1] = iso
+    return dates
+
+
+def with_dates(text, entry):
+    """A copy's feed dates as frontmatter. A page that arrives with its own
+    frontmatter, or a checkout without git history, keeps its text as is."""
+    if entry is None or text.startswith("---"):
+        return text
+    updated, created = entry
+    return f"---\ndate: {created}\nupdated: {updated}\n---\n\n{text}"
+
+
+RFC = "%a, %d %b %Y %H:%M:%S %z"
+
+
+def rfc822(iso):
+    return datetime.fromisoformat(iso).strftime(RFC)
+
+
+def esc(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def write_feeds(docs, site_url, pages):
+    """The two feed files, written from the sources' git dates. The plugin
+    route reads history for the files mkdocs compiles, and these are
+    generated copies git never sees, so the generator owns the feed the
+    way it owns the nav and the landing page."""
+    dates = git_dates()
+    base = site_url.rstrip("/")
+    items = [(p, d[1], d[0]) for p in pages if (d := dates.get(str(p.rel)))]
+    for name, key in (("feed_rss_created.xml", 1), ("feed_rss_updated.xml", 2)):
+        entries = sorted(items, key=lambda it: it[key], reverse=True)[:40]
+        out = ['<?xml version="1.0" encoding="UTF-8"?>',
+               '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+               "<channel>",
+               "  <title>SBSC Documentation</title>",
+               f"  <link>{esc(base)}/</link>",
+               "  <description>Updates to the Kitsune documentation.</description>",
+               f'  <atom:link href="{esc(base)}/{name}" rel="self" '
+               'type="application/rss+xml"/>',
+               "  <language>en</language>"]
+        if entries:
+            out.append(f"  <lastBuildDate>{rfc822(entries[0][key])}</lastBuildDate>")
+        for page, created, updated in entries:
+            when = created if key == 1 else updated
+            link = f"{base}{page_url(page)}"
+            out += ["  <item>",
+                    f"    <title>{esc(page.menu)}</title>",
+                    f"    <link>{esc(link)}</link>",
+                    f'    <guid isPermaLink="true">{esc(link)}</guid>',
+                    f"    <pubDate>{rfc822(when)}</pubDate>",
+                    f"    <description>{esc(summary(page.rel))}</description>",
+                    "  </item>"]
+        out += ["</channel>", "</rss>", ""]
+        (docs / name).write_text("\n".join(out), encoding="utf-8")
+        print(f"{name}: {len(entries)} entries")
 
 
 def convert(text):
@@ -214,12 +297,17 @@ def main():
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / page.rel, target)
+    dates = git_dates()
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         text = de_dead_links(convert(target.read_text(encoding="utf-8")), page.rel, docs)
-        target.write_text(text, encoding="utf-8")
+        target.write_text(with_dates(text, dates.get(str(page.rel))), encoding="utf-8")
 
-    (docs / "index.md").write_text(landing(roots), encoding="utf-8")
+    # The landing page rides along in the feed, dated by the newest source.
+    latest = max((d[0] for d in dates.values()), default=None)
+    (docs / "index.md").write_text(
+        with_dates(landing(roots), None if latest is None else [latest, latest]),
+        encoding="utf-8")
 
     nav = [{HOME_LABEL: "https://sbsc.stonybrook.edu"}]
     hub = roots[0]
@@ -237,10 +325,14 @@ def main():
 
     # The site's address arrives with the deployment (--site_url), never
     # hard-coded. The RSS feed needs an absolute address, so the plugin is
-    # wired only when one is known.
+    # wired only when one is known. The dates themselves arrive through
+    # each page's frontmatter (date, updated), stamped above from the
+    # sources' git history; use_git cannot see the generated copies.
     url_line = f"site_url: {site_url}" if site_url else ""
-    rss_block = ("  - rss:\n      use_git: " + ("true" if (ROOT / ".git").exists() else "false")
-                 + "\n      length: 20") if site_url else ""
+    rss_block = ('  - rss:\n      use_git: false\n      date_from_meta:\n'
+                 '        as_creation: date\n        as_update: updated\n'
+                 '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
+                 '      length: 40') if site_url else ""
     (OUT / "mkdocs.yml").write_text(f"""\
 # Built by tools/build_docs.py from site.yaml: edit the tree there, not here.
 site_name: SBSC Documentation
