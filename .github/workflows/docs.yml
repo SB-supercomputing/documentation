@@ -1,8 +1,9 @@
 # The documentation site: build on every change, deploy when enabled.
 #
-# check runs on every push and pull request: it regenerates the site from
-# site.yaml and refuses a broken build (missing pages, broken links). a11y
-# scans every built page with axe-core against WCAG 2.2 AA. deploy
+# check runs on every push to main and every pull request: it regenerates
+# the site from site.yaml and refuses a broken build (missing pages,
+# broken links). a11y scans every built page with axe-core against WCAG
+# 2.2 AA. deploy
 # publishes to GitHub Pages once the repository variable DOCS_DEPLOY is set
 # to "true" (Settings, Secrets and variables, Actions, Variables) and Pages
 # is enabled; until then nothing deploys.
@@ -11,6 +12,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
@@ -47,7 +49,7 @@ jobs:
           path: docs-site/a11y/
           if-no-files-found: ignore
   deploy:
-    needs: check
+    needs: [check, a11y]
     if: github.ref == 'refs/heads/main' && vars.DOCS_DEPLOY == 'true'
     runs-on: ubuntu-latest
     permissions:
