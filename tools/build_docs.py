@@ -104,53 +104,6 @@ def with_dates(text, entry):
     return f"---\ndate: {created}\nupdated: {updated}\n---\n\n{text}"
 
 
-RFC = "%a, %d %b %Y %H:%M:%S %z"
-
-
-def rfc822(iso):
-    return datetime.fromisoformat(iso).strftime(RFC)
-
-
-def esc(s):
-    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
-def write_feeds(docs, site_url, pages):
-    """The two feed files, written from the sources' git dates. The plugin
-    route reads history for the files mkdocs compiles, and these are
-    generated copies git never sees, so the generator owns the feed the
-    way it owns the nav and the landing page."""
-    dates = git_dates()
-    base = site_url.rstrip("/")
-    items = [(p, d[1], d[0]) for p in pages if (d := dates.get(str(p.rel)))]
-    for name, key in (("feed_rss_created.xml", 1), ("feed_rss_updated.xml", 2)):
-        entries = sorted(items, key=lambda it: it[key], reverse=True)[:40]
-        out = ['<?xml version="1.0" encoding="UTF-8"?>',
-               '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
-               "<channel>",
-               "  <title>SBSC Documentation</title>",
-               f"  <link>{esc(base)}/</link>",
-               "  <description>Updates to the Kitsune documentation.</description>",
-               f'  <atom:link href="{esc(base)}/{name}" rel="self" '
-               'type="application/rss+xml"/>',
-               "  <language>en</language>"]
-        if entries:
-            out.append(f"  <lastBuildDate>{rfc822(entries[0][key])}</lastBuildDate>")
-        for page, created, updated in entries:
-            when = created if key == 1 else updated
-            link = f"{base}{page_url(page)}"
-            out += ["  <item>",
-                    f"    <title>{esc(page.menu)}</title>",
-                    f"    <link>{esc(link)}</link>",
-                    f'    <guid isPermaLink="true">{esc(link)}</guid>',
-                    f"    <pubDate>{rfc822(when)}</pubDate>",
-                    f"    <description>{esc(summary(page.rel))}</description>",
-                    "  </item>"]
-        out += ["</channel>", "</rss>", ""]
-        (docs / name).write_text("\n".join(out), encoding="utf-8")
-        print(f"{name}: {len(entries)} entries")
-
-
 def convert(text):
     def repl(m):
         kind = ALERTS.get(m.group(1), "note")
@@ -327,15 +280,19 @@ def main():
     # hard-coded. The RSS feed needs an absolute address, so the plugin is
     # wired only when one is known. The dates themselves arrive through
     # each page's frontmatter (date, updated), stamped above from the
-    # sources' git history; use_git cannot see the generated copies.
+    # sources' git history; use_git cannot see the generated copies. The
+    # channel image is the fox emblem, its address derived the same way.
     url_line = f"site_url: {site_url}" if site_url else ""
     rss_block = ('  - rss:\n      use_git: false\n      date_from_meta:\n'
                  '        as_creation: date\n        as_update: updated\n'
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
+                 f'      image: {site_url.rstrip("/")}/assets/kitsune-emblem-sb.svg\n'
+                 '      pretty_print: true\n'
                  '      length: 40') if site_url else ""
     (OUT / "mkdocs.yml").write_text(f"""\
 # Built by tools/build_docs.py from site.yaml: edit the tree there, not here.
 site_name: SBSC Documentation
+site_description: Documentation for Kitsune at the Stony Brook Supercomputing Center.
 {url_line}
 use_directory_urls: true
 strict: true
@@ -447,6 +404,102 @@ body::after {
 }
 .md-copyright, .md-copyright a { color: rgba(255, 255, 255, 0.75); }
 .md-typeset .c1, .md-typeset .nv { color: #666666; }
+""", encoding="utf-8")
+
+    # The feeds' human-readable view, written beside them at the site
+    # root; its relative addresses work at any deployment path. Browsers
+    # apply it through the stylesheet processing instruction that
+    # tools/style_feeds.py adds to the built feeds after mkdocs runs.
+    if site_url:
+        (docs / "feed.xsl").write_text("""<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:atom="http://www.w3.org/2005/Atom">
+<xsl:output method="html" encoding="UTF-8" doctype-system="about:legacy-compat"/>
+<xsl:template match="/">
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title><xsl:value-of select="rss/channel/title"/></title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+header { background: #990000; }
+header .home {
+  display: inline-flex;
+  background: #ffffff;
+  border-radius: 3px;
+  padding: 3px 10px;
+  margin: 8px 16px;
+}
+header img { display: block; max-height: 1.6rem; width: auto; }
+main { max-width: 44rem; margin: 0 auto; padding: 1.5rem 16px 4rem; }
+h1 { font-size: 1.5rem; margin: 0 0 0.5rem; }
+.what { margin: 0 0 1.5rem; }
+.what code { font-size: 0.9em; overflow-wrap: anywhere; }
+ol { list-style: none; margin: 0; padding: 0; }
+li { border-top: 1px solid #e0e0e0; }
+li a {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0.5rem 0 0.25rem;
+  color: #002244;
+  text-decoration: underline;
+}
+.when { margin: 0 0 0.6rem; color: #595959; font-size: 0.875rem; }
+a:focus-visible {
+  outline: 3px solid #002244;
+  outline-offset: 2px;
+}
+body::after {
+  content: "";
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 260px;
+  max-width: 30vw;
+  aspect-ratio: 1;
+  background: url("assets/kitsune-emblem-sb.svg") bottom right / contain no-repeat;
+  opacity: 0.05;
+  pointer-events: none;
+}
+@media print, (forced-colors: active) { body::after { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="home" href="{rss/channel/link}">
+    <img src="assets/sbsc-brand.svg" alt="Stony Brook Supercomputing Center"/>
+  </a>
+</header>
+<main>
+<h1><xsl:value-of select="rss/channel/title"/></h1>
+<p class="what">This page is a feed: the documentation's new and updated
+pages, newest first. Subscribe by copying its address,
+<code><xsl:value-of select="rss/channel/atom:link/@href"/></code>, into a
+feed reader.</p>
+<ol>
+<xsl:for-each select="rss/channel/item">
+  <li>
+    <a href="{link}"><xsl:value-of select="title"/></a>
+    <p class="when"><xsl:value-of select="pubDate"/></p>
+  </li>
+</xsl:for-each>
+</ol>
+</main>
+</body>
+</html>
+</xsl:template>
+</xsl:stylesheet>
 """, encoding="utf-8")
 
     # Local scan URLs: mkdocs serve keeps the address's path prefix, so the

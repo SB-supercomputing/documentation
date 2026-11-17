@@ -70,6 +70,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL }}
       - run: mkdocs build --strict -f docs-site/mkdocs.yml
+      - run: python tools/style_feeds.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
