@@ -10,15 +10,21 @@ GitHub alerts ("> [!NOTE]") become Material admonitions, and a link whose
 target never publishes keeps its words and loses the link, so the strict
 build never fails on a page still being written. The RSS feed dates come
 from each source file's git history, stamped onto the generated copy as
-frontmatter, because the copies themselves are never tracked.
+frontmatter, because the copies themselves are never tracked. The
+announcements under announcements/ carry their own dates, and their feed
+is written here, since the plugin emits exactly the two page feeds.
 """
 from __future__ import annotations
 
 import argparse
+import datetime
 import pathlib
 import re
 import shutil
 import subprocess
+import sys
+from email.utils import format_datetime
+from xml.sax.saxutils import escape
 
 import yaml
 
@@ -66,8 +72,13 @@ def all_pages(nodes):
 
 
 def page_url(page):
+    """A page's local address in mkdocs's directory-URL form. An index or
+    README stem names its directory, not a page of its own."""
     parts = page.rel.parts
-    return "/" + "/".join(parts[:-1] + (parts[-1][:-3],)) + "/"
+    stem = parts[-1][:-3]
+    if stem in ("index", "README"):
+        return "/" + "/".join(parts[:-1]) + "/"
+    return "/" + "/".join(parts[:-1] + (stem,)) + "/"
 
 
 def git_dates():
@@ -102,6 +113,56 @@ def with_dates(text, entry):
         return text
     updated, created = entry
     return f"---\ndate: {created}\nupdated: {updated}\n---\n\n{text}"
+
+
+def as_utc(value):
+    """One comparable instant per notice: a date alone publishes at
+    midnight UTC (the plugin's own default for date-only values); a
+    timestamp keeps the offset it was written with."""
+    if isinstance(value, datetime.datetime):
+        return value
+    return datetime.datetime(value.year, value.month, value.day,
+                             tzinfo=datetime.timezone.utc)
+
+
+def parse_announcements():
+    """The notices under announcements/, newest first: one file each,
+    titled and dated by its frontmatter, because git history cannot
+    know when a maintenance window is scheduled. Anything malformed
+    stops the build naming the file."""
+    items = []
+    for path in sorted((ROOT / "announcements").glob("*.md")):
+        def die(msg):
+            sys.exit(f"announcements: {path.name}: {msg}")
+
+        text = path.read_text(encoding="utf-8")
+        m = re.match(r"---\n(.*?)\n---\n", text, re.S)
+        if not m:
+            die("expected frontmatter: a --- block with title and date")
+        try:
+            meta = yaml.safe_load(m.group(1)) or {}
+        except yaml.YAMLError:
+            die("the frontmatter is not valid YAML")
+        title = meta.get("title")
+        if not isinstance(title, str) or not title.strip():
+            die("frontmatter needs a title, a plain string")
+
+        def stated(key):
+            v = meta.get(key)
+            if not isinstance(v, (datetime.date, datetime.datetime)):
+                die(f"{key} is missing or quoted; write it unquoted, as "
+                    f"{key}: 2026-11-24 or {key}: 2026-11-24T06:00:00-0500")
+            if isinstance(v, datetime.datetime) and v.utcoffset() is None:
+                die(f"a timestamp needs its UTC offset, as {key}: "
+                    "2026-11-24T06:00:00-0500")
+            return as_utc(v)
+
+        when = stated("date")
+        items.append({"title": title.strip(), "date": when,
+                      "updated": stated("updated") if meta.get("updated") is not None else when,
+                      "stem": path.stem, "body": text[m.end():]})
+    items.sort(key=lambda it: (it["date"], it["stem"]), reverse=True)
+    return items
 
 
 def convert(text):
@@ -170,6 +231,12 @@ def summary(rel):
         lines = (ROOT / rel).read_text(encoding="utf-8").splitlines()
     except OSError:
         return ""
+    if lines and lines[0].strip() == "---":
+        # Frontmatter is not prose; the scan starts after it.
+        for i in range(1, len(lines)):
+            if lines[i].strip() == "---":
+                lines = lines[i + 1:]
+                break
     for line in lines:
         s = line.strip()
         if not s or s.startswith(("#", ">", "<", "!", "|", "-")) or s.startswith("[!"):
@@ -192,10 +259,11 @@ def leaf_pages(node):
             yield child
 
 
-def landing(roots):
+def landing(roots, notices):
     """The site's front page, from the tree: what the guide covers, a line
-    per tutorial, and the reference pages. Everything links to the page it
-    names, and the build regenerates it, so the list never goes stale."""
+    per tutorial, and the reference pages, with the recent notices on
+    top. Everything links to the page it names, and the build regenerates
+    it, so the list never goes stale."""
     hub = roots[0]
     guide, subsections, reference = [], [], []
     for child in hub.children:
@@ -211,6 +279,12 @@ def landing(roots):
            "Documentation for Kitsune, the Stony Brook Supercomputing Center's",
            "computing system. The guide sections are outlines; they fill in as",
            "Kitsune is deployed.", ""]
+    if notices:
+        out += ["## Announcements", ""]
+        for it in notices[:5]:
+            rel = pathlib.PurePosixPath(f"announcements/{it['stem']}.md")
+            out.append(f"- [{it['title']}]({'/'.join(rel.parts)}): {summary(rel)}")
+        out += ["", "[All announcements](announcements/index.md)", ""]
     if guide:
         out += ["## System guide", ""]
         out += [f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}" for p in guide]
@@ -227,12 +301,72 @@ def landing(roots):
     return "\n".join(out)
 
 
+def announcements_section(notices):
+    """The navigation's Announcements branch: the index first, then the
+    ten newest notices. The rest stay reachable from the index."""
+    kids = [Node(it["title"], it["title"],
+                 pathlib.PurePosixPath(f"announcements/{it['stem']}.md"), [])
+            for it in notices[:10]]
+    return nav_entry(Node("Announcements", "Announcements",
+                          pathlib.PurePosixPath("announcements/index.md"), kids))
+
+
+def announcements_index(notices):
+    """The section's own page, generated like the landing: every notice,
+    newest first, because the navigation and the front page carry only
+    the recent ones."""
+    out = ["# Announcements", "",
+           "Scheduled maintenance, changes to queues or storage, and known",
+           "problems land here, newest first. If the cluster behaves",
+           "differently than these pages describe, check here before",
+           "anything else.", ""]
+    for it in notices:
+        rel = pathlib.PurePosixPath(f"announcements/{it['stem']}.md")
+        when = f"{it['date']:%B} {it['date'].day}, {it['date'].year}"
+        out.append(f"- [{it['title']}]({it['stem']}.md) ({when}): {summary(rel)}")
+    return "\n".join(out) + "\n"
+
+
+def announcements_feed(notices, site_url, docs):
+    """The notices' own channel. The plugin emits exactly two feeds, both
+    page activity; announcements are authored content with a stated
+    publish date, so this channel is the generator's to write."""
+    base = site_url.rstrip("/")
+    out = ['<?xml version="1.0" encoding="UTF-8"?>',
+           '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+           "<channel>",
+           "  <title>Kitsune announcements</title>",
+           f"  <link>{escape(base + '/')}</link>",
+           "  <description>Maintenance windows, software updates, and "
+           "service notices for Kitsune.</description>",
+           f'  <atom:link href="{escape(base)}/feed_rss_announcements.xml" '
+           'rel="self" type="application/rss+xml"/>',
+           "  <language>en</language>",
+           f"  <lastBuildDate>{format_datetime(notices[0]['date'])}</lastBuildDate>"]
+    for it in notices[:20]:
+        link = f"{base}/announcements/{it['stem']}/"
+        blurb = summary(pathlib.PurePosixPath(f"announcements/{it['stem']}.md"))
+        out += ["  <item>",
+                f"    <title>{escape(it['title'])}</title>",
+                f"    <link>{escape(link)}</link>",
+                f'    <guid isPermaLink="true">{escape(link)}</guid>',
+                f"    <pubDate>{format_datetime(it['date'])}</pubDate>",
+                f"    <description>{escape(blurb)}</description>",
+                "  </item>"]
+    out += ["</channel>", "</rss>", ""]
+    (docs / "feed_rss_announcements.xml").write_text("\n".join(out), encoding="utf-8")
+    print(f"feed_rss_announcements.xml: {min(len(notices), 20)} entries")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--site-url", help="the address the site is served from; feeds need it absolute")
     args = ap.parse_args()
     site, roots = read_tree()
     site_url = args.site_url or site.get("site", "")
+    # Notices are read before the previous output is removed, so a
+    # malformed one never costs the last good tree.
+    notices = parse_announcements()
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -245,28 +379,52 @@ def main():
     # from an early page (the front page lists them all) finds its target
     # file no matter what order the tree lists them in. Then each page is
     # converted in place.
-    pages = list(all_pages(roots))
+    pages = list(all_pages(roots)) + [
+        Node(it["title"], it["title"],
+             pathlib.PurePosixPath(f"announcements/{it['stem']}.md"), [])
+        for it in notices]
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / page.rel, target)
     dates = git_dates()
+    by_rel = {f"announcements/{it['stem']}.md": it for it in notices}
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         text = de_dead_links(convert(target.read_text(encoding="utf-8")), page.rel, docs)
-        target.write_text(with_dates(text, dates.get(str(page.rel))), encoding="utf-8")
+        notice = by_rel.get(str(page.rel))
+        if notice:
+            # A notice's frontmatter is replaced, not stamped: the
+            # author's dates are the truth, and the plugin must never
+            # fall back to the build minute for a missing updated.
+            body = re.sub(r"\A---\n.*?\n---\n\n?", "", text, flags=re.S)
+            text = (f"---\ndate: {notice['date']:%Y-%m-%dT%H:%M:%S%z}\n"
+                    f"updated: {notice['updated']:%Y-%m-%dT%H:%M:%S%z}\n---\n\n{body}")
+        else:
+            text = with_dates(text, dates.get(str(page.rel)))
+        target.write_text(text, encoding="utf-8")
 
     # The landing page rides along in the feed, dated by the newest source.
     latest = max((d[0] for d in dates.values()), default=None)
     (docs / "index.md").write_text(
-        with_dates(landing(roots), None if latest is None else [latest, latest]),
+        with_dates(landing(roots, notices), None if latest is None else [latest, latest]),
         encoding="utf-8")
+
+    # The section's index rides along too, dated by the newest notice.
+    if notices:
+        newest = notices[0]["date"].strftime("%Y-%m-%dT%H:%M:%S%z")
+        (docs / "announcements").mkdir(exist_ok=True)
+        (docs / "announcements" / "index.md").write_text(
+            with_dates(announcements_index(notices), [newest, newest]),
+            encoding="utf-8")
 
     nav = [{HOME_LABEL: "https://sbsc.stonybrook.edu"}]
     hub = roots[0]
     # The front page is the site's home: its link, then its sections beside
     # it, not under a second copy of its own name.
     nav.append({hub.menu: "index.md"})
+    if notices:
+        nav.append(announcements_section(notices))
     for child in hub.children:
         sub = nav_entry(child)
         if sub:
@@ -410,8 +568,13 @@ body::after {
     # root; its relative addresses work at any deployment path. Browsers
     # apply it through the stylesheet processing instruction that
     # tools/style_feeds.py adds to the built feeds after mkdocs runs.
+    # The notices' channel carries each item's line as well, so it gets
+    # the variant view; tokens carry the differences, because the XSL's
+    # own braces rule out an f-string.
+    if site_url and notices:
+        announcements_feed(notices, site_url, docs)
     if site_url:
-        (docs / "feed.xsl").write_text("""<?xml version="1.0" encoding="UTF-8"?>
+        xsl = """<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:atom="http://www.w3.org/2005/Atom">
@@ -455,7 +618,7 @@ li a {
   color: #002244;
   text-decoration: underline;
 }
-.when { margin: 0 0 0.6rem; color: #595959; font-size: 0.875rem; }
+.when { margin: 0 0 0.6rem; color: #595959; font-size: 0.875rem; }@@BLURB_CSS@@
 a:focus-visible {
   outline: 3px solid #002244;
   outline-offset: 2px;
@@ -483,15 +646,14 @@ body::after {
 </header>
 <main>
 <h1><xsl:value-of select="rss/channel/title"/></h1>
-<p class="what">This page is a feed: the documentation's new and updated
-pages, newest first. Subscribe by copying its address,
+<p class="what">@@WHAT@@ Subscribe by copying its address,
 <code><xsl:value-of select="rss/channel/atom:link/@href"/></code>, into a
 feed reader.</p>
 <ol>
 <xsl:for-each select="rss/channel/item">
   <li>
     <a href="{link}"><xsl:value-of select="title"/></a>
-    <p class="when"><xsl:value-of select="pubDate"/></p>
+    <p class="when"><xsl:value-of select="pubDate"/></p>@@BLURB@@
   </li>
 </xsl:for-each>
 </ol>
@@ -500,16 +662,31 @@ feed reader.</p>
 </html>
 </xsl:template>
 </xsl:stylesheet>
-""", encoding="utf-8")
+"""
+        (docs / "feed.xsl").write_text(
+            xsl.replace("@@WHAT@@", "This page is a feed: the documentation's "
+                               "new and updated pages, newest first.")
+               .replace("@@BLURB_CSS@@", "")
+               .replace("@@BLURB@@", ""), encoding="utf-8")
+        (docs / "announcements.xsl").write_text(
+            xsl.replace("@@WHAT@@", "This page is a feed: announcements for "
+                               "Kitsune, newest first: maintenance windows, "
+                               "software updates, and service notices.")
+               .replace("@@BLURB_CSS@@", "\n.blurb { margin: 0 0 0.6rem; }")
+               .replace("@@BLURB@@", "\n    <p class=\"blurb\">"
+                                     "<xsl:value-of select=\"description\"/></p>"),
+            encoding="utf-8")
 
     # Local scan URLs: mkdocs serve keeps the address's path prefix, so the
     # urls carry it too (the a11y scan and any link check use this list).
     prefix = "/" + site_url.rstrip("/").split("/", 3)[-1] if site_url.count("/") >= 3 else ""
     (OUT / "urls-local.txt").write_text(
         f"http://127.0.0.1:8000{prefix}/\n"
+        + (f"http://127.0.0.1:8000{prefix}/announcements/\n" if notices else "")
         + "".join(f"http://127.0.0.1:8000{prefix}{page_url(p)}\n" for p in pages),
         encoding="utf-8")
-    print(f"docs-site: {len(list(all_pages(roots)))} pages, nav {len(nav)} top-level entries")
+    print(f"docs-site: {len(pages)} pages, nav {len(nav)} top-level entries"
+          + (f", {len(notices)} announcements" if notices else ""))
 
 
 if __name__ == "__main__":

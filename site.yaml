@@ -2,8 +2,6 @@
 pages:
 - title: Documentation
   pages:
-  - title: Notices
-    source: guide/notices.md
   - title: Introduction
     source: guide/introduction.md
   - title: System Architecture

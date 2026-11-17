@@ -31,5 +31,26 @@ no server needs to be running. `--axe-core` runs the automated gate only
 and exits nonzero on any axe-core violation at Level A/AA; that is the
 mode CI runs on every push and pull request. The axe-core script ships
 vendored as `tools/axe.min.js`, so only the browser driver is a
-dependency. Deploying to GitHub Pages stays off until the repository
+dependency.
+
+Announcements (maintenance windows, software changes, service notices)
+are one file each under `announcements/`, named `YYYY-MM-DD-slug.md`,
+with the title and date in the frontmatter:
+
+    ---
+    title: Scheduled maintenance on the login nodes
+    date: 2026-11-24
+    ---
+
+Dates are written unquoted; a quoted date is a string, and the build
+rejects it. A date alone publishes at midnight UTC; when the time
+matters, write the timestamp with its offset, as
+`2026-11-24T06:00:00-0500`, and add `updated:` only when editing a
+notice that is already out. The build gathers the files into the
+Announcements section, the front page (five newest), the navigation
+(ten), and `feed_rss_announcements.xml` (twenty); the section's index
+lists them all, and each notice also flows through the two page feeds,
+since a new notice is a change like any other.
+
+Deploying to GitHub Pages stays off until the repository
 variable `DOCS_DEPLOY` is set to "true"; see `.github/workflows/docs.yml`.

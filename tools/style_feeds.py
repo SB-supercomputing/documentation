@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Dress the built feeds after mkdocs runs.
 
-mkdocs-rss-plugin writes the feed XML and offers no stylesheet hook and no
-way to leave one page out, so this runs after the build: it points each
-feed at feed.xsl (the human-readable view written beside it) and removes
-the landing page's entry, which would otherwise top the updated feed on
-every change because the generator dates it by the newest source.
+mkdocs-rss-plugin writes the page feeds and offers no stylesheet hook and
+no way to leave one page out, so this runs after the build: it points
+each feed at its stylesheet (the human-readable view written beside it)
+and removes the landing page's entry, which would otherwise top the
+updated feed on every change because the generator dates it by the
+newest source.
 
     python tools/style_feeds.py
 
@@ -17,7 +18,16 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SITE = ROOT / "docs-site" / "site"
-PI = '<?xml-stylesheet href="feed.xsl" type="text/xsl"?>'
+# Each feed's own view: the notices' channel carries its items' lines, so
+# it gets the variant stylesheet; the page feeds keep the plain
+# title-and-date view.
+STYLESHEET = {"feed_rss_announcements.xml": "announcements.xsl"}
+
+
+def pi(feed_name):
+    """The stylesheet line a feed carries, pointing at its own view."""
+    href = STYLESHEET.get(feed_name, "feed.xsl")
+    return f'<?xml-stylesheet href="{href}" type="text/xsl"?>'
 
 
 def site_root():
@@ -36,10 +46,11 @@ def main():
     home = site_root()
     for feed in feeds:
         text = feed.read_text(encoding="utf-8")
-        if PI not in text:
+        line = pi(feed.name)
+        if line not in text:
             # The processing instruction belongs right after the XML
             # declaration, before anything a reader or validator parses.
-            text = text.replace("?>", "?>\n" + PI, 1)
+            text = text.replace("?>", "?>\n" + line, 1)
         if home:
             def repl(m):
                 return "" if f">{home}</guid>" in m.group(0) else m.group(0)
