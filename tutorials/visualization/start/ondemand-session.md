@@ -5,6 +5,9 @@
 Start a program on a compute node from your browser, check where it is running, and shut it down when you are done.
 **Time:** 10 minutes, plus any wait in the queue · **Program:** the desktop app (<mark>Kitsune desktop app name</mark>)
 
+> [!NOTE]
+> Kitsune's OnDemand is planned but not confirmed yet. These steps use OnDemand as it works on any cluster; the specifics are checked and updated once ours is running.
+
 | Before this | Data | You'll need |
 |---|---|---|
 | Nothing | None | An account on the cluster, and whatever second factor it asks for at sign-in: <mark>Kitsune account instructions, to come</mark> |

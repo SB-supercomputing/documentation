@@ -5,6 +5,9 @@
 Open a dataset in ParaView on a compute node, color it by one of its variables, and save a picture.
 **Time:** 10 minutes · **Program:** ParaView 6 (<mark>Kitsune ParaView module</mark>)
 
+> [!NOTE]
+> Kitsune's OnDemand is planned but not confirmed yet. These steps use OnDemand as it works on any cluster; the specifics are checked and updated once ours is running.
+
 | Before this | Data | You'll need |
 |---|---|---|
 | [Start an OnDemand session](../start/ondemand-session.md) | `disk_out_ref.ex2`: air flowing around a heated, spinning disk. It comes with ParaView (BSD-3) | Nothing else |

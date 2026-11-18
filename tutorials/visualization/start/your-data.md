@@ -5,6 +5,9 @@
 Link your scratch space into your home directory so the OnDemand apps can see it, then put a dataset there.
 **Time:** 10 minutes · **Program:** the OnDemand Files app and a terminal
 
+> [!NOTE]
+> Kitsune's OnDemand is planned but not confirmed yet. These steps use OnDemand as it works on any cluster; the specifics are checked and updated once ours is running.
+
 | Before this | Data | You'll need |
 |---|---|---|
 | Nothing | Your own files. Step 3 downloads a public dataset as an example | Your account on the cluster |
