@@ -25,11 +25,13 @@ import subprocess
 import sys
 from email.utils import format_datetime
 from xml.sax.saxutils import escape
+from zoneinfo import ZoneInfo
 
 import yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs-site"
+EASTERN = ZoneInfo("America/New_York")
 HOME_LABEL = "SBSC Home"
 ALERTS = {"NOTE": "note", "TIP": "tip", "IMPORTANT": "info", "WARNING": "warning", "CAUTION": "danger"}
 ALERT_RE = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>[^\n]*\n?)+)")
@@ -106,23 +108,34 @@ def git_dates():
     return dates
 
 
-def with_dates(text, entry):
-    """A copy's feed dates as frontmatter. A page that arrives with its own
+def as_yaml_scalar(text):
+    """A sentence as a YAML double-quoted scalar, whatever finds its way
+    into it. A colon in a plain scalar reads as a second key."""
+    return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def with_dates(text, entry, blurb=""):
+    """A copy's feed dates and description as frontmatter: the dates order
+    the feeds, and the description keeps the feed items reading as prose
+    instead of the page's raw markup. A page that arrives with its own
     frontmatter, or a checkout without git history, keeps its text as is."""
     if entry is None or text.startswith("---"):
         return text
     updated, created = entry
-    return f"---\ndate: {created}\nupdated: {updated}\n---\n\n{text}"
+    desc = (f"description: {as_yaml_scalar(blurb)}\n"
+            if blurb else "")
+    return f"---\ndate: {created}\nupdated: {updated}\n{desc}---\n\n{text}"
 
 
-def as_utc(value):
+def as_instant(value):
     """One comparable instant per notice: a date alone publishes at
-    midnight UTC (the plugin's own default for date-only values); a
-    timestamp keeps the offset it was written with."""
+    midnight Eastern, the center's own clock (and the plugin's
+    default_timezone below); a timestamp keeps the offset it was
+    written with."""
     if isinstance(value, datetime.datetime):
         return value
     return datetime.datetime(value.year, value.month, value.day,
-                             tzinfo=datetime.timezone.utc)
+                             tzinfo=EASTERN)
 
 
 def parse_announcements():
@@ -155,7 +168,7 @@ def parse_announcements():
             if isinstance(v, datetime.datetime) and v.utcoffset() is None:
                 die(f"a timestamp needs its UTC offset, as {key}: "
                     "2026-11-24T06:00:00-0500")
-            return as_utc(v)
+            return as_instant(v)
 
         when = stated("date")
         items.append({"title": title.strip(), "date": when,
@@ -268,6 +281,13 @@ def landing(roots, notices):
     guide, subsections, reference = [], [], []
     for child in hub.children:
         if child.rel is None:
+            # A section of nothing but reference pages lists under
+            # Reference; anything else is a section in its own right.
+            leaves = list(leaf_pages(child))
+            if leaves and all(leaf.rel.parts[0] == "reference" for leaf in leaves):
+                reference.extend(leaves)
+            else:
+                subsections.append(child)
             continue
         if child.children:
             subsections.append(child)
@@ -278,7 +298,18 @@ def landing(roots, notices):
     out = ["# Kitsune documentation", "",
            "Documentation for Kitsune, the Stony Brook Supercomputing Center's",
            "computing system. The guide sections are outlines; they fill in as",
-           "Kitsune is deployed.", ""]
+           "Kitsune is deployed.", "",
+           '<dl class="sbsc-specs">',
+           "  <dt>Compute nodes</dt><dd>162</dd>",
+           "  <dt>Processors</dt><dd>2x AMD EPYC 9965 per node</dd>",
+           "  <dt>Cores</dt><dd>60,000+</dd>",
+           "  <dt>Peak performance</dt><dd>6.7 PFLOPS, double precision</dd>",
+           "  <dt>Storage</dt><dd>6 PB usable GPFS</dd>",
+           "  <dt>Coming online</dt><dd>Q1 2027</dd>",
+           "</dl>",
+           "",
+           "Funded by the National Science Foundation under award OAC-2505376.",
+           ""]
     if notices:
         out += ["## Announcements", ""]
         for it in notices[:5]:
@@ -374,6 +405,10 @@ def main():
     docs.mkdir(parents=True)
     assets = docs / "assets"
     shutil.copytree(ROOT / "assets", assets, dirs_exist_ok=True)
+    # The SBSC theme's stylesheet and our accessibility additions ride
+    # along like the assets: tracked files, copied beside the pages.
+    shutil.copytree(ROOT / "stylesheets", docs / "stylesheets",
+                    dirs_exist_ok=True)
 
     # Two passes. First every page lands in the tree unchanged, so a link
     # from an early page (the front page lists them all) finds its target
@@ -392,16 +427,20 @@ def main():
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         text = de_dead_links(convert(target.read_text(encoding="utf-8")), page.rel, docs)
+        blurb = summary(page.rel)
         notice = by_rel.get(str(page.rel))
         if notice:
             # A notice's frontmatter is replaced, not stamped: the
             # author's dates are the truth, and the plugin must never
             # fall back to the build minute for a missing updated.
             body = re.sub(r"\A---\n.*?\n---\n\n?", "", text, flags=re.S)
+            desc = (f"description: {as_yaml_scalar(blurb)}\n"
+                    if blurb else "")
             text = (f"---\ndate: {notice['date']:%Y-%m-%dT%H:%M:%S%z}\n"
-                    f"updated: {notice['updated']:%Y-%m-%dT%H:%M:%S%z}\n---\n\n{body}")
+                    f"updated: {notice['updated']:%Y-%m-%dT%H:%M:%S%z}\n"
+                    f"{desc}---\n\n{body}")
         else:
-            text = with_dates(text, dates.get(str(page.rel)))
+            text = with_dates(text, dates.get(str(page.rel)), blurb)
         target.write_text(text, encoding="utf-8")
 
     # The landing page rides along in the feed, dated by the newest source.
@@ -415,7 +454,9 @@ def main():
         newest = notices[0]["date"].strftime("%Y-%m-%dT%H:%M:%S%z")
         (docs / "announcements").mkdir(exist_ok=True)
         (docs / "announcements" / "index.md").write_text(
-            with_dates(announcements_index(notices), [newest, newest]),
+            with_dates(announcements_index(notices), [newest, newest],
+                       "Maintenance windows, software updates, and service "
+                       "notices for Kitsune, newest first."),
             encoding="utf-8")
 
     nav = [{HOME_LABEL: "https://sbsc.stonybrook.edu"}]
@@ -438,13 +479,17 @@ def main():
     # hard-coded. The RSS feed needs an absolute address, so the plugin is
     # wired only when one is known. The dates themselves arrive through
     # each page's frontmatter (date, updated), stamped above from the
-    # sources' git history; use_git cannot see the generated copies. The
-    # channel image is the fox emblem, its address derived the same way.
+    # sources' git history; use_git cannot see the generated copies. A
+    # date without a time of its own reads as midnight Eastern, the same
+    # clock the notices' own channel uses. The channel image is the
+    # shield, the theme's own mark, its address derived the same way.
     url_line = f"site_url: {site_url}" if site_url else ""
     rss_block = ('  - rss:\n      use_git: false\n      date_from_meta:\n'
                  '        as_creation: date\n        as_update: updated\n'
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
-                 f'      image: {site_url.rstrip("/")}/assets/kitsune-emblem-sb.svg\n'
+                 '        default_time: 00:00\n'
+                 '        default_timezone: America/New_York\n'
+                 f'      image: {site_url.rstrip("/")}/assets/sbsc-shield.svg\n'
                  '      pretty_print: true\n'
                  '      length: 40') if site_url else ""
     (OUT / "mkdocs.yml").write_text(f"""\
@@ -454,6 +499,7 @@ site_description: Documentation for Kitsune at the Stony Brook Supercomputing Ce
 {url_line}
 use_directory_urls: true
 strict: true
+copyright: Stony Brook Supercomputing Center, Stony Brook University
 nav:
 {yaml_list(nav).rstrip()}
 plugins:
@@ -461,20 +507,33 @@ plugins:
 {rss_block}
 theme:
   name: material
+  custom_dir: overrides
   language: en
   font: false
-  logo: assets/sbsc-brand.svg
-  favicon: assets/kitsune-emblem-sb.svg
+  logo: assets/sbsc-shield.svg
+  favicon: assets/sbsc-shield.svg
   palette:
     - scheme: default
-      primary: red
-      accent: indigo
+      primary: custom
+      accent: custom
+      toggle: {{ icon: material/weather-night, name: Switch to dark mode }}
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle: {{ icon: material/weather-sunny, name: Switch to light mode }}
   features:
     - content.code.copy
+    - navigation.footer
+    - navigation.path
+    - navigation.sections
+    - navigation.tabs
     - navigation.top
     - navigation.tracking
 extra_css:
-  - assets/sbsc.css
+  - stylesheets/sbsc.css
+  - stylesheets/sbsc-docs.css
+extra:
+  homepage: https://sbsc.stonybrook.edu/
 markdown_extensions:
   - admonition
   - attr_list
@@ -487,82 +546,26 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 """, encoding="utf-8")
 
-    (assets / "sbsc.css").write_text("""\
-/* The center's tokens, the Kitsune placeholder mark, Material's theme
-   colors in the house palette, the lockup on its white plate, and the fox
-   watermark. The palette setting takes only Material's own color names,
-   and its runtime sets data-md-color-primary on the body, so the overrides
-   use the same selectors from this later stylesheet and win the cascade. */
-[data-md-color-primary="red"] {
-  --md-primary-fg-color: #990000;
-  --md-primary-fg-color--light: #6B000D;
-  --md-primary-fg-color--dark: #6B000D;
-  --md-primary-bg-color: #ffffff;
-  --md-primary-bg-color--light: #ffffff;
-}
-[data-md-color-accent="indigo"] {
-  --md-accent-fg-color: #002244;
-}
-/* The wordmark's colors are set for a light ground, so it rides a white
-   plate wherever Material places it: the header bar, and the navigation
-   drawer's logo row once the window narrows. */
-.md-header .md-header__button.md-logo,
-.md-header .md-logo,
-.md-nav__button.md-logo {
-  background: #ffffff;
-  border-radius: 3px;
-  padding: 3px 10px;
-  margin-right: 2px;
-}
-.md-header .md-logo img { max-height: 1.6rem; width: auto; }
-
-/* The left navigation is the navigation; a page's own sections stay in the
-   page, so the right-hand contents column is off. Written twice to outrank
-   the theme's own rule for it. */
-.md-sidebar--secondary.md-sidebar--secondary { display: none; }
-
-mark {
-  background: #F8F2C5;
-  color: #4B4B4B;
-  border-bottom: 2px dashed #4B4B4B;
-  padding: 0 2px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-body::after {
-  content: "";
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  width: 260px;
-  max-width: 30vw;
-  aspect-ratio: 1;
-  background: url("kitsune-emblem-sb.svg") bottom right / contain no-repeat;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-}
-@media print, (forced-colors: active) {
-  body::after { display: none; }
-}
-
-/* Findings from the axe scan, 2026-11-13. The theme ships its inline text
-   links distinguished by color alone (1.4.1), navigation links 18px tall
-   where the AA floor is 24px (2.5.8), and the footer credit at 45% white
-   on the dark footer (1.4.3). The underline covers lists and table cells
-   too. The theme's code-comment and variable tokens sit at 4.47:1 on the
-   code background (1.4.3), one step under the line. */
-.md-content p a,
-.md-content li a,
-.md-content td a { text-decoration: underline; }
-.md-sidebar--primary .md-nav__link {
-  display: flex;
-  align-items: center;
-  min-height: 24px;
-}
-.md-copyright, .md-copyright a { color: rgba(255, 255, 255, 0.75); }
-.md-typeset .c1, .md-typeset .nv { color: #666666; }
+    # Material's own logo partial hardcodes alt="logo", a name that helps
+    # no one using a screen reader; the override directory carries ours,
+    # with the center's name instead. The rest of the partial is the
+    # theme's, so an icon-only configuration keeps working.
+    override = OUT / "overrides" / "partials" / "logo.html"
+    override.parent.mkdir(parents=True, exist_ok=True)
+    override.write_text("""\
+{% if config.theme.logo %}
+  <img src="{{ config.theme.logo | url }}" alt="Stony Brook Supercomputing Center">
+{% else %}
+  {% set icon = config.theme.icon.logo or "material/library" %}
+  {% include ".icons/" ~ icon ~ ".svg" %}
+{% endif %}
 """, encoding="utf-8")
+
+    # The brand stylesheet is no longer written here: the SBSC theme ships
+    # as tracked files under stylesheets/ (the theme itself, plus our
+    # accessibility additions in sbsc-docs.css), copied into the tree
+    # above. The interim generated look survives in git history under the
+    # tag pre-sbsc-theme.
 
     # The feeds' human-readable view, written beside them at the site
     # root; its relative addresses work at any deployment path. Browsers
@@ -592,56 +595,51 @@ body {
   margin: 0;
   font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Helvetica, Arial, sans-serif;
-  color: #1a1a1a;
+  color: #17283e;
   background: #ffffff;
 }
-header { background: #990000; }
+/* The docs header's twin: white ground, navy top rule, shield and name. */
+header {
+  background: #ffffff;
+  border-top: 4px solid #112d50;
+  border-bottom: 1px solid #dbe4ee;
+}
 header .home {
   display: inline-flex;
-  background: #ffffff;
-  border-radius: 3px;
-  padding: 3px 10px;
+  align-items: center;
+  gap: 0.5rem;
   margin: 8px 16px;
+  color: #112d50;
+  font-weight: 700;
+  text-decoration: none;
 }
-header img { display: block; max-height: 1.6rem; width: auto; }
+header img { display: block; height: 1.9rem; width: auto; }
 main { max-width: 44rem; margin: 0 auto; padding: 1.5rem 16px 4rem; }
-h1 { font-size: 1.5rem; margin: 0 0 0.5rem; }
+h1 { font-size: 1.5rem; margin: 0 0 0.5rem; color: #112d50; }
 .what { margin: 0 0 1.5rem; }
 .what code { font-size: 0.9em; overflow-wrap: anywhere; }
 ol { list-style: none; margin: 0; padding: 0; }
-li { border-top: 1px solid #e0e0e0; }
+li { border-top: 1px solid #dbe4ee; }
 li a {
   display: flex;
   align-items: center;
   min-height: 24px;
   padding: 0.5rem 0 0.25rem;
-  color: #002244;
+  color: #155cbb;
   text-decoration: underline;
 }
-.when { margin: 0 0 0.6rem; color: #595959; font-size: 0.875rem; }@@BLURB_CSS@@
+.when { margin: 0 0 0.6rem; color: #52657b; font-size: 0.875rem; }@@BLURB_CSS@@
 a:focus-visible {
-  outline: 3px solid #002244;
+  outline: 3px solid #2a8fd6;
   outline-offset: 2px;
 }
-body::after {
-  content: "";
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  width: 260px;
-  max-width: 30vw;
-  aspect-ratio: 1;
-  background: url("assets/kitsune-emblem-sb.svg") bottom right / contain no-repeat;
-  opacity: 0.05;
-  pointer-events: none;
-}
-@media print, (forced-colors: active) { body::after { display: none; } }
 </style>
 </head>
 <body>
 <header>
   <a class="home" href="{rss/channel/link}">
-    <img src="assets/sbsc-brand.svg" alt="Stony Brook Supercomputing Center"/>
+    <img src="assets/sbsc-shield.svg" alt="Stony Brook Supercomputing Center"/>
+    <span>SBSC Documentation</span>
   </a>
 </header>
 <main>
