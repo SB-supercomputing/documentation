@@ -32,7 +32,9 @@ import yaml
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs-site"
 EASTERN = ZoneInfo("America/New_York")
-HOME_LABEL = "SBSC Home"
+HOME_LABEL = "Home"
+SBSC_HOME = "https://sbsc.stonybrook.edu/"
+SUPPORT = "https://sbsc.stonybrook.edu/contact"
 ALERTS = {"NOTE": "note", "TIP": "tip", "IMPORTANT": "info", "WARNING": "warning", "CAUTION": "danger"}
 ALERT_RE = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>[^\n]*\n?)+)")
 LINK_RE = re.compile(r"(?<!\!)\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
@@ -272,6 +274,13 @@ def leaf_pages(node):
             yield child
 
 
+def is_reference(node):
+    """A section made only of pages under reference/: it lists under
+    Reference, and comes last in the tabs."""
+    leaves = list(leaf_pages(node))
+    return bool(leaves) and all(leaf.rel.parts[0] == "reference" for leaf in leaves)
+
+
 def landing(roots, notices):
     """The site's front page, from the tree: what the guide covers, a line
     per tutorial, and the reference pages, with the recent notices on
@@ -283,9 +292,8 @@ def landing(roots, notices):
         if child.rel is None:
             # A section of nothing but reference pages lists under
             # Reference; anything else is a section in its own right.
-            leaves = list(leaf_pages(child))
-            if leaves and all(leaf.rel.parts[0] == "reference" for leaf in leaves):
-                reference.extend(leaves)
+            if is_reference(child):
+                reference.extend(leaf_pages(child))
             else:
                 subsections.append(child)
             continue
@@ -317,7 +325,7 @@ def landing(roots, notices):
             out.append(f"- [{it['title']}]({'/'.join(rel.parts)}): {summary(rel)}")
         out += ["", "[All announcements](announcements/index.md)", ""]
     if guide:
-        out += ["## System guide", ""]
+        out += ["## System Guide", ""]
         out += [f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}" for p in guide]
         out.append("")
     for section in subsections:
@@ -459,17 +467,23 @@ def main():
                        "notices for Kitsune, newest first."),
             encoding="utf-8")
 
-    nav = [{HOME_LABEL: "https://sbsc.stonybrook.edu"}]
-    hub = roots[0]
     # The front page is the site's home: its link, then its sections beside
-    # it, not under a second copy of its own name.
-    nav.append({hub.menu: "index.md"})
-    if notices:
-        nav.append(announcements_section(notices))
+    # it, not under a second copy of its own name. Each top-level entry is
+    # a tab, in the order of the main site's menu bar: the guide and the
+    # tutorials, then Announcements, with Reference last. The main site
+    # itself is a step away through the logo and the footer.
+    hub = roots[0]
+    nav = [{HOME_LABEL: "index.md"}]
+    pending = announcements_section(notices) if notices else None
     for child in hub.children:
+        if pending and child.rel is None and is_reference(child):
+            nav.append(pending)
+            pending = None
         sub = nav_entry(child)
         if sub:
             nav.append(sub)
+    if pending:
+        nav.append(pending)
     for root in roots[1:]:
         entry = nav_entry(root)
         if entry:
@@ -484,6 +498,12 @@ def main():
     # clock the notices' own channel uses. The channel image is the
     # shield, the theme's own mark, its address derived the same way.
     url_line = f"site_url: {site_url}" if site_url else ""
+    # The footer: who runs the site, where to get help, and the way back
+    # to the main site. Material prints the copyright as HTML, and its
+    # "Made with" credit is off (extra.generator) to leave room for these.
+    copyright = ("Stony Brook Supercomputing Center, Stony Brook University"
+                 f' · <a href="{SUPPORT}">Get support</a>'
+                 f' · <a href="{SBSC_HOME}">SBSC home</a>')
     rss_block = ('  - rss:\n      use_git: false\n      date_from_meta:\n'
                  '        as_creation: date\n        as_update: updated\n'
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
@@ -499,7 +519,7 @@ site_description: Documentation for Kitsune at the Stony Brook Supercomputing Ce
 {url_line}
 use_directory_urls: true
 strict: true
-copyright: Stony Brook Supercomputing Center, Stony Brook University
+copyright: '{copyright}'
 nav:
 {yaml_list(nav).rstrip()}
 plugins:
@@ -533,7 +553,8 @@ extra_css:
   - stylesheets/sbsc.css
   - stylesheets/sbsc-docs.css
 extra:
-  homepage: https://sbsc.stonybrook.edu/
+  homepage: {SBSC_HOME}
+  generator: false
 markdown_extensions:
   - admonition
   - attr_list

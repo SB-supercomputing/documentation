@@ -2,7 +2,7 @@
 pages:
 - title: Documentation
   pages:
-  - title: System guide
+  - title: System Guide
     pages:
     - title: Introduction
       source: guide/introduction.md
