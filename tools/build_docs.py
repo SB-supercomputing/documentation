@@ -502,8 +502,8 @@ def main():
     # to the main site. Material prints the copyright as HTML, and its
     # "Made with" credit is off (extra.generator) to leave room for these.
     copyright = ("Stony Brook Supercomputing Center, Stony Brook University"
-                 f' · <a href="{SUPPORT}">Get support</a>'
-                 f' · <a href="{SBSC_HOME}">SBSC home</a>')
+                 f' · <a href="{SUPPORT}">Get Support</a>'
+                 f' · <a href="{SBSC_HOME}">SBSC Home</a>')
     rss_block = ('  - rss:\n      use_git: false\n      date_from_meta:\n'
                  '        as_creation: date\n        as_update: updated\n'
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
