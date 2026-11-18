@@ -3,7 +3,7 @@
 # check runs on every push to main and every pull request: it regenerates
 # the site from site.yaml and refuses a broken build (missing pages,
 # broken links). a11y scans every built page with axe-core against WCAG
-# 2.2 AA. deploy
+# 2.2 AA, once in the light scheme and once in the dark one. deploy
 # publishes to GitHub Pages once the repository variable DOCS_DEPLOY is set
 # to "true" (Settings, Secrets and variables, Actions, Variables) and Pages
 # is enabled; until then nothing deploys.
@@ -26,6 +26,7 @@ jobs:
       - run: pip install -r requirements-docs.txt
       - run: python tools/build_docs.py
       - run: mkdocs build --strict -f docs-site/mkdocs.yml
+      - run: python tools/check_links.py
   a11y:
     needs: check
     runs-on: ubuntu-latest
@@ -41,6 +42,7 @@ jobs:
       - run: mkdocs build --strict -f docs-site/mkdocs.yml
       - run: playwright install chromium --with-deps
       - run: python tools/a11y_scan.py --axe-core
+      - run: python tools/a11y_scan.py --axe-core --scheme slate
       - name: report
         if: always()
         uses: actions/upload-artifact@v4
@@ -73,6 +75,7 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
       - run: mkdocs build --strict -f docs-site/mkdocs.yml
       - run: python tools/style_feeds.py
+      - run: python tools/check_links.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

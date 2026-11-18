@@ -2528,6 +2528,21 @@ def discover(page, site, limit, use_sitemap=True):
     return found
 
 
+SET_SCHEME_JS = """(scheme) => {
+  if (typeof __md_set !== "function") return false;
+  const inputs = [...document.querySelectorAll('input[name="__palette"]')];
+  const index = inputs.findIndex(x => x.getAttribute("data-md-color-scheme") === scheme);
+  if (index < 0) return false;
+  const x = inputs[index];
+  __md_set("__palette", {index, color: {
+    media: x.getAttribute("data-md-color-media") || "",
+    scheme,
+    primary: x.getAttribute("data-md-color-primary"),
+    accent: x.getAttribute("data-md-color-accent")}});
+  return true;
+}"""
+
+
 def main():
     ap = argparse.ArgumentParser(description="WCAG 2.2 AA scanner with remediation-ready findings.")
     ap.add_argument("--site")
@@ -2536,7 +2551,11 @@ def main():
                     help="Max pages to discover when using --site (default 100)")
     ap.add_argument("--no-sitemap", action="store_true",
                     help="Skip sitemap.xml and crawl links only")
-    ap.add_argument("--out", default=str(ROOT / "docs-site" / "a11y"))
+    ap.add_argument("--out", default=None,
+                    help="report folder (default docs-site/a11y, or docs-site/a11y/<scheme> with --scheme)")
+    ap.add_argument("--scheme", default=None,
+                    help="scan in this Material color scheme, e.g. slate for dark mode "
+                         "(default: the theme's first palette)")
     ap.add_argument("--axe", default=str(DEFAULT_AXE))
     ap.add_argument("--fast", action="store_true")
     ap.add_argument("--axe-core", action="store_true",
@@ -2568,6 +2587,8 @@ def main():
             return 1
         axe_src, axe_status = p.read_text(encoding="utf-8"), f"local ({p.name})"
 
+    if a.out is None:
+        a.out = str(ROOT / "docs-site" / "a11y" / (a.scheme or ""))
     outdir = pathlib.Path(a.out)
     shotdir = outdir / "screenshots"
     t0 = time.time()
@@ -2594,10 +2615,27 @@ def main():
             site = a.site
         print(f"{len(urls)} page(s) to scan\n")
 
+        if a.scheme:
+            # Material restores a reader's scheme from localStorage on every
+            # page. Store the choice the way its own toggle does, through
+            # the page's __md_set, so the key's scope and the toggle's index
+            # are always the theme's own.
+            page.goto(urls[0], wait_until="networkidle", timeout=45000)
+            chosen = page.evaluate(SET_SCHEME_JS, a.scheme)
+            if not chosen:
+                print(f"no palette toggle for scheme {a.scheme!r} on {urls[0]}")
+                return 1
+            print(f"Color scheme: {a.scheme}\n")
+
         results = []
         for i, u in enumerate(urls, 1):
             print(f"[{i}/{len(urls)}] {u}")
             r = scan_page(page, u, axe_src, not a.fast and not a.axe_core, None if a.axe_core else shotdir, page_no=i, native=not a.axe_core)
+            if a.scheme:
+                shown = page.evaluate("document.body.getAttribute('data-md-color-scheme')")
+                if shown != a.scheme:
+                    print(f"    page shows scheme {shown!r}, not {a.scheme!r}; stopping")
+                    return 1
             if i == 1:
                 if r.get("axe_error"):
                     print(f"    axe unavailable ({r['axe_error'][:60]}) — contrast not tested")

@@ -1,0 +1,41 @@
+/* Accessibility and site additions to the SBSC theme (sbsc.css).
+
+   The theme's inline links are told apart by color alone, its
+   navigation, tab, and breadcrumb links sit under the 24px target
+   floor of WCAG 2.2 (2.5.8), and the footer credit link shares its
+   color with the text around it once the copyright line sits above
+   it, so it reads as plain text (1.4.1). These rules close those
+   gaps, style the <mark> placeholder values the pages carry, and keep
+   the right-hand contents column off; everything else about the look
+   belongs to sbsc.css. */
+.md-content p a,
+.md-content li a,
+.md-content td a { text-decoration: underline; }
+
+.md-nav__link,
+.md-tabs__link,
+.md-path__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+.md-copyright { color: rgba(255, 255, 255, 0.75); }
+.md-copyright a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: underline;
+}
+
+mark {
+  background: #F8F2C5;
+  color: #4B4B4B;
+  border-bottom: 2px dashed #4B4B4B;
+  padding: 0 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* The left navigation is the navigation; a page's own sections stay in
+   the page, so the right-hand contents column is off. Written twice to
+   outrank the theme's own rule for it. */
+.md-sidebar--secondary.md-sidebar--secondary { display: none; }

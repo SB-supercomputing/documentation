@@ -2,36 +2,38 @@
 pages:
 - title: Documentation
   pages:
-  - title: Introduction
-    source: guide/introduction.md
-  - title: System Architecture
-    source: guide/system-architecture.md
-  - title: Accessing the System
-    source: guide/accessing-the-system.md
-  - title: Account Administration
-    source: guide/account-administration.md
-  - title: Managing Your Files
-    source: guide/managing-your-files.md
-  - title: Running Jobs
-    source: guide/running-jobs.md
-  - title: Launching Applications
-    source: guide/launching-applications.md
-  - title: Building Software
-    source: guide/building-software.md
-  - title: Job Scripts
-    source: guide/job-scripts.md
-  - title: Job Management
-    source: guide/job-management.md
-  - title: Programming and Performance
-    source: guide/programming-and-performance.md
-  - title: Machine Learning
-    source: guide/machine-learning.md
-  - title: Python
-    source: guide/python.md
-  - title: Help Desk
-    source: guide/help-desk.md
-  - title: References
-    source: guide/references.md
+  - title: System Guide
+    pages:
+    - title: Introduction
+      source: guide/introduction.md
+    - title: System Architecture
+      source: guide/system-architecture.md
+    - title: Accessing the System
+      source: guide/accessing-the-system.md
+    - title: Account Administration
+      source: guide/account-administration.md
+    - title: Managing Your Files
+      source: guide/managing-your-files.md
+    - title: Running Jobs
+      source: guide/running-jobs.md
+    - title: Launching Applications
+      source: guide/launching-applications.md
+    - title: Building Software
+      source: guide/building-software.md
+    - title: Job Scripts
+      source: guide/job-scripts.md
+    - title: Job Management
+      source: guide/job-management.md
+    - title: Programming and Performance
+      source: guide/programming-and-performance.md
+    - title: Machine Learning
+      source: guide/machine-learning.md
+    - title: Python
+      source: guide/python.md
+    - title: Help Desk
+      source: guide/help-desk.md
+    - title: References
+      source: guide/references.md
   - title: Tutorials
     source: tutorials/README.md
     pages:
@@ -87,5 +89,7 @@ pages:
             menu: Streamlines
           - link: tutorials/visualization/densities/orbitals-and-density/paraview.md
             menu: Orbitals and electron density
-  - title: Glossary
-    source: reference/glossary.md
+  - title: Reference
+    pages:
+    - title: Glossary
+      source: reference/glossary.md

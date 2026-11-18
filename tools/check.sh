@@ -21,6 +21,14 @@ else
   fail=1
 fi
 
+echo "== links"
+if "$PY" tools/check_links.py; then
+  echo "links clean"
+else
+  echo "LINKS FAILED: see the list above"
+  fail=1
+fi
+
 echo
 if [ "$fail" -eq 0 ]; then echo "PASS"; else echo "FAIL"; fi
 exit "$fail"

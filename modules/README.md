@@ -6,6 +6,8 @@ Modules marked *in draft* have an outline but no dates yet. Lessons without a li
 
 ## A. Onboarding
 
+These module pages are being written; they arrive with Kitsune's onboarding.
+
 - [**Basics of using Kitsune**](A1-cluster-basics.md) *(in draft)*: your account, the shell, where files live, and a first job.
 - [**Using Slurm**](A2-slurm.md) *(in draft)*: asking for cores, memory, and time; finding out why a job waits or fails; job arrays.
 - [**Open OnDemand**](A3-open-ondemand.md) *(in draft)*: using the cluster from a browser for files and for interactive apps.
@@ -25,6 +27,8 @@ Modules marked *in draft* have an outline but no dates yet. Lessons without a li
   - Comparisons of the programs that can do one lesson: [streamlines](../tutorials/visualization/vectors/streamlines/README.md), [orbitals and electron density](../tutorials/visualization/densities/orbitals-and-density/README.md)
 
 ## C. Parallel & Performance
+
+The modules here arrive with the parallel and performance work, which starts once user code runs on the system.
 
 - [**OpenMP**](C1-openmp.md) *(in draft)*: threads on one node.
 - [**MPI**](C2-mpi.md) *(in draft)*: processes across nodes.
