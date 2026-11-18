@@ -545,7 +545,6 @@ theme:
     - content.code.copy
     - navigation.footer
     - navigation.path
-    - navigation.sections
     - navigation.tabs
     - navigation.top
     - navigation.tracking
@@ -581,6 +580,23 @@ markdown_extensions:
   {% include ".icons/" ~ icon ~ ".svg" %}
 {% endif %}
 """, encoding="utf-8")
+
+    # The sidebar mirrors the header tabs: every section of the site,
+    # each one collapsible, the current one open. With navigation.tabs on,
+    # Material "lifts" the sidebar to the current tab's pages alone, so
+    # its nav partial sees the feature list without that one. The partial
+    # is the installed theme's own, with that single line put in front.
+    import material
+    theirs = (pathlib.Path(material.__file__).parent / "templates" /
+              "partials" / "nav.html").read_text(encoding="utf-8")
+    hook = '{% import "partials/nav-item.html" as item with context %}'
+    if hook not in theirs:
+        sys.exit("build_docs: Material's partials/nav.html changed shape; "
+                 "update the sidebar override in tools/build_docs.py")
+    unlift = ('{% set features = features | reject("equalto", '
+              '"navigation.tabs") | list %}\n')
+    (OUT / "overrides" / "partials" / "nav.html").write_text(
+        theirs.replace(hook, unlift + hook, 1), encoding="utf-8")
 
     # The brand stylesheet is no longer written here: the SBSC theme ships
     # as tracked files under stylesheets/ (the theme itself, plus our

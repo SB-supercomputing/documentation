@@ -23,7 +23,9 @@ The look comes from two stylesheets under `stylesheets/`. `sbsc.css` is
 the SBSC theme, copied from the main site's theme package; change only
 its token block at the top, and only to follow the main site.
 `sbsc-docs.css` holds what this site adds: the accessibility fixes, the
-placeholder highlight, and the hidden contents column. The site has a
+placeholder highlight, the hidden contents column, and the sidebar,
+which lists every section of the site as a collapsible group on wide
+and narrow screens alike. The site has a
 light and a dark scheme, and readers switch with the toggle in the header.
 
 For the accessibility scan, build once, then:
