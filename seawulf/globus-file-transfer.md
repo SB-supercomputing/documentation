@@ -4,8 +4,8 @@ Globus moves large research datasets reliably: it runs the transfer for you, ret
 
 **On this page:** [When to use Globus](#when) · [One-time setup](#setup) · [Start, transfer, stop](#transfer) · [Command reference](#ref) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Run Globus from the milan login nodes** (`milan.seawulf.stonybrook.edu`).
+!!! note ""
+    **Run Globus from the milan login nodes** (`milan.seawulf.stonybrook.edu`).
 
 ## When to use Globus {#when}
 
@@ -120,6 +120,7 @@ Your SeaWulf endpoint has probably stopped, for example because you logged out. 
 
 Need help planning a big data move? [Open a ticket](https://iacs.supportsystem.com/) with HPC support.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/globus-file-transfer> (maintained by Research Computing and Informatics).
+{: .rci-credit }

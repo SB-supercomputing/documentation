@@ -47,7 +47,7 @@ Choose an explicit memory size for routine work. All available can reserve node 
 
 **The desktop opens but CyLinter does not.** A valid config YAML is required before launch. Check the full configuration path and the input paths inside the file.
 
-**The session is Running after CyLinter failed.** The desktop deliberately stays open for inspection. Read cylinter-<jobid>.log in your workspace to identify the error; Running alone does not mean the analysis succeeded.
+**The session is Running after CyLinter failed.** The desktop deliberately stays open for inspection. Read cylinter-&lt;jobid>.log in your workspace to identify the error; Running alone does not mean the analysis succeeded.
 
 **The viewer reports a display or Qt error.** Keep the default GPU choice and inspect the session output and VNC log. The interactive workflow needs a real desktop display.
 
@@ -61,6 +61,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](../shared/ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-cylinter> (maintained by Research Computing and Informatics).
+{: .rci-credit }

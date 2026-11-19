@@ -222,8 +222,9 @@ def main():
             continue
         # Some sites (MathWorks, ACM, and the journal publishers among
         # them) turn away any scripted client, live or dead alike, with
-        # 403, 405, or 429; that is a refusal to say, not a no.
-        if status in (403, 405, 429, 999):
+        # 403, 405, or 429, and IEEE Xplore answers CI's servers with 418;
+        # that is a refusal to say, not a no.
+        if status in (403, 405, 418, 429, 999):
             refused.append(url)
         # A portal behind a sign-in (the OnDemand sites) answers 401: the
         # server is there and the address is its own, which is all a link

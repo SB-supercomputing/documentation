@@ -11,6 +11,13 @@ which is how the pages SeaWulf and NVwulf share appear under both. The
 page keeps the breadcrumb, tab, and previous and next links of its
 `source:` entry wherever a reader finds it.
 
+Each system's tab opens on its System Information page in `systems/`,
+which lists the system's specifications and where each figure comes
+from. The `label:` key in `site.yaml` sets that page's name in the
+sidebar, so it shows as "System Information" under "SeaWulf" instead of
+repeating "SeaWulf". When a published figure changes, update the page
+and its "checked" date.
+
 To work on the pages, clone the repository, set up a Python 3.9-or-newer
 environment of your choosing (venv, conda, or your system Python), and with
 it active:

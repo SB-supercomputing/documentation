@@ -4,15 +4,15 @@ A Python interface for MPI-based parallel computing.
 
 mpi4py provides Python bindings for the Message Passing Interface (MPI) standard, allowing Python programs to exploit multiple processors on multiple compute nodes. Do not load other MPI modules alongside it, as this may cause version conflicts and job failures; install mpi4py via conda rather than pip.
 
-**Module name:** `mpi4py`
+**Module name** `mpi4py`
 
 ## Loading mpi4py
 
-- module: `mpi4py/latest`
-- module: `anaconda/3`
+- module `mpi4py/latest`
+- module `anaconda/3`
 
-> [!TIP]
-> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+!!! tip ""
+    **Tip:** load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
 
 ## Example usage
 
@@ -48,8 +48,7 @@ size = comm.Get_size() print(f"Hello from process {rank} out of {size}!")
 
 mpi4py is available on: SeaWulf, NVwulf, ClinWulf.
 
-**Category:** MPI implementations
-
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/mpi4py> (maintained by Research Computing and Informatics).
+{: .rci-credit }

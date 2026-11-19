@@ -81,6 +81,7 @@ Try **Restart Web Server** in the Help menu, then reopen Job Composer. If the er
 
 Related: [OnDemand overview](../shared/ondemand-overview.md) · [Writing job scripts](../shared/writing-job-scripts.md) · [Managing jobs](../shared/managing-jobs.md)
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/job-composer> (maintained by Research Computing and Informatics).
+{: .rci-credit }

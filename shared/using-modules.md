@@ -69,9 +69,10 @@ Run `module purge` and load only what you need, compilers first, then libraries,
 
 </details>
 
-> [!NOTE]
-> **Need new software or a different version?** Submit a request at [iacs.supportsystem.com](https://iacs.supportsystem.com/).
+!!! note ""
+    **Need new software or a different version?** Submit a request at [iacs.supportsystem.com](https://iacs.supportsystem.com/).
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/using-modules> (maintained by Research Computing and Informatics).
+{: .rci-credit }

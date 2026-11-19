@@ -4,26 +4,26 @@ A fast, memory-efficient tool for aligning sequencing reads to long reference se
 
 Bowtie2 is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1,000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. Bowtie2 supports gapped, local, and paired-end alignment modes and works with a variety of popular read formats including FASTQ, QSEQ, and FASTA.
 
-**Module name:** `bowtie2`
+**Module name** `bowtie2`
 
 ## Loading Bowtie2
 
-- module: `bowtie2 (default: 2.5.4)`
+- module `bowtie2 (default: 2.5.4)`
 
-> [!TIP]
-> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+!!! tip ""
+    **Tip:** load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
 
 ## Commands
 
-- `-x` : Path to the index for the reference genome
-- `-1` : File with mate 1 reads (paired-end)
-- `-2` : File with mate 2 reads (paired-end)
-- `-U` : File with unpaired reads (single-end)
-- `-S` : Output SAM file (default: stdout)
-- `-p/--threads` : Number of parallel search threads (default: 1)
-- `--local`: Local alignment; ends might be soft clipped
-- `--end-to-end`: End-to-end alignment (default)
-- `-k` : Report up to  alignments per read
+- `-x`  Path to the index for the reference genome
+- `-1`  File with mate 1 reads (paired-end)
+- `-2`  File with mate 2 reads (paired-end)
+- `-U`  File with unpaired reads (single-end)
+- `-S`  Output SAM file (default: stdout)
+- `-p/--threads`  Number of parallel search threads (default: 1)
+- `--local` Local alignment; ends might be soft clipped
+- `--end-to-end` End-to-end alignment (default)
+- `-k`  Report up to  alignments per read
 
 ## Example usage
 
@@ -71,8 +71,7 @@ bowtie2 -p $SLURM_CPUS_PER_TASK -x $INDEX -1 $READS1 -2 $READS2 -S $OUTPUT
 
 Bowtie2 is available on: SeaWulf, ClinWulf.
 
-**Category:** Bioinformatics
-
-**Applies to:** SeaWulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/bowtie2> (maintained by Research Computing and Informatics).
+{: .rci-credit }

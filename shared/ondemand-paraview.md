@@ -14,8 +14,8 @@ ParaView provides interactive visualization of simulation results and three-dime
 
 For clinical work, use your approved study directories on ClinWulf and follow your study requirements for data handling.
 
-> [!NOTE]
-> **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
+!!! note ""
+    **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
 
 ## Start a session {#start}
 
@@ -92,6 +92,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-paraview> (maintained by Research Computing and Informatics).
+{: .rci-credit }

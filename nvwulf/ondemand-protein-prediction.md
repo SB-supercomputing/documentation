@@ -18,7 +18,7 @@ Protein Prediction submits an AlphaFold 2 or AlphaFold 3 workflow on NVwulf and 
 4. Wait for the session card to show the workflow status, then follow the submitted CPU and GPU phases.
 5. Protein Prediction runs as a multi-stage workflow. The initial CPU phase performs sequence and database searches required for MSA generation, followed by a dependent GPU phase for structure prediction. After launch, the Open OnDemand session page shows the CPU and GPU Slurm job IDs, current phase, progress, and relevant log output. Use View My Jobs or the displayed job IDs to check the corresponding Slurm jobs if a phase remains queued or stops unexpectedly.
 6. AlphaFold 3 requires a valid local copy of the model parameters. Enter the directory containing those files in Alphafold3 model parameters directory before launching. The input must be supplied in AlphaFold 3 JSON format, and the Google Terms of Service agreement must be selected. For AlphaFold 2, provide the sequence in FASTA format.
-7. Results are written under a pp<session timestamp> folder in your selected working directory, with input, structure, and logs subfolders.
+7. Results are written under a pp&lt;session timestamp> folder in your selected working directory, with input, structure, and logs subfolders.
 
 For AlphaFold 3, obtain the model parameters before launching and review the terms linked on the form. If you stop a run, check the separately submitted CPU and GPU jobs in Active Jobs and cancel any jobs you no longer need.
 
@@ -61,6 +61,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](../shared/ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-protein-prediction> (maintained by Research Computing and Informatics).
+{: .rci-credit }

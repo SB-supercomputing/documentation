@@ -142,6 +142,7 @@ Deny it. Someone may know your password, so change your NetID password through D
 
 Next: [Connecting to the cluster](connecting-cluster.md) covers the addresses for each cluster and more login troubleshooting.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/duo-authentication> (maintained by Research Computing and Informatics).
+{: .rci-credit }

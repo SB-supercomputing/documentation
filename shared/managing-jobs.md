@@ -4,8 +4,8 @@ Once a job is submitted, you'll want to see where it is, change or cancel it if 
 
 **On this page:** [Watch your jobs](#watch) · [Hold, release, cancel](#change) · [After a job finishes](#after) · [Live view on the node](#live) · [Use resources well](#tune) · [Why is my job waiting?](#reasons)
 
-> [!NOTE]
-> **First:** run `module load slurm` in each session so these commands are available.
+!!! note ""
+    **First:** run `module load slurm` in each session so these commands are available.
 
 ## Watch your jobs {#watch}
 
@@ -106,6 +106,7 @@ The last column of `squeue` gives the reason:
 
 *top on a compute node*
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/managing-jobs> (maintained by Research Computing and Informatics).
+{: .rci-credit }

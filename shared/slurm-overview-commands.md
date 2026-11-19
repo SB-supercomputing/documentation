@@ -23,8 +23,8 @@ module load slurm
 | Job history | `sacct` | View completed job information |
 | Node information | `sinfo` | Display node and partition information |
 
-> [!TIP]
-> Use `sbatch` for batch jobs (non-interactive, queued execution) and `srun` for interactive sessions (real-time access to compute nodes).
+!!! tip ""
+    **Tip:** Use `sbatch` for batch jobs (non-interactive, queued execution) and `srun` for interactive sessions (real-time access to compute nodes).
 
 ## Essential SLURM directives
 
@@ -66,6 +66,7 @@ cd $SLURM_SUBMIT_DIR
 - **Load modules in the script.** Start with `module purge` to avoid conflicts.
 - **Test small first.** Debug in interactive sessions before submitting large batch jobs.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/slurm-overview-commands> (maintained by Research Computing and Informatics).
+{: .rci-credit }

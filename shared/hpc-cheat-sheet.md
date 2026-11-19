@@ -4,12 +4,12 @@ The commands you'll type most on SeaWulf, on one page. Everything here runs on a
 
 **Jump to:** [Top 10](#top10) · [Run work](#run) · [Job script](#script) · [Queues](#queues) · [Manage jobs](#manage) · [Files & transfer](#files) · [Modules](#modules) · [Storage](#storage) · [Efficiency](#perf) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **First, load Slurm.** The job commands below need the Slurm module. Run this once each time you log in, or add it to your `~/.bashrc`:
->
-> ```
-> module load slurm
-> ```
+!!! note ""
+    **First, load Slurm.** The job commands below need the Slurm module. Run this once each time you log in, or add it to your `~/.bashrc`:
+
+    ```
+    module load slurm
+    ```
 
 ## Top 10 {#top10}
 
@@ -162,6 +162,7 @@ If `seff` shows you used far less memory or CPU than you asked for, request less
 
 Still stuck? See [When to ask for help](when-ask-help.md) or [open a ticket](https://iacs.supportsystem.com). New to all this? Start with the [Quick Start Guide](../seawulf/quick-start-guide.md) and the [glossary of HPC terms](https://rci.stonybrook.edu/docs/glossary-hpc-terms).
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/hpc-cheat-sheet> (maintained by Research Computing and Informatics).
+{: .rci-credit }

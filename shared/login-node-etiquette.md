@@ -24,9 +24,10 @@ Login nodes are where everyone signs in to the clusters. Use them only for light
 - Monitor your login-node usage and respect CPU/memory limits
 - Contact support via [iacs.supportsystem.com](https://iacs.supportsystem.com/) for job-placement help
 
-> [!NOTE]
-> **Key message:** Login nodes are shared by everyone. Following these rules keeps them fast for everyone.
+!!! note ""
+    **Key message:** Login nodes are shared by everyone. Following these rules keeps them fast for everyone.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/login-node-etiquette> (maintained by Research Computing and Informatics).
+{: .rci-credit }

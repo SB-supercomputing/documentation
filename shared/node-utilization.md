@@ -17,6 +17,7 @@ Efficient use of compute nodes ensures fair access for all users and maximizes t
 
 Prioritize shared queues, monitor jobs closely, and review the [queue tables](../seawulf/queue-selection-guide.md) before submission. These practices work alongside [fairshare and job priority](fairshare-job-priority.md) to keep workflows predictable and efficient.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/node-utilization> (maintained by Research Computing and Informatics).
+{: .rci-credit }

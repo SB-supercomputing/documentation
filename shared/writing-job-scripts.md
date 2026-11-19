@@ -4,8 +4,8 @@ A job script tells Slurm what your job needs (cores, memory, time, queue) and wh
 
 **On this page:** [The four parts](#parts) · [Template](#template) · [Asking for resources](#resources) · [Directive reference](#directives) · [Useful variables](#variables) · [Dependencies](#depend) · [Make scripts safer](#safe) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Shortcut:** the [job script builder](https://rci.stonybrook.edu/hpc/script-builder) asks a few questions and writes the script for you. Remember to run `module load slurm` before using `sbatch`.
+!!! note ""
+    **Shortcut:** the [job script builder](https://rci.stonybrook.edu/hpc/script-builder) asks a few questions and writes the script for you. Remember to run `module load slurm` before using `sbatch`.
 
 ## The four parts of a job script {#parts}
 
@@ -184,6 +184,7 @@ sed -i 's/\r$//' my_job.slurm
 
 More commands for watching and changing jobs are in [Managing jobs](managing-jobs.md) and the [cheat sheet](hpc-cheat-sheet.md).
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/writing-job-scripts> (maintained by Research Computing and Informatics).
+{: .rci-credit }

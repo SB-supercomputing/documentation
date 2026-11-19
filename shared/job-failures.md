@@ -4,8 +4,8 @@ When a job fails, Slurm records a state and an exit code, and your program usual
 
 **On this page:** [First look](#first-look) · [Reading the exit code](#read-code) · [Exit code 1](#exit-1) · [Exit code 2](#exit-2) · [Exit codes 127 and 126](#exit-127) · [Out of memory](#oom) · [Killed or stopped](#killed) · [Crashed](#segfault) · [Node failure](#node-fail) · [Anything else](#find-error) · [Getting help](#help)
 
-> [!NOTE]
-> **Test small first.** Run a short version of your job in a debug partition (`debug-h200x4` or `debug-b40x4` on NVwulf, 1 hour limit) before a long run. Most problems show up in the first minute.
+!!! note ""
+    **Test small first.** Run a short version of your job in a debug partition (`debug-h200x4` or `debug-b40x4` on NVwulf, 1 hour limit) before a long run. Most problems show up in the first minute.
 
 ## First look: state, exit code and output {#first-look}
 
@@ -93,6 +93,7 @@ Open an HPC ticket and include the cluster, the job ID, the path to your job scr
 
 Related: [Managing jobs](managing-jobs.md) · [Writing job scripts](writing-job-scripts.md) · [Getting started on NVwulf](../nvwulf/getting-started-nvwulf.md)
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/job-failures> (maintained by Research Computing and Informatics).
+{: .rci-credit }

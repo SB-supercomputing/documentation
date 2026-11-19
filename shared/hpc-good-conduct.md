@@ -19,8 +19,8 @@ srun -p short-40core --pty bash
 
 See [Login node etiquette](login-node-etiquette.md) and [Interactive jobs](interactive-jobs.md) for details, and use [job scripts](writing-job-scripts.md) for anything that runs at scale.
 
-> [!NOTE]
-> **AI coding tools and IDEs.** Tools like VS Code Remote, Cursor, and AI agents can spawn heavy background processes on the node they connect to. Point them at a compute node (start an interactive job first), not a login node, and remember you are responsible for everything they launch under your account.
+!!! note ""
+    **AI coding tools and IDEs.** Tools like VS Code Remote, Cursor, and AI agents can spawn heavy background processes on the node they connect to. Point them at a compute node (start an interactive job first), not a login node, and remember you are responsible for everything they launch under your account.
 
 ## Right-size your jobs and respect fair share
 
@@ -43,8 +43,8 @@ All clusters mount the same GPFS file systems. Each has a purpose, a quota, and 
 | `/gpfs/projects/<group>` | Up to 10 TB | No | Shared group data |
 | `/gpfs/software` | System | Managed | System applications |
 
-> [!NOTE]
-> **Scratch is temporary, and project space is not backed up.** Files on scratch are deleted once they pass 45 days old. Anything irreplaceable needs a second copy somewhere else: see [backing up with Rclone](../seawulf/backing-rclone.md). Keep an eye on your usage with the `myquota` tool ([checking storage quotas](../seawulf/checking-storage-quotas.md)), and read [storage layout & policies](../seawulf/storage-layout-policies.md) for the full picture.
+!!! note ""
+    **Scratch is temporary, and project space is not backed up.** Files on scratch are deleted once they pass 45 days old. Anything irreplaceable needs a second copy somewhere else: see [backing up with Rclone](../seawulf/backing-rclone.md). Keep an eye on your usage with the `myquota` tool ([checking storage quotas](../seawulf/checking-storage-quotas.md)), and read [storage layout & policies](../seawulf/storage-layout-policies.md) for the full picture.
 
 ## Keep I/O light
 
@@ -70,8 +70,8 @@ Large transfers can saturate a login node and stall everyone's sessions. For any
 
 Grants and continued investment depend on knowing how our systems support research. Please [acknowledge RCI](https://rci.stonybrook.edu/acknowledge) in publications that used the clusters, and let us know about resulting papers and awards.
 
-> [!NOTE]
-> **A note on enforcement.** These are guidelines, not threats, but when a job is genuinely harming the shared environment we may pause or cancel it, and repeated problems can lead to throttled access, so that the clusters stay usable for everyone. We'll always reach out to help you fix the underlying issue.
+!!! note ""
+    **A note on enforcement.** These are guidelines, not threats, but when a job is genuinely harming the shared environment we may pause or cancel it, and repeated problems can lead to throttled access, so that the clusters stay usable for everyone. We'll always reach out to help you fix the underlying issue.
 
 ## Quick reference
 
@@ -95,6 +95,7 @@ Grants and continued investment depend on knowing how our systems support resear
 
 Even experienced users hit snags. Open a ticket at [iacs.supportsystem.com](https://iacs.supportsystem.com), drop into [virtual office hours](https://rci.stonybrook.edu/events), or check the [documentation](https://rci.stonybrook.edu/hpc/docs) and FAQs first: most common issues are already covered. See [when to ask for help](when-ask-help.md) for what to include in a good ticket.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/hpc-good-conduct> (maintained by Research Computing and Informatics).
+{: .rci-credit }

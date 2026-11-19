@@ -46,7 +46,7 @@ Email notifications are optional. Enter an email address and select Email when j
 
 **Image pyramid generation is slow.** Allow time for large images and use more CPU cores or memory when needed. This app uses CPU processing and does not request a GPU.
 
-**The interface fails or an export is missing.** Check the chosen output directory and .minerva-author-<jobid>.log in the workspace. Keep exported stories and related image assets together.
+**The interface fails or an export is missing.** Check the chosen output directory and .minerva-author-&lt;jobid>.log in the workspace. Keep exported stories and related image assets together.
 
 **My session stays Queued.** Try a shorter request, less memory, or fewer cores. Check the session output if the job fails instead of remaining queued.
 
@@ -58,6 +58,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](../shared/ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-minerva-author> (maintained by Research Computing and Informatics).
+{: .rci-credit }

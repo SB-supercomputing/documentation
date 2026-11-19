@@ -24,9 +24,10 @@ Even experienced users hit issues. Asking for help at the right time, in the rig
 - Error messages or log output
 - Troubleshooting steps already attempted
 
-> [!TIP]
-> The more detail you give, and the faster you answer our questions, the faster we can fix the problem.
+!!! tip ""
+    **Tip:** the more detail you give, and the faster you answer our questions, the faster we can fix the problem.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/when-ask-help> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -54,8 +54,8 @@ python -m ipykernel install --user --name myproject --display-name "Python (mypr
 
 Start a new Jupyter session and pick **Python (myproject)** from the kernel list. Install more packages later with `conda install` in the same environment. More in [Conda environments](conda-environments.md) and [Python package management](python-package-management.md).
 
-> [!NOTE]
-> **On NVwulf,** install GPU builds of your libraries (for example PyTorch with CUDA) in the environment, then check the GPU from a notebook with `import torch; torch.cuda.is_available()`.
+!!! note ""
+    **On NVwulf,** install GPU builds of your libraries (for example PyTorch with CUDA) in the environment, then check the GPU from a notebook with `import torch; torch.cuda.is_available()`.
 
 ## Files {#files}
 
@@ -111,6 +111,7 @@ Conda environments and caches fill a home folder fast. Check with `myquota` (Sea
 
 Related: [OnDemand overview](ondemand-overview.md) · [SeaWulf apps](../seawulf/seawulf-ondemand-apps.md) · [NVwulf apps](../nvwulf/nvwulf-ondemand-apps.md) · [ClinWulf apps](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps)
 
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/jupyter-notebooks> (maintained by Research Computing and Informatics).
+{: .rci-credit }

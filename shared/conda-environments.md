@@ -72,8 +72,8 @@ conda create --name new --clone old     # clone for testing
 | Home directory (default) | Backed up, persistent | 20 GB limit | Most environments |
 | Project space | Shared with group, large capacity | Not backed up | Collaborative or large environments |
 
-> [!WARNING]
-> Never build environments in scratch. Old files there are deleted on a schedule, even while you use them, and the environment will break.
+!!! warning ""
+    **Warning:** never build environments in scratch. Old files there are deleted on a schedule, even while you use them, and the environment will break.
 
 ```
 du -sh ~/.conda/envs/*   # check environment sizes
@@ -95,6 +95,7 @@ conda clean --all        # clear package cache (keeps environments)
 - Never install into the base environment
 - Test interactively before submitting large jobs; monitor disk usage regularly
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/conda-environments> (maintained by Research Computing and Informatics).
+{: .rci-credit }

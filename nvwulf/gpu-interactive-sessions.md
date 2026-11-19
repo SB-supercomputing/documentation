@@ -4,8 +4,8 @@ An interactive session gives you a shell or a notebook on a GPU node, which is t
 
 **On this page:** [Which kind of session](#which) · [Start a shell on a GPU](#start) · [End it](#end) · [Close idle shells on their own](#idle) · [Check the GPU is working](#check) · [Turning it into a batch job](#batch)
 
-> [!NOTE]
-> **The one habit that matters most:** ask for the time you need now, not the most the partition allows, and type `exit` when you are done. Many NVwulf shell sessions run until the time limit closes them, which often means the GPU was held long after the work was done.
+!!! note ""
+    **The one habit that matters most:** ask for the time you need now, not the most the partition allows, and type `exit` when you are done. Many NVwulf shell sessions run until the time limit closes them, which often means the GPU was held long after the work was done.
 
 ## Which kind of session {#which}
 
@@ -86,6 +86,7 @@ The [job script builder](https://rci.stonybrook.edu/hpc/script-builder) writes N
 
 Related: [Getting started on NVwulf](getting-started-nvwulf.md) · [NVwulf queues](nvwulf-queues.md) · [Interactive jobs](../shared/interactive-jobs.md) · [Why did my job fail?](../shared/job-failures.md)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/gpu-interactive-sessions> (maintained by Research Computing and Informatics).
+{: .rci-credit }

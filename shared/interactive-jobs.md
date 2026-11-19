@@ -107,6 +107,7 @@ It probably reached its time limit or your connection dropped. Ask for a longer 
 - Use interactive sessions for testing and debugging, then move real runs to batch jobs.
 - Always `exit` when you're finished so the node goes back to others.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/interactive-jobs> (maintained by Research Computing and Informatics).
+{: .rci-credit }

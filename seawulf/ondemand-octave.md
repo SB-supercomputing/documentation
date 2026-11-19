@@ -58,6 +58,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](../shared/ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-octave> (maintained by Research Computing and Informatics).
+{: .rci-credit }

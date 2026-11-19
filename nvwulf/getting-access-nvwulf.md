@@ -18,8 +18,8 @@ If your PI already has an active SeaWulf or NVwulf project:
 2. Open a ticket at [iacs.supportsystem.com](https://iacs.supportsystem.com/) with the help topic **Request a Project Number – NVwulf** and attach the PDF.
 3. A review committee looks at it. If approved, your project number arrives by email; if not, they'll contact you to talk about alternatives.
 
-> [!NOTE]
-> Project requests become publicly available once submitted, so leave out anything confidential.
+!!! note ""
+    **Note:** project requests become publicly available once submitted, so leave out anything confidential.
 
 ## What to put in the PDF {#pdf}
 
@@ -38,6 +38,7 @@ The [SeaWulf project guide](../shared/requesting-accounts-project-numbers.md#pro
 
 Not sure NVwulf is the right cluster? Try the [cluster picker](https://rci.stonybrook.edu/hpc/cluster-picker) or see the [NVwulf page](README.md).
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/getting-access-nvwulf> (maintained by Research Computing and Informatics).
+{: .rci-credit }

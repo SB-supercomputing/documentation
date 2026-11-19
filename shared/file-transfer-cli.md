@@ -4,8 +4,8 @@ To move files between your computer and the cluster from a terminal, use `scp` f
 
 **On this page:** [Which tool?](#which) · [scp](#scp) · [rsync](#rsync) · [sftp](#sftp) · [Windows apps](#windows) · [Fewer Duo prompts](#duo) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Run these on your own computer,** not on the cluster. Replace `<netid>` with your NetID. Every transfer needs Duo, just like logging in.
+!!! note ""
+    **Run these on your own computer,** not on the cluster. Replace `<netid>` with your NetID. Every transfer needs Duo, just like logging in.
 
 ## Which tool? {#which}
 
@@ -123,6 +123,7 @@ Use `rsync` so you can resume, bundle many small files into one archive with `ta
 
 </details>
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/file-transfer-cli> (maintained by Research Computing and Informatics).
+{: .rci-credit }

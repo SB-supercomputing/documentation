@@ -218,12 +218,22 @@ DROP = ["style", "script", "noscript", "svg", "input", "button", "form",
         "iframe", "aside", ".applies-note", ".visually-hidden", ".hidden",
         ".svc-tools", "#catChips", ".chips", "#swCount", "[aria-hidden=true]"]
 
-ALERT_WORDS = {"tip": "TIP", "warning": "WARNING", "important": "IMPORTANT",
-               "caution": "CAUTION", "note": "NOTE"}
+ALERT_WORDS = {"tip": "tip", "warning": "warning", "important": "info",
+               "caution": "danger", "note": "note"}
 
 
 class Converter(MarkdownConverter):
     """markdownify, fitted to Python-Markdown and to this site's build."""
+
+    def escape(self, text, parent_tags):
+        text = super().escape(text, parent_tags)
+        if "_noformat" in parent_tags:
+            return text
+        # A "<" in prose would read as the start of an HTML tag (RCI writes
+        # placeholders like <jobid>), and an "&" before a name and ";" as
+        # an entity; both stay characters.
+        text = re.sub(r"&(?=#?\w+;)", "&amp;", text)
+        return text.replace("<", "&lt;")
 
     def convert_li(self, el, text, parent_tags):
         # Python-Markdown reads a list item's later lines only when they
@@ -275,14 +285,12 @@ class Converter(MarkdownConverter):
                 return ""
             label = el.find("strong")
             word = label.get_text(strip=True).rstrip(":").lower() if label else ""
-            kind = ALERT_WORDS.get(word, "NOTE")
-            if word in ALERT_WORDS:
-                # The box carries the word as its title already.
-                body = re.sub(r"\A\*\*[^*\n]+\*\*:?\s*", "", body)
-                body = body[:1].upper() + body[1:]
-            quoted = "\n".join(("> " + line) if line.strip() else ">"
+            kind = ALERT_WORDS.get(word, "note")
+            # The box has no title of its own: RCI's words, label and all,
+            # are the whole of it.
+            inside = "\n".join(("    " + line) if line.strip() else ""
                                for line in body.split("\n"))
-            return f"\n\n> [!{kind}]\n{quoted}\n\n"
+            return f'\n\n!!! {kind} ""\n{inside}\n\n'
         return super().convert_div(el, text, parent_tags)
 
     def convert_details(self, el, text, parent_tags):
@@ -365,6 +373,23 @@ def tidy(body, dest, cache, problems):
         pre = BeautifulSoup("", "html.parser").new_tag("pre")
         pre.string = code.get_text()
         code.replace_with(pre)
+    # A link wrapped around whole blocks (RCI's cluster cards) cannot be
+    # one Markdown link: the blocks stay as they are, and the link moves
+    # onto the card's last line ("View cluster").
+    blocks = ["div", "p", "h2", "h3", "h4", "h5", "ul", "ol", "table"]
+    for a in body.find_all("a", href=True):
+        if a.find(blocks):
+            href = a["href"]
+            a.name = "div"
+            a.attrs = {}
+            last = [c for c in a.children if getattr(c, "get_text", None)
+                    and c.get_text(strip=True)][-1:]
+            if last:
+                inner = BeautifulSoup("", "html.parser").new_tag("a", href=href)
+                for child in list(last[0].contents):
+                    inner.append(child.extract())
+                last[0].append(inner)
+
     # A row of links that RCI's stylesheet spaces out (related pages, app
     # icons, buttons) would run together as one line; it becomes a list.
     for row in body.find_all(["div", "p", "nav"]):
@@ -380,14 +405,14 @@ def tidy(body, dest, cache, problems):
     for step in body.select("ol.hx-steps > li"):
         label = step.find("strong", recursive=False)
         if label and label.next_sibling is not None:
-            label.insert_after(NavigableString(": "))
+            label.insert_after(NavigableString(" "))
 
     # A list item that holds only a label and a value, like a module
-    # name, reads as "label: value".
+    # name: RCI's stylesheet sets them apart, and a space does here.
     for li in body.select("ul.spec-list > li"):
         spans = li.find_all("span", recursive=False)
         if len(spans) == 2:
-            spans[0].insert_after(NavigableString(": "))
+            spans[0].insert_after(NavigableString(" "))
 
     for details in body.find_all("details"):
         summary = details.find("summary")
@@ -453,7 +478,7 @@ def tidy(body, dest, cache, problems):
 def applies(el):
     note = el.select_one(".applies-note") if el else None
     chips = [c.get_text(strip=True) for c in note.select(".meta-chip")] if note else []
-    return list(dict.fromkeys(chips))
+    return chips
 
 
 def port(dest, path, group, cache, problems):
@@ -496,15 +521,16 @@ def port(dest, path, group, cache, problems):
     for para in lead:
         out += [para, ""]
     if meta["module"]:
-        out += [f"**Module name:** `{meta['module']}`", ""]
+        out += [f"**Module name** `{meta['module']}`", ""]
     out += [text, ""]
-    if meta["category"]:
-        out += [f"**Category:** {meta['category']}", ""]
     if meta["applies"]:
-        out += [f"**Applies to:** {', '.join(meta['applies'])}", ""]
+        # RCI shows the clusters a page applies to as small labels.
+        chips = " ".join(f'<span class="rci-chip">{html.escape(c)}</span>'
+                         for c in meta["applies"])
+        out += [f"**Applies to** {chips}", ""]
     url = RCI + path
     out += [f"Ported from RCI's guide: <{url}> (maintained by Research "
-            "Computing and Informatics).", ""]
+            "Computing and Informatics).", "{: .rci-credit }", ""]
     target = ROOT / dest
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n".join(out), encoding="utf-8")
@@ -537,8 +563,12 @@ def nav(meta):
 
     branches = []
     for name, system, start in SYSTEMS:
+        # RCI's overview of the cluster is the first page under Getting
+        # started. The tab itself opens on systems/<name>.md.
+        overview = {"title": meta[f"{system}/README.md"]["title"],
+                    "source": f"{system}/README.md", "menu": "Cluster overview"}
         pages = [{"group": "Getting started",
-                  "pages": [entry(d, system) for d in start]}]
+                  "pages": [overview] + [entry(d, system) for d in start]}]
         for key, label in GROUPS:
             items = [entry(d, system) for d in by_group.get(key, [])
                      if serves(d, system) and d not in start]
@@ -562,8 +592,9 @@ def nav(meta):
             pages.append({"group": "Software catalog",
                           "pages": [{"link": "software/README.md",
                                      "menu": "All software"}] + groups})
-        branches.append({"title": name, "source": f"{system}/README.md",
-                         "menu": name, "pages": pages})
+        branches.append({"title": name, "source": f"systems/{system}.md",
+                         "menu": name, "label": "System Information",
+                         "pages": pages})
     return branches
 
 

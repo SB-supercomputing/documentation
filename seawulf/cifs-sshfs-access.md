@@ -6,22 +6,22 @@ There are two ways to work with cluster files from your own computer as if they 
 
 ## General project space (/gpfs/projects)
 
-> [!NOTE]
-> **Service notice:** Mounting SeaWulf project directories via CIFS is currently **disabled**. If you need local-machine access to shared storage, use the RPX option below instead.
+!!! note ""
+    **Service notice:** Mounting SeaWulf project directories via CIFS is currently **disabled**. If you need local-machine access to shared storage, use the RPX option below instead.
 
 ## RPX project space
 
 Does your group need a shared folder that works as a network drive on Windows, Mac or Linux? Ask for an **RPX Project Space** with a support ticket.
 
-> [!NOTE]
-> **Key constraint:** RPX directories are **not** accessible from SeaWulf itself: RPX is for storage, local mounting, and external sharing only.
+!!! note ""
+    **Key constraint:** RPX directories are **not** accessible from SeaWulf itself: RPX is for storage, local mounting, and external sharing only.
 
 ## SSHFS: mount your cluster folders on your computer {#sshfs}
 
 SSHFS shows a SeaWulf folder on your own computer, like a local folder. It works for your home, scratch or project folder. You can then open and edit the files with your usual apps. It works anywhere you can log in with SSH, and it doesn't depend on the CIFS service.
 
-> [!NOTE]
-> **Good for editing, not for big transfers.** Every file you open travels over the network. To move a lot of data, use [rsync or scp](../shared/file-transfer-cli.md) or [Globus](globus-file-transfer.md).
+!!! note ""
+    **Good for editing, not for big transfers.** Every file you open travels over the network. To move a lot of data, use [rsync or scp](../shared/file-transfer-cli.md) or [Globus](globus-file-transfer.md).
 
 ### macOS and Linux
 
@@ -75,6 +75,7 @@ If you see "Transport endpoint is not connected", unmount the folder and mount i
 - RPX and SSHFS are best for small edits and moving a few files.
 - For large data, use `scp`, `rsync` (see [CLI transfer](../shared/file-transfer-cli.md)) or [Globus](globus-file-transfer.md). They are much faster.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/cifs-sshfs-access> (maintained by Research Computing and Informatics).
+{: .rci-credit }

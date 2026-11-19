@@ -12,8 +12,8 @@ There are two ways onto RCI's clusters: **Open OnDemand** in your web browser, o
 | [**NVwulf**](../nvwulf/README.md)<br>GPU computing for AI and ML | `login.nvwulf.stonybrook.edu` | [nvwulf-ood.nvwulf.stonybrook.edu](https://nvwulf-ood.nvwulf.stonybrook.edu/) |
 | [**ClinWulf**](https://rci.stonybrook.edu/hpc/clusters/clinwulf)<br>HIPAA-compliant computing on PHI | `login02.uhmc.sbuh.stonybrook.edu` | [clinwulf-ood.uhmc.sbuh.stonybrook.edu](https://clinwulf-ood.uhmc.sbuh.stonybrook.edu/) |
 
-> [!NOTE]
-> **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
+!!! note ""
+    **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
 
 Not sure which cluster fits your work? Try the [cluster picker](https://rci.stonybrook.edu/hpc/cluster-picker).
 
@@ -65,8 +65,8 @@ ssh <netid>@milan.seawulf.stonybrook.edu
 
 PuTTY also works if you already use it.
 
-> [!NOTE]
-> **You land on a shared login node.** Login nodes are for editing, managing files, and submitting jobs. Run real work as a job or in an [interactive session](interactive-jobs.md). See [Login node etiquette](login-node-etiquette.md) and [Good conduct on the RCI clusters](hpc-good-conduct.md).
+!!! note ""
+    **You land on a shared login node.** Login nodes are for editing, managing files, and submitting jobs. Run real work as a job or in an [interactive session](interactive-jobs.md). See [Login node etiquette](login-node-etiquette.md) and [Good conduct on the RCI clusters](hpc-good-conduct.md).
 
 ## Which SeaWulf login node? {#login-nodes}
 
@@ -181,6 +181,7 @@ Cancel it at any time with `request-support --cancel`.
 - [File transfer from the CLI](file-transfer-cli.md) and [Globus file transfer](../seawulf/globus-file-transfer.md)
 - [Getting started on NVwulf](../nvwulf/getting-started-nvwulf.md)
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/connecting-cluster> (maintained by Research Computing and Informatics).
+{: .rci-credit }

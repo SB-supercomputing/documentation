@@ -20,6 +20,7 @@ The clusters use fairshare to share computing time fairly among all users. Job p
 
 Right-sized jobs in the right queue start sooner and make better use of the clusters.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/fairshare-job-priority> (maintained by Research Computing and Informatics).
+{: .rci-credit }

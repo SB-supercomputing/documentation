@@ -10,8 +10,8 @@ Use conda for most science work. Use venv for small projects. Use pip only to ad
 | **venv** | Smaller projects, personal utilities | Uses system Python, built into Python 3 | `python3 -m venv myenv` |
 | **pip** | Adding packages to an existing environment | Straightforward, broadly compatible | `pip install requests` |
 
-> [!NOTE]
-> **Avoid:** don't use `pip install --user`. It puts packages straight into your home folder. Use a conda or venv environment instead, so each project stays separate.
+!!! note ""
+    **Avoid:** don't use `pip install --user`. It puts packages straight into your home folder. Use a conda or venv environment instead, so each project stays separate.
 
 ## Conda workflow
 
@@ -37,6 +37,7 @@ pip install numpy scipy matplotlib
 - Export your environment so others can rebuild it: `conda env export > environment.yml`
 - Try not to mix pip and conda in one environment.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/python-package-management> (maintained by Research Computing and Informatics).
+{: .rci-credit }

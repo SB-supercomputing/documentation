@@ -4,8 +4,8 @@ NVwulf's Open OnDemand portal gives you 19 GPU-ready apps in your web browser, f
 
 **On this page:** [All apps at a glance](#glance) · [Launching an app](#launch) · [Coding and notebooks](#code) · [Desktops and visualization](#viz) · [AI and LLMs](#ai) · [Structural biology](#bio) · [Imaging and pathology](#img) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Where to find it:** sign in at [nvwulf-ood.nvwulf.stonybrook.edu](https://nvwulf-ood.nvwulf.stonybrook.edu/) with your NetID and Duo, then open **Interactive Apps** in the top menu. You need an NVwulf account first. See [Getting access to NVwulf](getting-access-nvwulf.md).
+!!! note ""
+    **Where to find it:** sign in at [nvwulf-ood.nvwulf.stonybrook.edu](https://nvwulf-ood.nvwulf.stonybrook.edu/) with your NetID and Duo, then open **Interactive Apps** in the top menu. You need an NVwulf account first. See [Getting access to NVwulf](getting-access-nvwulf.md).
 
 ## All apps at a glance {#glance}
 
@@ -50,8 +50,8 @@ Every interactive app runs as a job on NVwulf's **B40 GPU nodes** (NVIDIA RTX PR
 2. Click the connect button on the card to open the app in a new tab.
 3. When you're done, click **Delete** on the card so the GPU goes back to others. Closing the browser tab doesn't stop the job.
 
-> [!NOTE]
-> **Scratch is temporary.** Several apps keep their data in scratch by default (CryoSPARC projects, Open WebUI chats, downloaded models). NVwulf scratch is purged after 30 days, so copy anything you want to keep to project space. See [Storage layout & policies](../seawulf/storage-layout-policies.md).
+!!! note ""
+    **Scratch is temporary.** Several apps keep their data in scratch by default (CryoSPARC projects, Open WebUI chats, downloaded models). NVwulf scratch is purged after 30 days, so copy anything you want to keep to project space. See [Storage layout & policies](../seawulf/storage-layout-policies.md).
 
 If your group has priority access on NVwulf, the CryoSPARC and RELION forms also show **Priority b40x4** queues. Everyone else should use Regular or Long.
 
@@ -82,8 +82,8 @@ These apps run open-source language models on NVwulf's GPUs. The model runs insi
 | Ollama (Open WebUI) | You like Ollama's model library and a ChatGPT-style interface | System models appear in Open WebUI automatically. To add one, type its name (for example `codellama:7b`) in **Pull new model**; it downloads to your own models folder. |
 | vLLM (Open WebUI) | You need fast serving of a Hugging Face model, or want to split a large model across GPUs | Pick a system model or enter a Hugging Face ID such as `microsoft/Phi-3-mini-4k-instruct`. More GPUs let vLLM split a model across them. If it runs out of GPU memory, lower the context length. |
 
-> [!NOTE]
-> **No patient data.** Don't use these apps with patient information (PHI). Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf). Downloaded models count toward your scratch space and are purged with it.
+!!! note ""
+    **No patient data.** Don't use these apps with patient information (PHI). Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf). Downloaded models count toward your scratch space and are purged with it.
 
 ## Structural biology and cryo-EM {#bio}
 
@@ -145,6 +145,7 @@ Need an app that isn't here, or stuck on a problem? [Open a ticket](https://iacs
 
 Related: [OnDemand overview](../shared/ondemand-overview.md) · [OnDemand apps on SeaWulf](../seawulf/seawulf-ondemand-apps.md) · [OnDemand apps on ClinWulf](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps) · [Getting started on NVwulf](getting-started-nvwulf.md) · [About NVwulf](README.md)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/nvwulf-ondemand-apps> (maintained by Research Computing and Informatics).
+{: .rci-credit }

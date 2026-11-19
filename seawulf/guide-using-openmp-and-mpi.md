@@ -132,9 +132,10 @@ mpirun ./hybrid_pi
 
 Compile with the MPI wrapper *and* `-fopenmp`. Reducing MPI ranks in favor of threads uses shared memory more efficiently, though for this simple pi benchmark, pure MPI actually wins (~2.08 s hybrid). The moral: **benchmark your own application**; the right shape is workload-specific.
 
-> [!NOTE]
-> **Need help choosing?** The Computational Science team can help you profile and pick a parallelization strategy: [open a ticket](https://rci.stonybrook.edu/hpc/support).
+!!! note ""
+    **Need help choosing?** The Computational Science team can help you profile and pick a parallelization strategy: [open a ticket](https://rci.stonybrook.edu/hpc/support).
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/guide-using-openmp-and-mpi> (maintained by Research Computing and Informatics).
+{: .rci-credit }

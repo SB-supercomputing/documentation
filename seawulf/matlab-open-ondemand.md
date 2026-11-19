@@ -99,6 +99,7 @@ Try a shorter queue, fewer cores, or less memory.
 
 Related: [OnDemand overview](../shared/ondemand-overview.md) · [SeaWulf apps](seawulf-ondemand-apps.md) · [NVwulf apps](../nvwulf/nvwulf-ondemand-apps.md)
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/matlab-open-ondemand> (maintained by Research Computing and Informatics).
+{: .rci-credit }

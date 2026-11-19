@@ -4,8 +4,8 @@ SeaWulf's Open OnDemand portal gives you 18 apps in your web browser: notebooks,
 
 **On this page:** [All apps at a glance](#glance) · [Launching an app](#launch) · [Coding and notebooks](#code) · [Desktops and math](#math) · [Chemistry and structural biology](#chem) · [Visualization and data](#viz) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Where to find it:** sign in at [sn-ood.seawulf.stonybrook.edu](https://sn-ood.seawulf.stonybrook.edu/) with your NetID and Duo, then open **Interactive Apps** in the top menu. You need a SeaWulf account first. See [Requesting accounts & project numbers](../shared/requesting-accounts-project-numbers.md).
+!!! note ""
+    **Where to find it:** sign in at [sn-ood.seawulf.stonybrook.edu](https://sn-ood.seawulf.stonybrook.edu/) with your NetID and Duo, then open **Interactive Apps** in the top menu. You need a SeaWulf account first. See [Requesting accounts & project numbers](../shared/requesting-accounts-project-numbers.md).
 
 ## All apps at a glance {#glance}
 
@@ -89,8 +89,8 @@ The full list of queues and limits is in the [queue selection guide](queue-selec
 | IGV | IGV 2.19 for viewing alignments, variants, and other genomic tracks. Set the working directory to where your BAM or VCF files are. |
 | TensorBoard | Browse TensorFlow or PyTorch training logs. Set **log directory** to the folder with your `events` files. It runs on CPU only. |
 
-> [!NOTE]
-> **Scratch is temporary.** Your scratch folder (`/gpfs/scratch/<netid>`) is handy for big data, but files older than 45 days are deleted. Keep anything you need in home or project space. See [Storage layout & policies](storage-layout-policies.md).
+!!! note ""
+    **Scratch is temporary.** Your scratch folder (`/gpfs/scratch/<netid>`) is handy for big data, but files older than 45 days are deleted. Keep anything you need in home or project space. See [Storage layout & policies](storage-layout-policies.md).
 
 ## Troubleshooting {#trouble}
 
@@ -133,6 +133,7 @@ Need an app that isn't here, or stuck on a problem? [Open a ticket](https://iacs
 
 Related: [OnDemand overview](../shared/ondemand-overview.md) · [OnDemand apps on NVwulf](../nvwulf/nvwulf-ondemand-apps.md) · [OnDemand apps on ClinWulf](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps) · [About SeaWulf](README.md)
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/seawulf-ondemand-apps> (maintained by Research Computing and Informatics).
+{: .rci-credit }

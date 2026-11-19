@@ -92,6 +92,7 @@ Try a shorter queue, fewer cores, less memory, or no GPU.
 
 Related: [OnDemand overview](ondemand-overview.md) · [X11 forwarding](../seawulf/x11-forwarding.md) · [Using modules](using-modules.md)
 
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/seawulf-desktop> (maintained by Research Computing and Informatics).
+{: .rci-credit }

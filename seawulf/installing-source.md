@@ -19,8 +19,8 @@ Home (`--prefix=$HOME/software/myapp-1.0`) is backed up but capped at 20 GB; pro
 | 96-core AMD EPYC Milan | `-march=znver3` | None | `short-96core` |
 | 96-core Sapphire Rapids | `-march=sapphirerapids` (GCC ≥12) | `-xCORE-AVX512` | `hbm-short-96core` |
 
-> [!TIP]
-> Running on multiple architectures? Compile separate versions, or use generic flags like `-march=x86-64` for compatibility at some performance cost.
+!!! tip ""
+    **Tip:** Running on multiple architectures? Compile separate versions, or use generic flags like `-march=x86-64` for compatibility at some performance cost.
 
 ## Load compilers and dependencies
 
@@ -108,6 +108,7 @@ module load myapp/1.0
 - **Poor performance**: recompile with `-O3` and the right `-march` flag
 - **Won't run on another node type**: architecture-specific build; use generic flags or separate builds
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/installing-source> (maintained by Research Computing and Informatics).
+{: .rci-credit }

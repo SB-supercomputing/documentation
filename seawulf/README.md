@@ -76,8 +76,8 @@ Details and how to ask for project space: [Storage layout & policies](storage-la
 - [ParaView](../shared/ondemand-paraview.md)
 - [All 18 apps](seawulf-ondemand-apps.md)
 
-> [!NOTE]
-> **No patient data.** SeaWulf isn't approved for PHI or other HIPAA-covered data. Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf).
+!!! note ""
+    **No patient data.** SeaWulf isn't approved for PHI or other HIPAA-covered data. Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf).
 
 ## Best suited for
 
@@ -88,15 +88,15 @@ Details and how to ask for project space: [Storage layout & policies](storage-la
 
 ## Getting access
 
-1. **Join a project**: If your PI already has a SeaWulf project, open a ticket with the help topic "Request an account for SeaWulf" and include your NetID, your PI's name and the project number.
+1. **Join a project** If your PI already has a SeaWulf project, open a ticket with the help topic "Request an account for SeaWulf" and include your NetID, your PI's name and the project number.
 
     [How to request an account](../shared/requesting-accounts-project-numbers.md)
 
-2. **Or start one (faculty)**: Faculty request a project number with a one-page PDF describing the work, computing needs, software, storage and group members.
+2. **Or start one (faculty)** Faculty request a project number with a one-page PDF describing the work, computing needs, software, storage and group members.
 
     [Request a project number](../shared/requesting-accounts-project-numbers.md#project)
 
-3. **Set up Duo, then connect**: Every login needs a Duo approval. Then sign in with Open OnDemand or SSH and run your first job.
+3. **Set up Duo, then connect** Every login needs a Duo approval. Then sign in with Open OnDemand or SSH and run your first job.
     - [Duo setup](../shared/duo-authentication.md)
     - [Quick start guide](quick-start-guide.md)
 
@@ -113,28 +113,29 @@ Other clusters
 
 ## Also available
 
-- [Cluster**NVwulf**
+Cluster**NVwulf**
 
-    GPU and AI
+GPU and AI
 
-    GPU acceleration for AI and machine learning, on H200 and Blackwell GPUs.
+GPU acceleration for AI and machine learning, on H200 and Blackwell GPUs.
 
-    View cluster →](../nvwulf/README.md)
+[View cluster →](../nvwulf/README.md)
 
-- [Cluster**ClinWulf**
+Cluster**ClinWulf**
 
-    HIPAA
+HIPAA
 
-    HIPAA-compliant computing for IRB-approved research on PHI.
+HIPAA-compliant computing for IRB-approved research on PHI.
 
-    View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
+[View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
 
-- [Cluster**SecureWulf**
+Cluster**SecureWulf**
 
-    Coming Christmas 2026
+Coming Christmas 2026
 
-    Secure computing for controlled-access research data.
+Secure computing for controlled-access research data.
 
-    View cluster →](https://rci.stonybrook.edu/hpc/clusters/securewulf)
+[View cluster →](https://rci.stonybrook.edu/hpc/clusters/securewulf)
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/clusters/seawulf> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -118,6 +118,7 @@ python simulation.py --param-set $SLURM_ARRAY_TASK_ID
 | GPU | CUDA or GPU-accelerated applications | `--gres=gpu:1` |
 | Array | Multiple similar runs | `--array=1-100` |
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/example-jobs> (maintained by Research Computing and Informatics).
+{: .rci-credit }

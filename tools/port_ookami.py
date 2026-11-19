@@ -224,16 +224,7 @@ def title_of(soup, main):
 
 
 class OokamiConverter(Converter):
-    """markdownify as the RCI port uses it, with text that stays text."""
-
-    def escape(self, text, parent_tags):
-        text = super().escape(text, parent_tags)
-        if "_noformat" in parent_tags:
-            return text
-        # A "<" in prose would read as the start of an HTML tag, and an
-        # "&" before a name and ";" as an entity; both stay characters.
-        text = re.sub(r"&(?=#?\w+;)", "&amp;", text)
-        return text.replace("<", "&lt;")
+    """markdownify as the RCI port uses it."""
 
 
 def to_markdown(node):
@@ -512,14 +503,20 @@ def nav(meta):
                     "menu": "FAQ", "pages": [entry(k) for k in by_group["faq"]
                                              if k != "support/faq"]})
     pages = [{"group": "Support", "pages": support},
-             {"group": "About Ookami", "pages": [entry(k) for k in by_group["about"]]},
+             # The old site's home page is the first About page. The tab
+             # itself opens on systems/ookami.md.
+             {"group": "About Ookami",
+              "pages": [{"title": meta[""]["title"], "source": DEST[""],
+                         "menu": "Archived home page"}]
+              + [entry(k) for k in by_group["about"]]},
              {"title": meta["science_stories"]["title"], "source": DEST["science_stories"],
               "menu": "Science stories",
               "pages": [entry(k) for k in by_group["stories"] if k != "science_stories"]},
              {"title": meta["user_meeting"]["title"], "source": DEST["user_meeting"],
               "menu": "User meetings",
               "pages": [entry(k) for k in by_group["meetings"] if k != "user_meeting"]}]
-    return [{"title": "Ookami", "source": DEST[""], "menu": "Ookami", "pages": pages}]
+    return [{"title": "Ookami", "source": "systems/ookami.md", "menu": "Ookami",
+             "label": "System Information", "pages": pages}]
 
 
 def main():

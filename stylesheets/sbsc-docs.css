@@ -94,3 +94,14 @@ mark {
   .md-nav--primary .md-nav__link[for="__toc"] ~ .md-nav { display: none; }
   .md-nav--primary .md-nav__link[for="__toc"] + .md-nav__link { display: flex; }
 }
+
+/* On pages ported from RCI, the clusters a page applies to, shown as
+   small outlined labels the way RCI's own pages show them. */
+.md-typeset .rci-chip {
+  display: inline-block;
+  padding: 0 0.5em;
+  margin-right: 0.3em;
+  border: 1px solid currentColor;
+  border-radius: 1em;
+  font-size: 0.85em;
+}

@@ -4,16 +4,16 @@ AMD's collection of optimized math libraries for scientific workloads on AMD CPU
 
 AMD Optimizing CPU Libraries (AOCL) is a set of performance-optimized math libraries tailored for scientific and engineering applications on AMD CPUs. The suite includes routines for linear algebra, FFTs, random number generation, and more, and is optimized for AMD EPYC processors to deliver high performance on supported hardware.
 
-**Module name:** `aocl`
+**Module name** `aocl`
 
 ## Loading AOCL
 
-- module: `aocl/4.2.0`
-- module: `aocl/4.0.0`
-- module: `aocl/3.1.0`
+- module `aocl/4.2.0`
+- module `aocl/4.0.0`
+- module `aocl/3.1.0`
 
-> [!TIP]
-> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+!!! tip ""
+    **Tip:** load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
 
 ## Example usage
 
@@ -33,8 +33,7 @@ gcc -o my_program my_program.c -laocl
 
 AOCL is available on: SeaWulf.
 
-**Category:** Mathematics & statistics
-
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/aocl> (maintained by Research Computing and Informatics).
+{: .rci-credit }

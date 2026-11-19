@@ -4,23 +4,23 @@ A popular open-source compiler for C, C++, and other languages.
 
 The GNU Compiler Collection (GCC) is a cornerstone of high-performance computing on SeaWulf, offering a comprehensive set of compilers and development tools for scientific and technical applications. This open-source toolchain supports multiple programming languages and integrates with MPI implementations for parallel computing on SeaWulf's supercomputing environment.
 
-**Module name:** `gcc-stack`
+**Module name** `gcc-stack`
 
 ## Loading GCC
 
-- module: `gcc-stack: GCC 13.2 + MVAPICH 2.3.7 (recommended)`
-- module: `gcc/13.2.0 · mvapich2/gcc13.2/2.3.7`
-- module: `gcc/12.1.0 · mvapich2/gcc12.1/2.3.7 (alternative)`
+- module `gcc-stack: GCC 13.2 + MVAPICH 2.3.7 (recommended)`
+- module `gcc/13.2.0 · mvapich2/gcc13.2/2.3.7`
+- module `gcc/12.1.0 · mvapich2/gcc12.1/2.3.7 (alternative)`
 
-> [!TIP]
-> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+!!! tip ""
+    **Tip:** load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
 
 ## Commands
 
-- `gcc`: C compiler
-- `g++`: C++ compiler
-- `gfortran`: Fortran compiler
-- `mpicc / mpicxx / mpif90`: MVAPICH MPI wrappers
+- `gcc` C compiler
+- `g++` C++ compiler
+- `gfortran` Fortran compiler
+- `mpicc / mpicxx / mpif90` MVAPICH MPI wrappers
 
 ## Example usage
 
@@ -74,8 +74,7 @@ mpirun -np $SLURM_NTASKS ./mpi_example
 
 GCC is available on: SeaWulf, NVwulf, ClinWulf.
 
-**Category:** Compilers
-
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/gcc> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -4,8 +4,8 @@ Your first hour on NVwulf: log in, bring your data over from SeaWulf, load softw
 
 **On this page:** [Log in](#login) · [Move data from SeaWulf](#data) · [Load software](#modules) · [First GPU job](#job) · [Interactive GPU session](#interactive) · [Tips](#tips)
 
-> [!NOTE]
-> **Need an account?** See [Getting access to NVwulf](getting-access-nvwulf.md).
+!!! note ""
+    **Need an account?** See [Getting access to NVwulf](getting-access-nvwulf.md).
 
 ## 1. Log in {#login}
 
@@ -93,6 +93,7 @@ Type `exit` when you're done so the GPU goes back to others.
 - **Use the [job script builder](https://rci.stonybrook.edu/hpc/script-builder)** to make NVwulf scripts with the right partition limits.
 - **Read [Good conduct on the RCI clusters](../shared/hpc-good-conduct.md)** before running large jobs.
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/getting-started-nvwulf> (maintained by Research Computing and Informatics).
+{: .rci-credit }

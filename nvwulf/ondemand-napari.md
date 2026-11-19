@@ -40,7 +40,7 @@ Email notifications are optional. Enter an email address and select Email when j
 
 Choose an explicit memory size for routine work. All available can reserve node memory and increase waiting time; use it only when your task needs it.
 
-Note. Users can install their own Napari plugins without modifying the shared installation. Open a terminal inside the desktop, load the Napari module, and install the required plugin with pip install --user <plugin-name>. User-installed plugins are stored under `~/.napari-plugins/0.7.0` and become available from the Plugins menu after Napari is restarted. To list installed plugins, run napari-plugins. To remove a plugin, use pip uninstall <plugin-name>. The entire private plugin environment can be reset by removing `~/.napari-plugins/0.7.0`.
+Note. Users can install their own Napari plugins without modifying the shared installation. Open a terminal inside the desktop, load the Napari module, and install the required plugin with pip install --user &lt;plugin-name>. User-installed plugins are stored under `~/.napari-plugins/0.7.0` and become available from the Plugins menu after Napari is restarted. To list installed plugins, run napari-plugins. To remove a plugin, use pip uninstall &lt;plugin-name>. The entire private plugin environment can be reset by removing `~/.napari-plugins/0.7.0`.
 
 ## Troubleshooting {#trouble}
 
@@ -60,6 +60,7 @@ If the problem continues, [contact HPC support](https://iacs.supportsystem.com) 
 - [OnDemand overview](../shared/ondemand-overview.md)
 - [Open OnDemand](https://rci.stonybrook.edu/hpc/ondemand)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-napari> (maintained by Research Computing and Informatics).
+{: .rci-credit }

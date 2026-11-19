@@ -153,6 +153,7 @@ rm temp/tasks_${START}_${STOP}
 - **Job arrays**: distribute independent tasks across multiple nodes
 - **Hybrid**: maximum scaling across nodes and cores at once
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/guide-embarrassingly-parallel-workflows> (maintained by Research Computing and Informatics).
+{: .rci-credit }

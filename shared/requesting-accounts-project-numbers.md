@@ -81,8 +81,8 @@ More detail is in [Storage layout & policies](../seawulf/storage-layout-policies
 3. Use your verified `@stonybrook.edu` or `@stonybrookmedicine.edu` email and attach the PDF.
 4. The committee reviews it. If it's approved, your project number arrives by email. If they can't accommodate the request as written, they'll contact you to talk through options.
 
-> [!NOTE]
-> **The most common cause of delays is a missing piece.** Include the computing estimates and the full list of group members from the start, and approval goes much faster.
+!!! note ""
+    **The most common cause of delays is a missing piece.** Include the computing estimates and the full list of group members from the start, and approval goes much faster.
 
 ## External collaborators without a NetID {#external}
 
@@ -138,6 +138,7 @@ Then they don't need the affiliation form. Request their account with their NetI
 
 Questions about a request? [Open a ticket with IACS support](https://iacs.supportsystem.com/) or drop into [HPC virtual office hours](https://rci.stonybrook.edu/events/hpc-virtual-office-hours).
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/requesting-accounts-project-numbers> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -32,8 +32,8 @@ The critical difference from exclusive queues: you share the node’s memory wit
 #SBATCH --mem=<amount>
 ```
 
-> [!NOTE]
-> **Why it matters:** without an explicit request your job can exceed the memory available on a shared node and fail, or crowd out other users’ jobs.
+!!! note ""
+    **Why it matters:** without an explicit request your job can exceed the memory available on a shared node and fail, or crowd out other users’ jobs.
 
 ## Best practices
 
@@ -41,6 +41,7 @@ The critical difference from exclusive queues: you share the node’s memory wit
 - Monitor your jobs with `squeue -u $USER`.
 - Request cores and memory precisely: smaller, well-sized requests schedule faster.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/shared-nodes> (maintained by Research Computing and Informatics).
+{: .rci-credit }

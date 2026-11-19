@@ -1,7 +1,7 @@
 # Software catalog
 
-> [!NOTE]
-> **Looking for desktop software?** This catalog covers the module system on the HPC clusters. DoIT licenses additional programs for faculty and staff, including SAS and SPSS, for on-campus use, off-campus download, and through the [Virtual SINC Site](https://it.stonybrook.edu/services/virtual-sinc-site). See the [DoIT software catalog](https://it.stonybrook.edu/software).
+!!! note ""
+    **Looking for desktop software?** This catalog covers the module system on the HPC clusters. DoIT licenses additional programs for faculty and staff, including SAS and SPSS, for on-campus use, off-campus download, and through the [Virtual SINC Site](https://it.stonybrook.edu/services/virtual-sinc-site). See the [DoIT software catalog](https://it.stonybrook.edu/software).
 
 *Availability shown is for SeaWulf. Module availability and versions on NVwulf and ClinWulf vary. Run `module avail <name>` on your cluster, or [ask HPC support](https://rci.stonybrook.edu/hpc/support).*
 
@@ -68,3 +68,4 @@
 No packages match your filters.
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software> (maintained by Research Computing and Informatics).
+{: .rci-credit }

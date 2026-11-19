@@ -79,6 +79,7 @@ Try a shorter queue, fewer cores, or less memory.
 
 Related: [OnDemand overview](ondemand-overview.md) · [Conda environments](conda-environments.md) · [SeaWulf apps](../seawulf/seawulf-ondemand-apps.md) · [NVwulf apps](../nvwulf/nvwulf-ondemand-apps.md) · [ClinWulf apps](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps)
 
-**Applies to:** SeaWulf, NVwulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/code-server> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -21,8 +21,8 @@ ssh <netid>@milan.seawulf.stonybrook.edu
 
 Windows users can use MobaXterm or the built-in Windows Terminal. [Connecting to the cluster](../shared/connecting-cluster.md) has step-by-step instructions and explains which login address to use.
 
-> [!NOTE]
-> **You're now on a shared login node.** It's fine for editing files and submitting jobs, but don't run real computations here. Anything heavy goes in a job. See [Login node etiquette](../shared/login-node-etiquette.md).
+!!! note ""
+    **You're now on a shared login node.** It's fine for editing files and submitting jobs, but don't run real computations here. Anything heavy goes in a job. See [Login node etiquette](../shared/login-node-etiquette.md).
 
 ## 2. Load software {#modules}
 
@@ -146,6 +146,7 @@ Connect with `ssh -X`, or use [WolfieHPCDesktop](../shared/seawulf-desktop.md) i
 
 Still stuck? [When to ask for help](../shared/when-ask-help.md) explains how to reach HPC support and virtual office hours.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/quick-start-guide> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -38,9 +38,10 @@ rclone sync ./mydir/ my_box:seawulf_backup/mydir        # mirror (deletes extras
 - Folders with many small files are slow, so pack them into one archive first: `tar -zcvf mydir.tar.gz ./mydir`
 - If Box slows your transfers down, add a rate limit, for example `--tpslimit`.
 
-> [!NOTE]
-> **Related:** Migrating a whole Google Drive into BOX? The step-by-step [Google Drive → BOX rclone guide](https://rci.stonybrook.edu/box/migrate-gdrive-rclone) covers the full cloud-to-cloud workflow.
+!!! note ""
+    **Related:** Migrating a whole Google Drive into BOX? The step-by-step [Google Drive → BOX rclone guide](https://rci.stonybrook.edu/box/migrate-gdrive-rclone) covers the full cloud-to-cloud workflow.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/backing-rclone> (maintained by Research Computing and Informatics).
+{: .rci-credit }

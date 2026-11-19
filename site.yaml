@@ -2,9 +2,14 @@
 pages:
 - title: Documentation
   pages:
-  - group: Kitsune
+  # Kitsune opens on its System Information page. The guide pages follow
+  # in TACC user-guide order, grouped like the SeaWulf and NVwulf sections.
+  - title: Kitsune
+    source: systems/kitsune.md
+    menu: Kitsune
+    label: System Information
     pages:
-    - title: System Guide
+    - group: Getting started
       pages:
       - title: Introduction
         source: guide/introduction.md
@@ -12,26 +17,42 @@ pages:
         source: guide/system-architecture.md
       - title: Accessing the System
         source: guide/accessing-the-system.md
-      - title: Account Administration
-        source: guide/account-administration.md
-      - title: Managing Your Files
-        source: guide/managing-your-files.md
+      - link: tutorials/visualization/start/ondemand-session.md
+        menu: Start an OnDemand session
+    - group: Jobs and SLURM
+      pages:
       - title: Running Jobs
         source: guide/running-jobs.md
       - title: Launching Applications
         source: guide/launching-applications.md
-      - title: Building Software
-        source: guide/building-software.md
       - title: Job Scripts
         source: guide/job-scripts.md
       - title: Job Management
         source: guide/job-management.md
+    - group: Storage and transfer
+      pages:
+      - title: Managing Your Files
+        source: guide/managing-your-files.md
+    - group: Software environment
+      pages:
+      - title: Account Administration
+        source: guide/account-administration.md
+      - title: Building Software
+        source: guide/building-software.md
       - title: Programming and Performance
         source: guide/programming-and-performance.md
       - title: Machine Learning
         source: guide/machine-learning.md
       - title: Python
         source: guide/python.md
+    - group: Open OnDemand
+      pages:
+      - link: tutorials/visualization/start/ondemand-session.md
+        menu: Start a session
+      - link: tutorials/visualization/start/your-data.md
+        menu: Get your data
+    - group: Help and references
+      pages:
       - title: Help Desk
         source: guide/help-desk.md
       - title: References
@@ -94,11 +115,15 @@ pages:
   # SeaWulf and NVwulf: written by tools/port_rci.py --nav; rerun it
   # and paste its output here rather than editing these by hand.
   - title: SeaWulf
-    source: seawulf/README.md
+    source: systems/seawulf.md
     menu: SeaWulf
+    label: System Information
     pages:
     - group: Getting started
       pages:
+      - title: SeaWulf
+        source: seawulf/README.md
+        menu: Cluster overview
       - title: Requesting accounts & project numbers
         source: shared/requesting-accounts-project-numbers.md
       - title: Connecting to the cluster
@@ -381,11 +406,15 @@ pages:
         - title: R
           source: software/r.md
   - title: NVwulf
-    source: nvwulf/README.md
+    source: systems/nvwulf.md
     menu: NVwulf
+    label: System Information
     pages:
     - group: Getting started
       pages:
+      - title: NVwulf
+        source: nvwulf/README.md
+        menu: Cluster overview
       - title: Getting access to NVwulf
         source: nvwulf/getting-access-nvwulf.md
       - title: Getting started on NVwulf
@@ -594,8 +623,9 @@ pages:
   # Ookami (retired): written by tools/port_ookami.py --nav; rerun it
   # and paste its output here rather than editing these by hand.
   - title: Ookami
-    source: ookami/README.md
+    source: systems/ookami.md
     menu: Ookami
+    label: System Information
     pages:
     - group: Support
       pages:
@@ -699,6 +729,9 @@ pages:
           source: ookami/support/faq/nvidia-grace-cpus.md
     - group: About Ookami
       pages:
+      - title: A NEW PATH TO EXASCALE COMPUTING
+        source: ookami/README.md
+        menu: Archived home page
       - title: About Ookami
         source: ookami/about.md
       - title: People

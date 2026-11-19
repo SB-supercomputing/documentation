@@ -16,8 +16,8 @@
 | Project `/gpfs/projects/` | Large | No | Yes | Shared tools, group use |
 | Scratch `/gpfs/scratch/` | 20 TB | No | No (45-day purge) | Temp files ONLY |
 
-> [!IMPORTANT]
-> Don't install software in scratch. Files there are deleted after 45 days, even if you still use them, and your software will stop working.
+!!! info ""
+    **Important:** don't install software in scratch. Files there are deleted after 45 days, even if you still use them, and your software will stop working.
 
 ## Best practices
 
@@ -26,6 +26,7 @@
 - Write down how you installed each tool and what it needs.
 - Set group permissions with `chmod` on software you share.
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/managing-custom-software> (maintained by Research Computing and Informatics).
+{: .rci-credit }

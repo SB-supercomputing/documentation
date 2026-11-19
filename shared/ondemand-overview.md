@@ -14,8 +14,8 @@ Each cluster has its own portal and its own set of apps.
 | NVwulf | [nvwulf-ood.nvwulf.stonybrook.edu](https://nvwulf-ood.nvwulf.stonybrook.edu/) | [19 apps](../nvwulf/nvwulf-ondemand-apps.md) on GPU nodes: notebooks, AI chat, cryo-EM, imaging |
 | ClinWulf | [clinwulf-ood.uhmc.sbuh.stonybrook.edu](https://clinwulf-ood.uhmc.sbuh.stonybrook.edu/) | [8 apps](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps) for research with PHI |
 
-> [!NOTE]
-> **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
+!!! note ""
+    **ClinWulf network access:** ClinWulf OnDemand can only be reached from within Health Sciences and Stony Brook University Hospital and Medical Center. From anywhere else, connect through Citrix Desktop or the Stony Brook Hospital & Medical Center VPN first.
 
 ## Log in {#login}
 
@@ -64,8 +64,8 @@ For every other app, from Gaussian and ChimeraX to CryoSPARC and private AI chat
 4. When it's running, click the connect button to open the app in a new tab.
 5. When you're finished, click **Delete** on the session card so the resources go back to others. Closing the browser tab doesn't end the session.
 
-> [!NOTE]
-> **Your session keeps running without you.** You can close the tab, shut your laptop, and reconnect later from **My Interactive Sessions**, as long as the hours you asked for haven't run out. When they do, the session ends and anything unsaved is lost.
+!!! note ""
+    **Your session keeps running without you.** You can close the tab, shut your laptop, and reconnect later from **My Interactive Sessions**, as long as the hours you asked for haven't run out. When they do, the session ends and anything unsaved is lost.
 
 ## Working with files {#files}
 
@@ -138,6 +138,7 @@ Add the symbolic link shown above, then refresh the Files page.
 
 Still stuck? [Open a ticket](https://iacs.supportsystem.com/) with the cluster, the app, and the time it happened, or drop into [HPC virtual office hours](https://rci.stonybrook.edu/events/hpc-virtual-office-hours).
 
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/ondemand-overview> (maintained by Research Computing and Informatics).
+{: .rci-credit }

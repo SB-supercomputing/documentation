@@ -4,8 +4,8 @@ An SSH key lets you log in without typing your NetID password each time. You mak
 
 **On this page:** [macOS and Linux](#mac) · [Windows: MobaXterm](#moba) · [Windows: built-in terminal](#win) · [Windows: PuTTY](#putty) · [Other clusters](#other) · [Troubleshooting](#trouble)
 
-> [!NOTE]
-> **Keep your private key private.** Never copy it to the cluster or share it. Protect it with a passphrase; an SSH agent can remember the passphrase so you only type it once per session.
+!!! note ""
+    **Keep your private key private.** Never copy it to the cluster or share it. Protect it with a passphrase; an SSH agent can remember the passphrase so you only type it once per session.
 
 ## macOS and Linux {#mac}
 
@@ -62,8 +62,8 @@ Your home folder is shared by all SeaWulf login nodes, so one copy of the key wo
 
 4. Create a new SSH session to `milan.seawulf.stonybrook.edu`, tick **Specify username** and enter your NetID. Under **Advanced SSH settings**, tick **Use private key** and choose your key file. Click **OK**.
 
-> [!NOTE]
-> Older saved sessions that weren't set up with your private key will still ask for a password. Edit them to use the key.
+!!! note ""
+    **Note:** older saved sessions that weren't set up with your private key will still ask for a password. Edit them to use the key.
 
 ## Windows: built-in terminal {#win}
 
@@ -117,6 +117,7 @@ Log in with your password, edit `~/.ssh/authorized_keys` on the cluster to remov
 
 More login help: [Connecting to the cluster](connecting-cluster.md) and [Duo authentication](duo-authentication.md).
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/passwordless-ssh> (maintained by Research Computing and Informatics).
+{: .rci-credit }

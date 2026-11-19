@@ -73,6 +73,7 @@ sbatch --dependency=afterany:$jid train.slurm
 
 Related: [Writing job scripts](writing-job-scripts.md) · [Managing jobs](managing-jobs.md) · [GPU interactive sessions](../nvwulf/gpu-interactive-sessions.md) · [Job script builder](https://rci.stonybrook.edu/hpc/script-builder)
 
-**Applies to:** All clusters
+**Applies to** <span class="rci-chip">All clusters</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/choosing-time-limits> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -46,6 +46,7 @@ To ask about a dedicated allocation, [contact HPC support](https://rci.stonybroo
 
 **Related:** [Getting started on NVwulf](getting-started-nvwulf.md) · [Fairshare and job priority](../shared/fairshare-job-priority.md) · [How long can a job run?](../seawulf/queue-selection-guide.md#walltime) · [NVwulf](README.md)
 
-**Applies to:** NVwulf
+**Applies to** <span class="rci-chip">NVwulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/nvwulf-queues> (maintained by Research Computing and Informatics).
+{: .rci-credit }

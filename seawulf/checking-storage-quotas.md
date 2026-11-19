@@ -44,6 +44,7 @@ Most directories have identical soft and hard limits, functioning as a single bo
 - Before transferring or creating large datasets
 - When resolving shared project-space concerns with collaborators
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/checking-storage-quotas> (maintained by Research Computing and Informatics).
+{: .rci-credit }

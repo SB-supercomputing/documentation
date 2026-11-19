@@ -23,8 +23,8 @@ All of these are the same on every login and compute node, so a file you save in
 
 ## Keep your data safe {#safe}
 
-> [!NOTE]
-> **Only home is backed up.** Scratch is purged by file age, and project space has no backup. Keep a second copy of anything irreplaceable, for example in Stony Brook BOX. See [Backing up with rclone](backing-rclone.md).
+!!! note ""
+    **Only home is backed up.** Scratch is purged by file age, and project space has no backup. Keep a second copy of anything irreplaceable, for example in Stony Brook BOX. See [Backing up with rclone](backing-rclone.md).
 
 To move data on and off the cluster, see [File transfer from the CLI](../shared/file-transfer-cli.md) or, for large datasets, [Globus](globus-file-transfer.md).
 
@@ -48,6 +48,7 @@ du -sh * | sort -h       # what's using space in the current folder
 
 More in [Checking storage quotas](checking-storage-quotas.md). If you hit a limit, jobs can fail with "Disk quota exceeded", so check before big runs.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/storage-layout-policies> (maintained by Research Computing and Informatics).
+{: .rci-credit }

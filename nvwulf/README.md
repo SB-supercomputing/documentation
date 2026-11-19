@@ -90,8 +90,8 @@ Save it as `test_job.slurm`, then run `sbatch test_job.slurm` and `squeue -u $US
 - [ParaView](../shared/ondemand-paraview.md)
 - [All 19 apps](nvwulf-ondemand-apps.md)
 
-> [!NOTE]
-> **No patient data.** NVwulf, including its AI chat apps, isn't approved for PHI. Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf).
+!!! note ""
+    **No patient data.** NVwulf, including its AI chat apps, isn't approved for PHI. Work with PHI belongs on [ClinWulf](https://rci.stonybrook.edu/hpc/clusters/clinwulf).
 
 ## Best suited for
 
@@ -102,12 +102,12 @@ Save it as `test_job.slurm`, then run `sbatch test_job.slurm` and `squeue -u $US
 
 ## Getting access
 
-1. **Join a project**: If your PI already has an active SeaWulf or NVwulf project, open a ticket with the help topic "Request an Account for NVwulf" and include your NetID, your PI's name and the project number.
+1. **Join a project** If your PI already has an active SeaWulf or NVwulf project, open a ticket with the help topic "Request an Account for NVwulf" and include your NetID, your PI's name and the project number.
 
     [Getting access to NVwulf](getting-access-nvwulf.md)
 
-2. **Or start one (faculty)**: Send a one-page PDF with the help topic "Request a Project Number – NVwulf". A review committee replies by email.
-3. **Set up Duo, then log in**: Then move your data over and run a first GPU job.
+2. **Or start one (faculty)** Send a one-page PDF with the help topic "Request a Project Number – NVwulf". A review committee replies by email.
+3. **Set up Duo, then log in** Then move your data over and run a first GPU job.
     - [Duo setup](../shared/duo-authentication.md)
     - [Getting started on NVwulf](getting-started-nvwulf.md)
 
@@ -124,28 +124,29 @@ Other clusters
 
 ## Also available
 
-- [Cluster**SeaWulf**
+Cluster**SeaWulf**
 
-    General purpose
+General purpose
 
-    The general-purpose workhorse: CPU, high-memory and A100 GPU nodes.
+The general-purpose workhorse: CPU, high-memory and A100 GPU nodes.
 
-    View cluster →](../seawulf/README.md)
+[View cluster →](../seawulf/README.md)
 
-- [Cluster**ClinWulf**
+Cluster**ClinWulf**
 
-    HIPAA
+HIPAA
 
-    HIPAA-compliant computing for IRB-approved research on PHI.
+HIPAA-compliant computing for IRB-approved research on PHI.
 
-    View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
+[View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
 
-- [Cluster**SecureWulf**
+Cluster**SecureWulf**
 
-    Coming Christmas 2026
+Coming Christmas 2026
 
-    Secure computing for controlled-access research data.
+Secure computing for controlled-access research data.
 
-    View cluster →](https://rci.stonybrook.edu/hpc/clusters/securewulf)
+[View cluster →](https://rci.stonybrook.edu/hpc/clusters/securewulf)
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/clusters/nvwulf> (maintained by Research Computing and Informatics).
+{: .rci-credit }

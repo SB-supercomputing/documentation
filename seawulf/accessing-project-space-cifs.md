@@ -2,8 +2,8 @@
 
 An RPX project space is shared storage for your research group that you can open like any other network folder on your own computer. Drag files in and out, open them in desktop apps, and share them with your group, all without SSH or SFTP. This page shows how to connect from Windows, macOS, and Linux, on campus or from home over the VPN.
 
-> [!NOTE]
-> **RPX is separate from SeaWulf.** RPX folders can't be seen from SeaWulf's login or compute nodes, and SeaWulf's own project directories (`/gpfs/projects`) can no longer be opened as a network drive. To move data between RPX and the cluster, copy it from your computer with [scp or rsync](../shared/file-transfer-cli.md), or use [Globus](globus-file-transfer.md) for large amounts.
+!!! note ""
+    **RPX is separate from SeaWulf.** RPX folders can't be seen from SeaWulf's login or compute nodes, and SeaWulf's own project directories (`/gpfs/projects`) can no longer be opened as a network drive. To move data between RPX and the cluster, copy it from your computer with [scp or rsync](../shared/file-transfer-cli.md), or use [Globus](globus-file-transfer.md) for large amounts.
 
 **On this page:** [Before you start](#before) · [Windows](#windows) · [macOS](#macos) · [Linux](#linux) · [Off campus](#vpn) · [Good habits](#tips) · [Troubleshooting](#trouble)
 
@@ -128,8 +128,8 @@ Run `sudo mount -a` to test it. `nofail` lets your computer start normally when 
 1. Connect to the [Stony Brook University VPN](https://it.stonybrook.edu/services/vpn).
 2. Follow the steps for your computer above. When asked to sign in, use `sunysb.edu\<NetID>` and your NetID password.
 
-> [!NOTE]
-> **Drive missing after a restart?** Saved drives and login items can't reconnect until the VPN is up. Connect to the VPN first, then open the drive (Windows) or reconnect from Finder's sidebar or Connect to Server (macOS).
+!!! note ""
+    **Drive missing after a restart?** Saved drives and login items can't reconnect until the VPN is up. Connect to the VPN first, then open the drive (Windows) or reconnect from Finder's sidebar or Connect to Server (macOS).
 
 ## Good habits {#tips}
 
@@ -203,6 +203,7 @@ RPX isn't mounted on SeaWulf. Copy the files from your computer to SeaWulf with 
 
 Still stuck? [Open a ticket with IACS support](https://iacs.supportsystem.com) and include your operating system, whether you're on campus or on the VPN, and the exact error message.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/accessing-project-space-cifs> (maintained by Research Computing and Informatics).
+{: .rci-credit }

@@ -4,8 +4,8 @@ Every SeaWulf job runs in a queue (also called a partition). The queue decides w
 
 **On this page:** [How long can a job run](#walltime) · [Quick picks](#pick) · [How to choose](#tips) · [Limits per person](#tips) · [40-core Skylake](#40) · [96-core Milan](#96) · [HBM](#hbm) · [A100 GPU](#a100)
 
-> [!NOTE]
-> **Where you log in matters.** The 40-core, 96-core, HBM, and A100 queues are reached from `milan.seawulf.stonybrook.edu` (or `xeonmax`). The 28-core Haswell nodes and the older K80, P100 and V100 GPU nodes were retired in November 2026. See [Which SeaWulf login node?](../shared/connecting-cluster.md#login-nodes)
+!!! note ""
+    **Where you log in matters.** The 40-core, 96-core, HBM, and A100 queues are reached from `milan.seawulf.stonybrook.edu` (or `xeonmax`). The 28-core Haswell nodes and the older K80, P100 and V100 GPU nodes were retired in November 2026. See [Which SeaWulf login node?](../shared/connecting-cluster.md#login-nodes)
 
 ## How long can a job run? (maximum walltime) {#walltime}
 
@@ -44,8 +44,8 @@ Ask for the time your job needs plus a margin; shorter requests usually start so
 
 In the tables, **Time** is the range of run times each queue is meant for; the upper number is the maximum you can request.
 
-> [!NOTE]
-> **Limits per person.** On SeaWulf you can use up to 32 nodes at once across all your running jobs, unless you're using one of the `large` queues, and you can have up to 100 jobs in the queue at one time.
+!!! note ""
+    **Limits per person.** On SeaWulf you can use up to 32 nodes at once across all your running jobs, unless you're using one of the `large` queues, and you can have up to 100 jobs in the queue at one time.
 
 ## 40-core Intel Skylake {#40}
 
@@ -108,6 +108,7 @@ Four A100 80 GB GPUs per node, on 64-core Intel Ice Lake nodes with 256 GB memor
 - [Fairshare & job priority](../shared/fairshare-job-priority.md): why some jobs start before others.
 - [Cluster picker](https://rci.stonybrook.edu/hpc/cluster-picker): whether SeaWulf, NVwulf, or ClinWulf fits best.
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/queue-selection-guide> (maintained by Research Computing and Informatics).
+{: .rci-credit }

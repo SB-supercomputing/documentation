@@ -30,8 +30,8 @@ ssh -X <your_netid>@login.seawulf.stonybrook.edu
 
 For interactive jobs, request resources with `salloc`, then SSH into the allocated node with X11 forwarding enabled. For some GUI applications, particularly tools like RStudio, the SeaWulf Desktop app in [Open OnDemand](../shared/ondemand-overview.md) delivers better performance.
 
-> [!NOTE]
-> X11 forwarding operates per SSH connection: switching nodes requires reconnecting with the `-X` flag.
+!!! note ""
+    **Note:** X11 forwarding operates per SSH connection: switching nodes requires reconnecting with the `-X` flag.
 
 ## Troubleshooting
 
@@ -39,6 +39,7 @@ For interactive jobs, request resources with `salloc`, then SSH into the allocat
 - Confirm the display variable is set: `echo $DISPLAY`
 - Test with `glxgears` or a GUI app like Matplotlib or MATLAB
 
-**Applies to:** SeaWulf
+**Applies to** <span class="rci-chip">SeaWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/x11-forwarding> (maintained by Research Computing and Informatics).
+{: .rci-credit }

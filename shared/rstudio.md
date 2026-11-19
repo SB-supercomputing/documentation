@@ -99,6 +99,7 @@ Try a shorter queue, fewer cores, or less memory.
 
 Related: [OnDemand overview](ondemand-overview.md) · [Using modules](using-modules.md) · [SeaWulf apps](../seawulf/seawulf-ondemand-apps.md) · [NVwulf apps](../nvwulf/nvwulf-ondemand-apps.md) · [ClinWulf apps](https://rci.stonybrook.edu/docs/clinwulf-ondemand-apps)
 
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/docs/rstudio> (maintained by Research Computing and Informatics).
+{: .rci-credit }

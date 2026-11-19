@@ -37,8 +37,8 @@ EASTERN = ZoneInfo("America/New_York")
 HOME_LABEL = "Home"
 SBSC_HOME = "https://sbsc.stonybrook.edu/"
 SUPPORT = "https://sbsc.stonybrook.edu/contact"
-# Systems kept as an archive of their old website: the front page names
-# them and links the archive's home, without listing every page.
+# Retired systems whose old website is archived here. Their pages are
+# left out of the page feeds.
 ARCHIVED = {"ookami"}
 ALERTS = {"NOTE": "note", "TIP": "tip", "IMPORTANT": "info", "WARNING": "warning", "CAUTION": "danger"}
 ALERT_RE = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>[^\n]*\n?)+)")
@@ -49,9 +49,13 @@ class Node:
     """A page, a heading over the pages under it (rel is None), or a
     second listing of a page published elsewhere in the tree (link)."""
 
-    def __init__(self, title, menu, rel, children, link=None):
+    def __init__(self, title, menu, rel, children, link=None, label=None):
         self.title, self.menu, self.rel, self.children = title, menu, rel, children
         self.link = link
+        # The sidebar name for a section's own page, such as "System
+        # Information" under "SeaWulf". Without it the page repeats the
+        # section's name.
+        self.label = label
 
 
 def read_tree():
@@ -75,7 +79,7 @@ def read_tree():
                 source = entry.get("source")
                 nodes.append(Node(entry["title"], entry.get("menu") or entry["title"],
                                   pathlib.PurePosixPath(source) if source else None,
-                                  walk(entry.get("pages"))))
+                                  walk(entry.get("pages")), label=entry.get("label")))
         return nodes
 
     return site, walk(site.get("pages"))
@@ -243,7 +247,7 @@ def nav_entry(node, home, chain=()):
         inner = chain + (node.menu,)
         home[dest] = inner
         kids = [k for k in (nav_entry(c, home, inner) for c in node.children) if k]
-        return {node.menu: [{node.menu: dest}] + kids}
+        return {node.menu: [{node.label or node.menu: dest}] + kids}
     home[dest] = chain
     return {node.menu: dest}
 
@@ -369,78 +373,37 @@ def is_reference(node):
 
 
 def landing(roots, notices):
-    """The site's front page, from the tree: Kitsune at a glance and its
-    guide and tutorials, a section per cluster ported from RCI, and the
-    reference pages, with the recent notices on top. Everything links to
-    the page it names, and the build regenerates it, so the list never
-    goes stale."""
+    """The site's front page, built from the tree: one line per system
+    (the first sentence of its System Information page), the latest
+    announcements, and the reference pages. Specifications stay on each
+    system's own page and are not repeated here."""
     hub = roots[0]
-    link = lambda p: f"[{p.menu}]({'/'.join(p.rel.parts)})"
-    line = lambda p: f"- {link(p)}: {summary(p.rel)}"
+    line = lambda p: f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}"
     out = ["# SBSC documentation", "",
-           "Documentation for the Stony Brook Supercomputing Center's systems:",
-           "Kitsune, the center's new supercomputer, and the SeaWulf and NVwulf",
-           "clusters. The Kitsune guide sections are outlines; they fill in as",
-           "Kitsune is deployed.", "",
-           "## Kitsune at a glance", "",
-           '<dl class="sbsc-specs">',
-           "  <dt>Compute nodes</dt><dd>162</dd>",
-           "  <dt>Processors</dt><dd>2x AMD EPYC 9965 per node</dd>",
-           "  <dt>Cores</dt><dd>60,000+</dd>",
-           "  <dt>Peak performance</dt><dd>6.7 PFLOPS, double precision</dd>",
-           "  <dt>Storage</dt><dd>6 PB usable GPFS</dd>",
-           "  <dt>Coming online</dt><dd>Q1 2027</dd>",
-           "</dl>",
-           "",
-           "Funded by the National Science Foundation under award OAC-2505376.",
-           ""]
+           "Documentation for Stony Brook's research computing systems.",
+           "Each system's page lists its specifications, and its guides are",
+           "in the navigation.", "",
+           "## Systems", ""]
+    reference = []
+    for child in hub.children:
+        if child.link is not None:
+            continue
+        if child.rel is None:
+            if is_reference(child):
+                reference.extend(leaf_pages(child))
+            continue
+        if child.rel.parts[0] == "reference":
+            reference.append(child)
+            continue
+        out.append(f"- **[{child.menu}]({'/'.join(child.rel.parts)})**: "
+                   f"{summary(child.rel)}")
+    out.append("")
     if notices:
         out += ["## Announcements", ""]
         for it in notices[:5]:
             rel = pathlib.PurePosixPath(f"announcements/{it['stem']}.md")
             out.append(f"- [{it['title']}]({'/'.join(rel.parts)}): {summary(rel)}")
         out += ["", "[All announcements](announcements/index.md)", ""]
-    reference, loose = [], []
-    for child in hub.children:
-        if child.link is not None:
-            continue
-        if child.rel is None and is_reference(child):
-            reference.extend(leaf_pages(child))
-        elif child.rel is None:
-            # A group of sections (Kitsune): a heading for each section,
-            # and a line per page under it.
-            out += [f"## {child.menu}", ""]
-            for sub in child.children:
-                if sub.link is not None:
-                    continue
-                if sub.rel is not None and not sub.children:
-                    out += [line(sub), ""]
-                    continue
-                out += [f"### {sub.menu}", ""]
-                out += [line(leaf) for leaf in leaf_pages(sub)]
-                out.append("")
-        elif child.rel.parts[0] in ARCHIVED:
-            out += [f"## {child.menu} (retired)", "",
-                    f"{child.menu} reached end of life at the end of 2025. Its "
-                    f"website is kept here for reference, starting from the "
-                    f"{link(child)} home page.", ""]
-        elif child.children:
-            # A cluster ported from RCI: what it is, its overview, and the
-            # pages that are its own. The pages every cluster shares sit
-            # under each one in the navigation.
-            system = child.rel.parts[0]
-            own = [p for p in all_pages(child.children) if p.rel.parts[0] == system]
-            out += [f"## {child.menu}", "",
-                    f"{summary(child.rel)} Start with the {link(child)} overview.", ""]
-            out += [f"- {link(p)}" for p in own]
-            out += ["", f"The guides that apply to every cluster, and the software "
-                    f"catalog, are listed under {child.menu} in the navigation.", ""]
-        elif child.rel.parts[0] == "reference":
-            reference.append(child)
-        else:
-            loose.append(child)
-    if loose:
-        out += [line(p) for p in loose] + [""]
     if reference:
         out += ["## Reference", ""]
         out += [line(p) for p in reference]

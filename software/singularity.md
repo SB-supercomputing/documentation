@@ -4,17 +4,17 @@ An open-source container platform for executing applications in isolated environ
 
 Singularity is a containerization platform that allows users to run applications in isolated environments, ensuring reproducibility across different computing systems. By encapsulating your entire environment in a container, you can ensure that your research code runs the same way on different systems. Note: the singularity build command with definition files is not supported on SeaWulf due to privilege requirements. Docker and Apptainer: Docker itself can't run on the clusters because it needs administrator (root) rights, but Singularity runs Docker images without them. Apptainer is the newer name for the same project, and the commands work the same way. Pull a Docker image with singularity pull docker://python:3.11 , then run it with singularity exec . For GPU jobs, add --nv .
 
-**Module name:** `singularity`
+**Module name** `singularity`
 
 ## Loading Singularity
 
 Load the default module, or run `module avail singularity` to list every installed version on your cluster:
 
-> [!NOTE]
-> `module load singularity`
+!!! note ""
+    `module load singularity`
 
-> [!TIP]
-> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+!!! tip ""
+    **Tip:** load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
 
 ## Example usage
 
@@ -81,8 +81,7 @@ Images are large, so pull them into scratch or project space rather than your ho
 
 Singularity is available on: SeaWulf, NVwulf, ClinWulf.
 
-**Category:** Development
-
-**Applies to:** SeaWulf, NVwulf, ClinWulf
+**Applies to** <span class="rci-chip">SeaWulf</span> <span class="rci-chip">NVwulf</span> <span class="rci-chip">ClinWulf</span>
 
 Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/singularity> (maintained by Research Computing and Informatics).
+{: .rci-credit }
