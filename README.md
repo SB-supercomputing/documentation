@@ -67,6 +67,20 @@ The run rewrites every ported page. `port-nav.yaml` holds the SeaWulf
 and NVwulf branches of the navigation; paste it over the marked block
 in `site.yaml` when RCI adds, removes, or renames a page.
 
+Ookami reached end of life at the end of 2025, and its website is kept
+here as an archive under `ookami/`, with its linked documents under
+`ookami/files/` and its pictures under `assets/ookami/`. The pages keep
+the old site's wording exactly: `tools/port_ookami.py` builds them from
+the copy of the site saved on November 5, 2026 (the `ookami-archive`
+folder, kept outside this repository). Each page opens with
+a note that it is archived and closes with the address it came from.
+Past recordings, webinars, and seminar videos are not uploaded; their
+titles stay on the pages without links, and the note on those pages
+says so. Links to pages that no longer exist keep their words and lose
+the link. Don't edit these pages by hand; to rebuild them:
+
+    python tools/port_ookami.py --archive ../ookami-archive --nav ookami-nav.yaml
+
 Announcements (maintenance windows, software changes, service notices)
 cover all three systems, and each names its system in its title. They
 are one file each under `announcements/`, named `YYYY-MM-DD-slug.md`,

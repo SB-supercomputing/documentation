@@ -44,6 +44,7 @@ More in [Using modules](../shared/using-modules.md) and the [software catalog](.
     ```
     mkdir ~/my_first_job && cd ~/my_first_job
     ```
+
 2. **Create a job script** called `hello.slurm`. Open an editor with `nano hello.slurm`, paste this in, then save with **Ctrl+O** and exit with **Ctrl+X**:
 
     ```
@@ -62,6 +63,7 @@ More in [Using modules](../shared/using-modules.md) and the [software catalog](.
     echo "Running on node: $(hostname)"
     echo "Date and time: $(date)"
     ```
+
 3. **Submit it.**
 
     ```
@@ -69,6 +71,7 @@ More in [Using modules](../shared/using-modules.md) and the [software catalog](.
     ```
 
     Slurm replies with something like `Submitted batch job 12345`. That number is your job ID.
+
 4. **Read the result** once it finishes (use your own job ID):
 
     ```

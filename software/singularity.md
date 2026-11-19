@@ -62,11 +62,13 @@ Not directly. Docker needs administrator (root) rights, which aren't available o
     ```
     singularity pull docker://python:3.11
     ```
+
 3. Run it in your job script:
 
     ```
     singularity exec python_3.11.sif python3 my_script.py
     ```
+
 4. For GPU jobs, add `--nv` so the container can use the node's NVIDIA GPUs:
 
     ```

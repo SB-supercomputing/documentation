@@ -76,6 +76,7 @@ sudo dnf install cifs-utils samba-client
     ```
     smbclient -L rpx-gtwy.seawulf.stonybrook.edu -W sunysb.edu -U <NetID>
     ```
+
 2. Make a folder to mount it on, then mount it. You'll be asked for your computer password (for sudo) and then your NetID password.
 
     ```
@@ -83,6 +84,7 @@ sudo dnf install cifs-utils samba-client
     sudo mount -t cifs //rpx-gtwy.seawulf.stonybrook.edu/hpc_support ~/hpc_support \
       -o domain=sunysb.edu,username=<NetID>,uid=$(id -u),gid=$(id -g)
     ```
+
 3. Your files are now in `~/hpc_support`.
 4. When you're done, unmount it. If it says the target is busy, close anything using the folder, or add `-l`.
 

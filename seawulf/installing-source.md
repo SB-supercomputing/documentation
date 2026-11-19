@@ -43,6 +43,7 @@ export CC=icx CXX=icpx FC=ifx            # Intel oneAPI
     wget https://example.com/software-1.0.tar.gz
     tar -xzf software-1.0.tar.gz && cd software-1.0
     ```
+
 2. **Configure.** Autotools:
 
     ```
@@ -59,6 +60,7 @@ export CC=icx CXX=icpx FC=ifx            # Intel oneAPI
              -DCMAKE_BUILD_TYPE=Release \
              -DCMAKE_C_FLAGS="-O3 -march=skylake-avx512"
     ```
+
 3. **Compile.**
 
     ```
@@ -66,11 +68,13 @@ export CC=icx CXX=icpx FC=ifx            # Intel oneAPI
     ```
 
     Avoid more than a few cores on login nodes: request an [interactive job](../shared/interactive-jobs.md) for large builds (see [login node etiquette](../shared/login-node-etiquette.md)).
+
 4. **Test.**
 
     ```
     make check   # or: make test
     ```
+
 5. **Install.**
 
     ```

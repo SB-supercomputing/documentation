@@ -18,11 +18,13 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import json
 import pathlib
 import re
 import shutil
 import subprocess
 import sys
+import urllib.parse
 from email.utils import format_datetime
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
@@ -35,6 +37,9 @@ EASTERN = ZoneInfo("America/New_York")
 HOME_LABEL = "Home"
 SBSC_HOME = "https://sbsc.stonybrook.edu/"
 SUPPORT = "https://sbsc.stonybrook.edu/contact"
+# Systems kept as an archive of their old website: the front page names
+# them and links the archive's home, without listing every page.
+ARCHIVED = {"ookami"}
 ALERTS = {"NOTE": "note", "TIP": "tip", "IMPORTANT": "info", "WARNING": "warning", "CAUTION": "danger"}
 ALERT_RE = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>[^\n]*\n?)+)")
 LINK_RE = re.compile(r"(?<!\!)\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
@@ -209,7 +214,7 @@ def de_dead_links(text, page_rel, docs):
         label, target = m.group(1), m.group(2)
         if target.startswith(("http://", "https://", "mailto:", "#")):
             return m.group(0)
-        path = target.split("#", 1)[0]
+        path = urllib.parse.unquote(target.split("#", 1)[0])
         if not path:
             return m.group(0)
         resolved = (here.parent / path).resolve()
@@ -298,11 +303,20 @@ def on_nav(nav, config, files):
 '''
 
 
+def yaml_key(text):
+    """A nav title as a YAML key: quoted when a colon, quote, or other
+    YAML mark in it would otherwise change what the line means."""
+    if re.search(r"""[:#\[\]{},&*!|>'"%@`]|^[-?\s]|\s$""", text):
+        return json.dumps(text, ensure_ascii=False)
+    return text
+
+
 def yaml_list(items, indent=0):
     out, pad = "", "  " * indent
     for item in items:
         if isinstance(item, dict):
             for k, v in item.items():
+                k = yaml_key(k)
                 if isinstance(v, list):
                     out += f"{pad}- {k}:\n" + yaml_list(v, indent + 1)
                 else:
@@ -405,6 +419,11 @@ def landing(roots, notices):
                 out += [f"### {sub.menu}", ""]
                 out += [line(leaf) for leaf in leaf_pages(sub)]
                 out.append("")
+        elif child.rel.parts[0] in ARCHIVED:
+            out += [f"## {child.menu} (retired)", "",
+                    f"{child.menu} reached end of life at the end of 2025. Its "
+                    f"website is kept here for reference, starting from the "
+                    f"{link(child)} home page.", ""]
         elif child.children:
             # A cluster ported from RCI: what it is, its overview, and the
             # pages that are its own. The pages every cluster shares sit
@@ -617,6 +636,8 @@ def main():
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
                  '        default_time: 00:00\n'
                  '        default_timezone: America/New_York\n'
+                 # The archived systems' pages are old news, not new pages.
+                 '      match_path: "^(?!(' + "|".join(sorted(ARCHIVED)) + ')/).*"\n'
                  f'      image: {site_url.rstrip("/")}/assets/sbsc-shield.svg\n'
                  '      pretty_print: true\n'
                  '      length: 40') if site_url else ""

@@ -33,11 +33,13 @@ SSHFS shows a SeaWulf folder on your own computer, like a local folder. It works
     ```
 
     On a Mac, install macFUSE and SSHFS. Both are at [macfuse.github.io](https://macfuse.github.io/).
+
 2. Make an empty folder to mount into:
 
     ```
     mkdir ~/seawulf
     ```
+
 3. Mount your home directory. To mount scratch or a project instead, put `/gpfs/scratch/<netid>` or `/gpfs/projects/<group>` after the colon.
 
     ```
@@ -45,6 +47,7 @@ SSHFS shows a SeaWulf folder on your own computer, like a local folder. It works
     ```
 
     Enter your NetID password and approve the Duo prompt. Your files now show up in `~/seawulf`.
+
 4. Unmount when you're done:
 
     ```
@@ -62,6 +65,7 @@ If you see "Transport endpoint is not connected", unmount the folder and mount i
     ```
     winget install SSHFS-Win.SSHFS-Win
     ```
+
 3. Install [SSHFS-Win Manager](https://github.com/evsar3/sshfs-win-manager) and open it.
 4. Click **Add Connection**. Enter `milan.seawulf.stonybrook.edu` as the host, your NetID as the username, and a free drive letter. Leave **Remote Path** blank for your home directory, or enter `/gpfs/scratch/<netid>` or `/gpfs/projects/<group>`. Choose **Password** for authentication.
 5. Click **Connect** and approve the Duo prompt. The folder appears as a drive in File Explorer. To unmount, select the connection and click **Disconnect**.

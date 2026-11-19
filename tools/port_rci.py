@@ -241,7 +241,10 @@ class Converter(MarkdownConverter):
         lines = text.split("\n")
         rest = "".join("\n" + ("    " + line if line.strip() else "")
                        for line in lines[1:])
-        return f"{bullet} {lines[0]}{rest}\n"
+        # An item of more than one paragraph ends with a blank line, or
+        # Python-Markdown reads the next item's bullet as more of its text.
+        end = "\n\n" if "\n\n" in text else "\n"
+        return f"{bullet} {lines[0]}{rest}{end}"
 
     def convert_pre(self, el, text, parent_tags):
         code = el.get_text().strip("\n")

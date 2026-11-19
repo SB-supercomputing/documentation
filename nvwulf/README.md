@@ -105,6 +105,7 @@ Save it as `test_job.slurm`, then run `sbatch test_job.slurm` and `squeue -u $US
 1. **Join a project**: If your PI already has an active SeaWulf or NVwulf project, open a ticket with the help topic "Request an Account for NVwulf" and include your NetID, your PI's name and the project number.
 
     [Getting access to NVwulf](getting-access-nvwulf.md)
+
 2. **Or start one (faculty)**: Send a one-page PDF with the help topic "Request a Project Number – NVwulf". A review committee replies by email.
 3. **Set up Duo, then log in**: Then move your data over and run a first GPU job.
     - [Duo setup](../shared/duo-authentication.md)
@@ -130,6 +131,7 @@ Other clusters
     The general-purpose workhorse: CPU, high-memory and A100 GPU nodes.
 
     View cluster →](../seawulf/README.md)
+
 - [Cluster**ClinWulf**
 
     HIPAA
@@ -137,6 +139,7 @@ Other clusters
     HIPAA-compliant computing for IRB-approved research on PHI.
 
     View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
+
 - [Cluster**SecureWulf**
 
     Coming Christmas 2026

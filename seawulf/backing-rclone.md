@@ -11,6 +11,7 @@ Scratch files are deleted after 45 days. Project spaces are not backed up. So ba
     ```
     module load rclone/1.74.4
     ```
+
 2. **Configure a Box remote.**
 
     ```
@@ -18,6 +19,7 @@ Scratch files are deleted after 45 days. Project spaces are not backed up. So ba
     ```
 
     Pick Box from the list. Leave the ID and secret fields blank. Choose *No* for auto config, because SeaWulf has no web browser.
+
 3. **Authorize from your own computer.** Install rclone locally, run `rclone authorize "box"`, sign in, and paste the generated token back into the SeaWulf config prompt.
 
 Google Drive works the same way: pick Drive in `rclone config` and authorize with `rclone authorize "drive"`.

@@ -16,11 +16,13 @@ An SSH key lets you log in without typing your NetID password each time. You mak
     ```
 
     If you need an RSA key for an older tool, use `ssh-keygen -t rsa -b 4096` instead.
+
 2. **Add it to your SSH agent** so you don't retype the passphrase:
 
     ```
     ssh-add ~/.ssh/id_ed25519
     ```
+
 3. **Copy the public key to SeaWulf** (you'll log in with your password and Duo this one time):
 
     ```
@@ -32,6 +34,7 @@ An SSH key lets you log in without typing your NetID password each time. You mak
     ```
     cat ~/.ssh/id_ed25519.pub | ssh <netid>@milan.seawulf.stonybrook.edu 'mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys'
     ```
+
 4. **Test it:**
 
     ```
@@ -50,11 +53,13 @@ Your home folder is shared by all SeaWulf login nodes, so one copy of the key wo
     ```
     ssh-keygen -t ed25519
     ```
+
 3. Copy the public key to SeaWulf:
 
     ```
     cat ~/.ssh/id_ed25519.pub | ssh <netid>@milan.seawulf.stonybrook.edu "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
     ```
+
 4. Create a new SSH session to `milan.seawulf.stonybrook.edu`, tick **Specify username** and enter your NetID. Under **Advanced SSH settings**, tick **Use private key** and choose your key file. Click **OK**.
 
 > [!NOTE]

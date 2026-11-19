@@ -6,5 +6,6 @@ __pycache__/
 # Built by tools/build_docs.py from site.yaml
 docs-site/
 
-# Written by tools/port_rci.py --nav
+# Written by tools/port_rci.py and tools/port_ookami.py --nav
 port-nav.yaml
+ookami-nav.yaml

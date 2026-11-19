@@ -42,6 +42,7 @@ Open OnDemand gives you files, a job composer, a shell, and apps like Jupyter, R
     ```
     ssh <netid>@milan.seawulf.stonybrook.edu
     ```
+
 3. The first time, you'll be asked whether to trust the server's key. Type `yes`.
 4. Enter your NetID password (nothing shows as you type), then approve the Duo push.
 

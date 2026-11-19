@@ -591,6 +591,155 @@ pages:
         - link: software/python.md
           menu: Python
   # End of the tools/port_rci.py --nav output.
+  # Ookami (retired): written by tools/port_ookami.py --nav; rerun it
+  # and paste its output here rather than editing these by hand.
+  - title: Ookami
+    source: ookami/README.md
+    menu: Ookami
+    pages:
+    - group: Support
+      pages:
+      - title: Support
+        source: ookami/support/README.md
+      - title: Documentation
+        source: ookami/support/index_links_and_docs.md
+      - title: Frequently Asked Questions
+        source: ookami/support/faq/README.md
+        menu: FAQ
+        pages:
+        - title: What is Ookami?
+          source: ookami/support/faq/what_is_ookami.md
+        - title: How do I request an Ookami account?
+          source: ookami/support/faq/ookami-account-request.md
+        - title: How do I get a project on Ookami?
+          source: ookami/support/faq/getting-a-project-on-ookami.md
+        - title: How do I log into Ookami?
+          source: ookami/support/faq/logging-into-ookami.md
+        - title: How do I enroll in DUO Security?
+          source: ookami/support/faq/enroll-in-duo-security.md
+        - title: Getting Started Guide
+          source: ookami/support/faq/getting-started-guide.md
+        - title: Example Slurm Job Script
+          source: ookami/support/faq/example-slurm-script.md
+        - title: Using Slurm to manage resources on Ookami
+          source: ookami/support/faq/core-thread-control-ookami.md
+        - title: Using MPI options to manage resources on Ookami
+          source: ookami/support/faq/core-thread-control-mpi-flags.md
+        - title: this FAQ section is currently under development
+          source: ookami/support/faq/thread_binding.md
+        - title: How to submit, delete, and check the status of Slurm job
+          source: ookami/support/faq/submit-delete-check-slurm-jobs.md
+        - title: Handling job output
+          source: ookami/support/faq/handling-job-output.md
+        - title: Interactive Sessions
+          source: ookami/support/faq/interactive_slurm_session.md
+        - title: Understanding the Login Nodes
+          source: ookami/support/faq/understanding_login_nodes.md
+        - title: Understanding Modules
+          source: ookami/support/faq/what_are_modules.md
+        - title: Ookami Queues / Partitions
+          source: ookami/support/faq/queues_on_ookami.md
+        - title: Software installed on Ookami
+          source: ookami/support/faq/software_on_ookami.md
+        - title: How Do I Access Ookami with Open OnDemand?
+          source: ookami/support/faq/open_ondemand.md
+        - title: Using the ARM compilers on Ookami
+          source: ookami/support/faq/ookami-arm-compilers.md
+        - title: Using the Cray compilers on Ookami
+          source: ookami/support/faq/ookami-cray-compilers.md
+        - title: Using the GCC compilers on Ookami
+          source: ookami/support/faq/ookami-gcc-compilers.md
+        - title: Using the AMD compilers on Ookami
+          source: ookami/support/faq/ookami-amd-compilers.md
+        - title: Using the NVIDIA HPC SDK compilers on Ookami
+          source: ookami/support/faq/ookami-nvidia-compilers.md
+        - title: Using the Fujitsu compilers on Ookami
+          source: ookami/support/faq/ookami-fujitsu-compilers.md
+        - title: Ookami storage policies
+          source: ookami/support/faq/ookami_storage_options.md
+        - title: Setting Permissions in Project Spaces
+          source: ookami/support/faq/project_space_permissions.md
+        - title: Vectorization Flags
+          source: ookami/support/faq/vectorization_flags.md
+        - title: "Note that this article contains results of the Fujitsu compiler, which is not available\n                        anymore on Ookami"
+          source: ookami/support/faq/vectorization_example.md
+        - title: Profilers on Ookami
+          source: ookami/support/faq/profilers.md
+        - title: Acknowledging Ookami in Publications
+          source: ookami/support/faq/iacs_acknowledgement.md
+        - title: Processing HIPAA Data on Ookami
+          source: ookami/support/faq/hipaa_concerns.md
+        - title: How to Reset Your Ookami Password
+          source: ookami/support/faq/resetting_ookami_password.md
+        - title: Setting Up Passwordless SSH
+          source: ookami/support/faq/passwordless_ssh.md
+        - title: Transferring Files to and from Ookami
+          source: ookami/support/faq/transferring_data_to_ookami.md
+        - title: How to Fix Common Login Issues
+          source: ookami/support/faq/fixing_common_login_issues.md
+        - title: DUO and LD_LIBRARY_PATH
+          source: ookami/support/faq/warning_modshare_library_path_duo.md
+        - title: Remote Assistance Procedure
+          source: ookami/support/faq/remote_troubleshooting.md
+        - title: How can I monitor Ookami's usage?
+          source: ookami/support/faq/xdmod.md
+        - title: Monitoring Power Usage
+          source: ookami/support/faq/power_usage.md
+        - title: Math libraries on Ookami
+          source: ookami/support/faq/available_math_libraries.md
+        - title: Compiling-for-performance checklist on Ookami
+          source: ookami/support/faq/compiling.md
+        - title: Conditional Compilation by Architecture
+          source: ookami/support/faq/conditional_compilation_by_architecture.md
+        - title: Debugging tools
+          source: ookami/support/faq/debugging_tools.md
+        - title: Ookami's Infiniband Topology
+          source: ookami/support/faq/infiniband_topology.md
+        - title: Using Ookami's NVIDIA Grace CPUs
+          source: ookami/support/faq/nvidia-grace-cpus.md
+    - group: About Ookami
+      pages:
+      - title: About Ookami
+        source: ookami/about.md
+      - title: People
+        source: ookami/people.md
+      - title: Projects
+        source: ookami/projects.md
+      - title: Publications
+        source: ookami/publications.md
+      - title: Announcements
+        source: ookami/announcements.md
+      - title: Calendar
+        source: ookami/calendar.md
+      - title: System Status
+        source: ookami/system_status.md
+      - title: 'Cybertraining:'
+        source: ookami/byteboost.md
+    - title: Science Stories
+      source: ookami/science_stories/README.md
+      menu: Science stories
+      pages:
+      - title: "Cracking the Code of Supersonic Jets: The Science Behind Jet Expansion and Turbulence\n                        in Extreme Conditions"
+        source: ookami/science_stories/tumuklu.md
+      - title: 'The Quest for the Fastest Code: A Heat Equation Adventure'
+        source: ookami/science_stories/diehl.md
+      - title: 'The Dielectric Dance Party: When Charges Break the Rules'
+        source: ookami/science_stories/fernandez-serra.md
+      - title: Penguins and their diets
+        source: ookami/science_stories/gallagher.md
+      - title: 'The Quest for Faster Computing: A High-Performance Adventure'
+        source: ookami/science_stories/krysl.md
+      - title: The correlation between where we spend our time and political segregation
+        source: ookami/science_stories/zhang.md
+      - title: Using social media to analyze Sinophobia during the pandemic
+        source: ookami/science_stories/zhang2.md
+    - title: User Group Meeting
+      source: ookami/user_meeting/README.md
+      menu: User meetings
+      pages:
+      - title: Ookami
+        source: ookami/user_meeting/ugm2023.md
+  # End of the tools/port_ookami.py --nav output.
   - title: Reference
     pages:
     - title: Glossary

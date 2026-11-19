@@ -91,9 +91,11 @@ Details and how to ask for project space: [Storage layout & policies](storage-la
 1. **Join a project**: If your PI already has a SeaWulf project, open a ticket with the help topic "Request an account for SeaWulf" and include your NetID, your PI's name and the project number.
 
     [How to request an account](../shared/requesting-accounts-project-numbers.md)
+
 2. **Or start one (faculty)**: Faculty request a project number with a one-page PDF describing the work, computing needs, software, storage and group members.
 
     [Request a project number](../shared/requesting-accounts-project-numbers.md#project)
+
 3. **Set up Duo, then connect**: Every login needs a Duo approval. Then sign in with Open OnDemand or SSH and run your first job.
     - [Duo setup](../shared/duo-authentication.md)
     - [Quick start guide](quick-start-guide.md)
@@ -118,6 +120,7 @@ Other clusters
     GPU acceleration for AI and machine learning, on H200 and Blackwell GPUs.
 
     View cluster →](../nvwulf/README.md)
+
 - [Cluster**ClinWulf**
 
     HIPAA
@@ -125,6 +128,7 @@ Other clusters
     HIPAA-compliant computing for IRB-approved research on PHI.
 
     View cluster →](https://rci.stonybrook.edu/hpc/clusters/clinwulf)
+
 - [Cluster**SecureWulf**
 
     Coming Christmas 2026

@@ -22,6 +22,7 @@ For everyday copies, `scp` and `rsync` are simpler. See [File transfer from the 
     ```
     module load globus/3.15.0
     ```
+
 2. **Log in to Globus.**
 
     ```
@@ -29,6 +30,7 @@ For everyday copies, `scp` and `rsync` are simpler. See [File transfer from the 
     ```
 
     Open the link it prints, choose **Stony Brook University**, sign in with your NetID, and paste the authorization code back into the terminal.
+
 3. **Create your SeaWulf endpoint.**
 
     ```
@@ -36,6 +38,7 @@ For everyday copies, `scp` and `rsync` are simpler. See [File transfer from the 
     ```
 
     Write down the **Endpoint ID** and **Setup Key** it prints.
+
 4. **Finish setup** with the Setup Key:
 
     ```
@@ -50,16 +53,19 @@ For everyday copies, `scp` and `rsync` are simpler. See [File transfer from the 
     ep1=<your-seawulf-endpoint-id>
     ep2=<destination-endpoint-id>
     ```
+
 2. **Start your endpoint** in the background, limited to your own folders:
 
     ```
     globusconnectpersonal -start -restrict-paths rw/gpfs/scratch/$USER,rw/gpfs/home/$USER &
     ```
+
 3. **Check it can see your files:**
 
     ```
     globus ls $ep1
     ```
+
 4. **Transfer a folder:**
 
     ```
@@ -67,6 +73,7 @@ For everyday copies, `scp` and `rsync` are simpler. See [File transfer from the 
     ```
 
     Globus prints a task ID. You can close your terminal; the transfer carries on, and you can watch it on [app.globus.org](https://app.globus.org/activity).
+
 5. **Stop your endpoint** when the transfer is done:
 
     ```

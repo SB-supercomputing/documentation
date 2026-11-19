@@ -52,11 +52,13 @@ sacct -j <jobid> --format=JobID,JobName,State,Elapsed,MaxRSS,CPUTime
     ```
 
     For example `dn045`.
+
 2. **Connect to it** (only works while your job is running there):
 
     ```
     ssh dn045
     ```
+
 3. **Watch it** with one of these:
 
     ```

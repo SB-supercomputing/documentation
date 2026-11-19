@@ -28,6 +28,10 @@ from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 UA = {"User-Agent": "Mozilla/5.0 (compatible; sbsc-docs-linkcheck/1.0)"}
+# Some sites answer a script with 404 or 5xx and a browser with the page;
+# an address is called broken only after it fails a browser's request too.
+BROWSER = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+           "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"}
 SKIPPED = ("mailto:", "tel:", "data:", "javascript:")
 # Hosts reachable only from inside the hospital network (ClinWulf's
 # portal, linked from the ported RCI pages); from anywhere else they
@@ -67,7 +71,7 @@ def file_for(site: pathlib.Path, base: pathlib.Path, value: str):
     """The file an address lands on, directory URLs and all, resolved
     from base (the page's own directory, or the site root for absolute
     tails). None when it leaves the build or matches nothing."""
-    tail = value.split("#", 1)[0].split("?", 1)[0].lstrip("/")
+    tail = urllib.parse.unquote(value.split("#", 1)[0].split("?", 1)[0]).lstrip("/")
     if not tail:
         return None
     path = (base / tail).resolve()
@@ -80,11 +84,11 @@ def file_for(site: pathlib.Path, base: pathlib.Path, value: str):
     return path if path.is_file() else None
 
 
-def fetch(url):
+def fetch(url, headers=UA, methods=("HEAD", "GET")):
     """One address's status, HEAD first and GET when refused. None when
     the network never answers, which is a retry, not a verdict."""
-    for method in ("HEAD", "GET"):
-        req = urllib.request.Request(url, headers=UA, method=method)
+    for method in methods:
+        req = urllib.request.Request(url, headers=headers, method=method)
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return resp.status
@@ -178,10 +182,13 @@ def main():
             if status is not None and status < 500 and status != 429:
                 break
             time.sleep(2 * attempt)
+        if status is None or (status >= 400 and status not in (401, 403)):
+            status = fetch(url, BROWSER, ("GET",)) or status
         checked += 1
-        # Some sites (MathWorks among them) answer 403 to any scripted
-        # client, live or dead alike; that is a refusal to say, not a no.
-        if status in (403, 999):
+        # Some sites (MathWorks, ACM, and the journal publishers among
+        # them) turn away any scripted client, live or dead alike, with
+        # 403, 405, or 429; that is a refusal to say, not a no.
+        if status in (403, 405, 429, 999):
             refused.append(url)
         # A portal behind a sign-in (the OnDemand sites) answers 401: the
         # server is there and the address is its own, which is all a link

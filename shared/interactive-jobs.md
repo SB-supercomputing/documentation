@@ -11,11 +11,13 @@ An interactive job gives you a live shell on a compute node, so you can test com
     ```
     module load slurm
     ```
+
 2. Ask for a shell on a compute node. Replace `short-40core` with the queue you want:
 
     ```
     srun -p short-40core --time=01:00:00 --pty bash
     ```
+
 3. Wait for the prompt to change to a compute node name (for example `[netid@dn045 ~]$`). You're now on your own node.
 4. When you're done, type `exit` to give the node back.
 

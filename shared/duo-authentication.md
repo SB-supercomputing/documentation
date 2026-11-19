@@ -52,12 +52,14 @@ If you always use the same method, set the `DUO_PASSCODE` variable and the menu 
     Host *.seawulf.stonybrook.edu
         SendEnv DUO_PASSCODE
     ```
+
 2. Set the variable, then log in or copy files as usual:
 
     ```
     export DUO_PASSCODE=push
     ssh <netid>@milan.seawulf.stonybrook.edu
     ```
+
 3. To make it permanent, add the `export` line to `~/.zshrc` (macOS) or `~/.bashrc` (Linux) on your computer.
 
 ### Windows (MobaXterm)
@@ -83,6 +85,7 @@ If you always use the same method, set the `DUO_PASSCODE` variable and the menu 
     ```
 
     While your first SSH window is open (and for an hour after), new `ssh`, `scp`, and `rsync` commands to the same address reuse it.
+
 - **Set up an SSH key** so you don't type your password each time. See [Passwordless SSH](passwordless-ssh.md).
 - **Move big data with Globus**, which doesn't need a Duo prompt for every file. See [Globus file transfer](../seawulf/globus-file-transfer.md).
 
