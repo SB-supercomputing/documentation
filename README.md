@@ -1,8 +1,15 @@
-# Kitsune documentation
+# SBSC documentation
 
-The documentation for Kitsune, built with MkDocs. The Markdown files are
+The documentation for the Stony Brook Supercomputing Center's systems,
+Kitsune, SeaWulf, and NVwulf, built with MkDocs. The Markdown files are
 the pages; `site.yaml` says what publishes and in what order, and
 `tools/build_docs.py` builds the site under `docs-site/`.
+
+In `site.yaml`, a page publishes from its `source:` entry, once. A
+`link:` entry lists the same page in one more place in the navigation,
+which is how the pages SeaWulf and NVwulf share appear under both. The
+page keeps the breadcrumb, tab, and previous and next links of its
+`source:` entry wherever a reader finds it.
 
 To work on the pages, clone the repository, set up a Python 3.9-or-newer
 environment of your choosing (venv, conda, or your system Python), and with
@@ -46,12 +53,27 @@ runs that as well. The axe-core script ships
 vendored as `tools/axe.min.js`, so only the browser driver is a
 dependency.
 
+The SeaWulf and NVwulf pages come from the guide Research Computing and
+Informatics keeps at rci.stonybrook.edu, and each one says so at the
+bottom. `tools/port_rci.py` copies them: the pages land under
+`shared/` (what applies to both clusters), `seawulf/`, `nvwulf/`, and
+`software/`, and their pictures under `assets/rci/`. Edit those pages at
+the source rather than here, then bring the change over:
+
+    pip install -r requirements-port.txt
+    python tools/port_rci.py --nav port-nav.yaml
+
+The run rewrites every ported page. `port-nav.yaml` holds the SeaWulf
+and NVwulf branches of the navigation; paste it over the marked block
+in `site.yaml` when RCI adds, removes, or renames a page.
+
 Announcements (maintenance windows, software changes, service notices)
+cover all three systems, and each names its system in its title. They
 are one file each under `announcements/`, named `YYYY-MM-DD-slug.md`,
 with the title and date in the frontmatter:
 
     ---
-    title: Scheduled maintenance on the login nodes
+    title: Scheduled maintenance on the Kitsune login nodes
     date: 2026-11-24
     ---
 

@@ -22,12 +22,17 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 UA = {"User-Agent": "Mozilla/5.0 (compatible; sbsc-docs-linkcheck/1.0)"}
 SKIPPED = ("mailto:", "tel:", "data:", "javascript:")
+# Hosts reachable only from inside the hospital network (ClinWulf's
+# portal, linked from the ported RCI pages); from anywhere else they
+# never answer, so the check reports them instead of failing on them.
+PRIVATE = (".uhmc.sbuh.stonybrook.edu",)
 
 
 class Collector(HTMLParser):
@@ -161,8 +166,12 @@ def main():
                 seen_external[url] = None
 
     checked = 0
-    refused = []
+    refused, signin, private = [], [], []
     for url in sorted(seen_external):
+        host = urllib.parse.urlsplit(url).hostname or ""
+        if host.endswith(PRIVATE):
+            private.append(url)
+            continue
         status = None
         for attempt in (1, 2):
             status = fetch(url)
@@ -174,6 +183,11 @@ def main():
         # client, live or dead alike; that is a refusal to say, not a no.
         if status in (403, 999):
             refused.append(url)
+        # A portal behind a sign-in (the OnDemand sites) answers 401: the
+        # server is there and the address is its own, which is all a link
+        # can promise a reader who is not signed in yet.
+        elif status == 401:
+            signin.append(url)
         elif status is None or status >= 400:
             broken.append((None, f"external address answers {status}: {url}"))
 
@@ -188,6 +202,10 @@ def main():
         print(f"check_links: BROKEN {where}: {why}")
     for url in refused:
         print(f"check_links: not machine-checkable (server refuses scripts): {url}")
+    for url in signin:
+        print(f"check_links: not machine-checkable (sign-in required): {url}")
+    for url in private:
+        print(f"check_links: not machine-checkable (private network): {url}")
     print(f"check_links: {len(pages)} pages, {len(feeds)} feeds, "
           f"{checked} external addresses checked, {len(broken)} broken")
     sys.exit(1 if broken else 0)
