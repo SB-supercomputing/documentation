@@ -31,7 +31,7 @@ On the OnDemand dashboard, choose **Interactive Apps ▸ ParaView**. The form ta
 
 **You should see:** the ParaView window in your browser, with the Pipeline Browser on the left and an empty render view in the middle.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Pipeline Browser and render view, marked</summary>
 
 *Screenshot to come.*
@@ -47,7 +47,7 @@ Choose **File ▸ Open…**, click **Examples** in the left-hand list, select `d
 
 **You should see:** a gray, roughly cylindrical shape in the render view, and `disk_out_ref.ex2` in the Pipeline Browser.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Open File dialog, with Examples marked</summary>
 
 *Screenshot to come.*
@@ -68,7 +68,7 @@ The **Reset Camera** button on the camera toolbar brings the whole object back i
 
 **You should see:** the shape turn and move as you drag.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Reset Camera button</summary>
 
 *Screenshot to come.*
@@ -81,7 +81,7 @@ With `disk_out_ref.ex2` selected, open the coloring drop-down on the toolbar (it
 
 **You should see:** the surface colored from cool to hot, with a color legend labeled `Temp`.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the coloring drop-down and the legend</summary>
 
 *Screenshot to come.*
@@ -97,14 +97,14 @@ In the **Properties** panel, find **Coloring** and click **Choose Preset** (the 
 
 **You should see:** colors running from dark purple (cool) to yellow (hot). Viridis stays in order in grayscale and for red-green color blindness. A rainbow [color map](../../../reference/glossary.md#color-map) does not.
 
-<details>
+<details markdown="1">
 <summary>What you should see</summary>
 
 *Picture to come: the practice data colored by temperature with Viridis.*
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Choose Preset dialog</summary>
 
 *Screenshot to come.*
@@ -117,7 +117,7 @@ Choose **File ▸ Save Screenshot…**. Set the file name to `~/scratch/paraview
 
 **You should see:** `paraview-first.png` in the **Files** app, in your `scratch` folder.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Save Screenshot dialog</summary>
 
 *Screenshot to come.*
@@ -132,14 +132,14 @@ Choose **File ▸ Exit** to close ParaView. Then **delete the session** on **My 
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>After choosing a new variable, the whole object is one flat color. What single click usually fixes it?</summary>
 
 **Rescale to Data Range.** The color scale was still set for the previous variable's values, so every value in the new one fell at one end of it.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Where did ParaView actually run, and why does that matter for a 200 GB dataset?</summary>
 
 On one of the cluster's compute nodes. The data is read on the node, and only the rendered image crosses the network, so the size of the file makes little difference to your connection.

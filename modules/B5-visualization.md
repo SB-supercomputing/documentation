@@ -180,7 +180,7 @@ Three things make it solid enough for a batch job:
 
 To run it in a batch job, load ParaView (<mark>Kitsune ParaView module</mark>) and run `pvbatch --opengl-window-backend OSMesa streamlines.py disk_out_ref.ex2 out.png`. Older ParaView builds can fail here: their [offscreen rendering](../reference/glossary.md#offscreen-rendering) needs OSMesa support, which not every build has.
 
-<details>
+<details markdown="1">
 <summary>What you should see</summary>
 
 ![Streamline tubes in the outlined flow domain: a dome over the heated disk, yellow near the disk, dark purple higher up where the air is cooler](../tutorials/visualization/img/results/streamlines-paraview.png)
@@ -190,21 +190,21 @@ To run it in a batch job, load ParaView (<mark>Kitsune ParaView module</mark>) a
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>A colleague has a folder of cryo-EM maps and wants figures for a paper. Which program would you suggest, and which kind of picture?</summary>
 
 ChimeraX: it opens a map from a file or straight from a public cryo-EM archive. A common picture is an isosurface at a chosen threshold, with the fitted atomic model shown inside it.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Why is a rainbow color map a poor choice for a temperature field?</summary>
 
 Its bright bands (yellow, cyan) create boundaries that aren't in the data, and colorblind readers can't order its colors. A sequential map such as Viridis changes evenly in lightness, so equal steps in temperature look like equal steps in color.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Your batch job's pvbatch script fails with an error about opening a display. What's wrong, and what are two ways around it?</summary>
 
 Compute nodes have no screen, so draw in memory instead: load ParaView (<mark>Kitsune ParaView module</mark>), then run `pvbatch --opengl-window-backend OSMesa`. Or run the script in a terminal inside a desktop session, which has a display.

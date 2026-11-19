@@ -21,7 +21,7 @@ Each program has its own page below. They cover the same ground.
 | ChimeraX | [Orbitals and density in ChimeraX](chimerax.md) | Work that also involves proteins or cryo-EM maps. It reads the grid from a cube file, but not the atoms, so the molecule comes from the PDB file | 10 |
 | PyMOL | [Orbitals and density in PyMOL](pymol.md) | Publication figures, drawn the way PyMOL draws proteins | 10 |
 
-<details>
+<details markdown="1">
 <summary>What each program's result looks like</summary>
 
 The same orbital, from the same cube files, drawn by the ParaView and PyMOL lessons' scripts. The lobes are the same shape and size in both. Only the drawing style differs. Pictures from GaussView and ChimeraX follow once the lessons have been run in them.

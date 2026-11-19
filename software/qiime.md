@@ -1,0 +1,34 @@
+# QIIME
+
+A powerful software package for analyzing and visualizing microbiome data.
+
+The QIIME 2 module provides a comprehensive suite of bioinformatics tools for the analysis of microbiome data, including tools for sequence analysis, taxonomic classification, and diversity analysis.
+
+**Module name:** `qiime2`
+
+## Loading QIIME
+
+- module: `qiime/2-2020.8`
+- module: `qiime2-2021.11/2021.11`
+- module: `qiime2-amplicon/2024.5.0`
+
+> [!TIP]
+> Load modules inside your SLURM job script, not just on the login node, so compute nodes see the same environment. Verify with `which` after loading.
+
+## Example usage
+
+**Load the QIIME 2 module**
+
+```
+module load qiime2-2021.11/2021.11
+```
+
+## Availability
+
+QIIME is available on: SeaWulf, ClinWulf.
+
+**Category:** Bioinformatics
+
+**Applies to:** SeaWulf, ClinWulf
+
+Ported from RCI's guide: <https://rci.stonybrook.edu/hpc/software/qiime> (maintained by Research Computing and Informatics).

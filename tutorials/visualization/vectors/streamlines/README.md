@@ -18,7 +18,7 @@ Each version is a complete lesson on its own page. Pick the program you use.
 
 ParaView reads simulation output directly: Exodus, VTK, NetCDF, OpenFOAM, and CSV. Use MATLAB if your velocity data is already in MATLAB arrays.
 
-<details>
+<details markdown="1">
 <summary>What each program's result looks like</summary>
 
 Both pictures come from the lessons' own scripts.

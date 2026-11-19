@@ -426,6 +426,16 @@ def main():
         Node(it["title"], it["title"],
              pathlib.PurePosixPath(f"announcements/{it['stem']}.md"), [])
         for it in notices]
+    # Whatever else sits in the folders the pages come from (pictures,
+    # chiefly) rides along at the same path, so a page's relative image
+    # links resolve on the site as they do in the repository.
+    for top in sorted({page.rel.parts[0] for page in pages if len(page.rel.parts) > 1}):
+        for src in sorted((ROOT / top).rglob("*")):
+            rel = src.relative_to(ROOT)
+            if (src.is_file() and src.suffix != ".md"
+                    and not any(part.startswith(".") for part in rel.parts)):
+                (docs / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src, docs / rel)
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         target.parent.mkdir(parents=True, exist_ok=True)

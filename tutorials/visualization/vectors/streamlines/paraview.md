@@ -28,7 +28,7 @@ Open `disk_out_ref.ex2` as in [the ParaView starter](../../tools/paraview.md) an
 
 **You should see:** a box outline, so you can see inside the flow domain.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Representation drop-down set to Outline</summary>
 
 *Screenshot to come.*
@@ -41,7 +41,7 @@ Select `disk_out_ref.ex2` in the Pipeline Browser and choose **Filters ▸ Alpha
 
 **You should see:** thin lines swirling through the domain, starting from a cloud of points near its middle.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: Stream Tracer's properties with Vectors and Seed Type marked</summary>
 
 *Screenshot to come.*
@@ -60,7 +60,7 @@ With **Tube1** selected, choose **Temp** in the toolbar's coloring drop-down and
 
 **You should see:** tubes colored by the air's temperature: hot near the heated disk, cooler where fresh air enters.
 
-<details>
+<details markdown="1">
 <summary>What you should see</summary>
 
 ![Streamline tubes in the outlined flow domain: a dome over the heated disk, yellow near the disk, dark purple higher up where the air is cooler](../../img/results/streamlines-paraview.png)
@@ -76,14 +76,14 @@ Choose **File ▸ Save Screenshot…** and save to `~/scratch/streamlines.png` a
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>Your streamlines all bunch up in one corner and miss the region you care about. What do you change first?</summary>
 
 The seeds. Enlarge the point cloud or move its center. Or switch **Seed Type** to **Line** and lay that line across the inflow, so every curve starts upstream of what you want to see.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Why color the streamlines by temperature instead of drawing them in one color?</summary>
 
 The line shows where the air goes and the color shows how hot it is along the way. In a single color you could not tell which lines carry the heat.
