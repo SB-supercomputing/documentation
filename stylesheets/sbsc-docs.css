@@ -39,3 +39,58 @@ mark {
    the page, so the right-hand contents column is off. Written twice to
    outrank the theme's own rule for it. */
 .md-sidebar--secondary.md-sidebar--secondary { display: none; }
+
+/* The sidebar lists the whole site, one collapsible group per header
+   tab (the build's nav.html override turns off Material's per-tab
+   sidebar). The tab names lead in bold so the groups scan as headings. */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+  font-weight: 700;
+}
+
+/* On a wide screen the site name already heads the page, so the
+   sidebar's own copy of it, which sticks over the list as it scrolls,
+   goes. */
+@media screen and (min-width: 76.25em) {
+  .md-nav--primary > .md-nav__title { display: none; }
+}
+
+/* In the narrow-screen drawer Material slides each group in as a
+   panel of its own, so reaching a page takes a tap per level and a
+   back button to leave. Here a group opens in place under its name
+   instead, the same as the sidebar on a wide screen. */
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__item--nested > .md-nav {
+    position: static;
+    height: auto;
+    display: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    background-color: transparent;
+  }
+  .md-nav--primary .md-nav__item--nested > .md-nav__toggle:checked ~ .md-nav {
+    display: flex;
+  }
+  .md-nav--primary .md-nav__item--nested > .md-nav > .md-nav__title {
+    display: none;
+  }
+  .md-nav--primary .md-nav__item--nested > .md-nav > .md-nav__list {
+    overflow: visible;
+    box-shadow: none;
+    scroll-snap-type: none;
+  }
+  [dir="ltr"] .md-nav--primary .md-nav__item--nested > .md-nav { padding-left: 0.8rem; }
+  [dir="rtl"] .md-nav--primary .md-nav__item--nested > .md-nav { padding-right: 0.8rem; }
+  .md-nav--primary .md-nav__item--nested > .md-nav__link .md-nav__icon::after {
+    transition: transform 0.25s;
+  }
+  .md-nav--primary .md-nav__item--nested > .md-nav__toggle:checked ~ .md-nav__link .md-nav__icon::after {
+    transform: rotate(90deg);
+  }
+  /* The page's own contents, which the drawer would also slide in as
+     a panel, stay in the page, as on a wide screen: the current page is
+     a plain link. */
+  .md-nav--primary .md-nav__link[for="__toc"],
+  .md-nav--primary .md-nav__link[for="__toc"] ~ .md-nav { display: none; }
+  .md-nav--primary .md-nav__link[for="__toc"] + .md-nav__link { display: flex; }
+}
