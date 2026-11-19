@@ -17,8 +17,10 @@ break, so CI refuses to ship one.
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
 import re
+import socket
 import sys
 import time
 import urllib.error
@@ -82,6 +84,30 @@ def file_for(site: pathlib.Path, base: pathlib.Path, value: str):
     if path.is_dir():
         return path / "index.html"
     return path if path.is_file() else None
+
+
+def resolves_locally(host):
+    try:
+        socket.getaddrinfo(host, 443)
+        return True
+    except OSError:
+        return False
+
+
+def resolves_publicly(host):
+    """Whether public DNS (Cloudflare, over HTTPS) knows the host. Some
+    networks filter DNS, so a name this machine cannot look up may still
+    be a working site everywhere else."""
+    query = urllib.parse.urlencode({"name": host, "type": "A"})
+    req = urllib.request.Request(f"https://cloudflare-dns.com/dns-query?{query}",
+                                 headers={"Accept": "application/dns-json", **UA})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            answer = json.load(resp)
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        return False
+    return answer.get("Status") == 0 and any(
+        rec.get("type") in (1, 28) for rec in answer.get("Answer", []))
 
 
 def fetch(url, headers=UA, methods=("HEAD", "GET")):
@@ -170,7 +196,7 @@ def main():
                 seen_external[url] = None
 
     checked = 0
-    refused, signin, private, down = [], [], [], []
+    refused, signin, private, down, filtered = [], [], [], [], []
     for url in sorted(seen_external):
         host = urllib.parse.urlsplit(url).hostname or ""
         if host.endswith(PRIVATE):
@@ -185,6 +211,15 @@ def main():
         if status is None or (status >= 400 and status not in (401, 403)):
             status = fetch(url, BROWSER, ("GET",)) or status
         checked += 1
+        # No answer because this machine's DNS cannot find the host, while
+        # public DNS can: the network here filters it (a router's DNS
+        # filter, say), and the link is not shown to be broken. A domain
+        # that is truly gone fails public DNS too, and still fails here.
+        host = urllib.parse.urlsplit(url).hostname or ""
+        if status is None and host and not resolves_locally(host) \
+                and resolves_publicly(host):
+            filtered.append(url)
+            continue
         # Some sites (MathWorks, ACM, and the journal publishers among
         # them) turn away any scripted client, live or dead alike, with
         # 403, 405, or 429; that is a refusal to say, not a no.
@@ -218,6 +253,8 @@ def main():
         print(f"check_links: not machine-checkable (sign-in required): {url}")
     for url in private:
         print(f"check_links: not machine-checkable (private network): {url}")
+    for url in filtered:
+        print(f"check_links: not machine-checkable (local DNS blocks this host): {url}")
     for url in down:
         print(f"check_links: temporarily unavailable (503, try again later): {url}")
     print(f"check_links: {len(pages)} pages, {len(feeds)} feeds, "
