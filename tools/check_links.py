@@ -170,7 +170,7 @@ def main():
                 seen_external[url] = None
 
     checked = 0
-    refused, signin, private = [], [], []
+    refused, signin, private, down = [], [], [], []
     for url in sorted(seen_external):
         host = urllib.parse.urlsplit(url).hostname or ""
         if host.endswith(PRIVATE):
@@ -195,6 +195,11 @@ def main():
         # can promise a reader who is not signed in yet.
         elif status == 401:
             signin.append(url)
+        # 503 is HTTP's "temporarily unavailable": a site down for
+        # maintenance, which a later run will see back. A site that is
+        # gone answers 404 or 410, or not at all, and those still fail.
+        elif status == 503:
+            down.append(url)
         elif status is None or status >= 400:
             broken.append((None, f"external address answers {status}: {url}"))
 
@@ -213,6 +218,8 @@ def main():
         print(f"check_links: not machine-checkable (sign-in required): {url}")
     for url in private:
         print(f"check_links: not machine-checkable (private network): {url}")
+    for url in down:
+        print(f"check_links: temporarily unavailable (503, try again later): {url}")
     print(f"check_links: {len(pages)} pages, {len(feeds)} feeds, "
           f"{checked} external addresses checked, {len(broken)} broken")
     sys.exit(1 if broken else 0)
