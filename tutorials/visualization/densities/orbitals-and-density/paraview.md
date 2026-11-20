@@ -28,7 +28,7 @@ Choose **File ▸ Open…**, open `~/scratch/cubes/density.cube`, and click **Ap
 
 **You should see:** under `density.cube` in the Pipeline Browser, two outputs: **Molecule** (the atoms) and **Gridded Data** (the numbers). ParaView 6 splits the file this way; in ParaView 5 the reader gives the grid alone.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Pipeline Browser with the Molecule and Gridded Data outputs</summary>
 
 *Screenshot to come.*
@@ -41,7 +41,7 @@ Select **Gridded Data**. Choose **Filters ▸ Alphabetical ▸ Contour**, set **
 
 **You should see:** a surface around the atoms. Change the value to `0.0004` and click **Apply**: the surface grows to about the size of the molecule. Set it back to `0.05`.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: Contour's properties, with Isosurfaces marked</summary>
 
 *Screenshot to come.*
@@ -54,7 +54,7 @@ Select **Molecule**. In **Properties**, type `radius` in the search box and set 
 
 **You should see:** four balls inside a see-through surface: oxygen red, carbon gray, the hydrogens white. No bonds are drawn: a cube file records no bonds, and ParaView does not infer them.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Properties search box finding Atomic Radius Factor</summary>
 
 *Screenshot to come.*
@@ -70,7 +70,7 @@ Open `homo.cube`, select its **Gridded Data**, and add a **Contour** with two is
 
 **You should see:** four lobes lying in the plane of the molecule, red alternating with blue as the orbital's sign changes. The pair beside the oxygen straddles the C=O bond; the pair over the hydrogens is the bigger of the two at ±0.02.
 
-<details>
+<details markdown="1">
 <summary>What you should see</summary>
 
 ![Formaldehyde's HOMO in ParaView: four see-through red and blue lobes, larger around the hydrogens, with the four atoms visible inside](../../img/results/orbitals-paraview.png)
@@ -78,7 +78,7 @@ Open `homo.cube`, select its **Gridded Data**, and add a **Contour** with two is
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Screenshot: Contour's properties with both values, and Compute Scalars under the gear icon</summary>
 
 *Screenshot to come.*
@@ -93,14 +93,14 @@ Choose **File ▸ Save Screenshot…** and save to `~/scratch/orbitals-paraview.
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>You raise the density isovalue from 0.0004 to 0.05. Does the surface get bigger or smaller, and why?</summary>
 
 Smaller. A contour keeps only points where the density reaches the value you set. Density rises steeply toward the nuclei, so only points near them reach the larger value.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Why does the orbital need two isosurfaces when the density needs only one?</summary>
 
 Because the orbital's sign flips between lobes. A contour at +0.02 catches the positive lobes, one at −0.02 the negative ones. With only the first you would see half the orbital. A density is positive everywhere, so a single contour catches all of it.

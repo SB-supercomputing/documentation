@@ -31,7 +31,7 @@ Go to the cluster's OnDemand site, <mark>Kitsune OnDemand address</mark>, and si
 
 **You should see:** the OnDemand dashboard, with a row of app icons (pinned apps) and a menu bar with **Files**, **Jobs**, **Clusters** and **Interactive Apps**.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the OnDemand dashboard</summary>
 
 *Screenshot to come.*
@@ -44,7 +44,7 @@ Choose **Interactive Apps** and the desktop app (<mark>Kitsune desktop app name<
 
 **You should see:** a form asking what the session needs.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Interactive Apps menu</summary>
 
 *Screenshot to come.*
@@ -71,7 +71,7 @@ Each field is part of an ordinary [Slurm](../../../reference/glossary.md#slurm) 
 
 **You should see:** your values in the form, and a **Launch** button at the bottom.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the filled-in form</summary>
 
 *Screenshot to come.*
@@ -84,7 +84,7 @@ Click **Launch**. The session card on **My Interactive Sessions** moves through 
 
 **You should see:** a green **Running** card, after anything from seconds to a few minutes. It has a button that opens the desktop, and sliders for image quality.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Running session card</summary>
 
 *Screenshot to come.*
@@ -97,7 +97,7 @@ Click the card's launch button (<mark>Kitsune desktop app name</mark>). If it as
 
 **You should see:** a Linux desktop in a new browser tab. It's running on one of the cluster's compute nodes, not on your computer.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the desktop in the browser</summary>
 
 *Screenshot to come.*
@@ -126,7 +126,7 @@ Close the desktop's browser tab. Then, on **My Interactive Sessions**, click **D
 
 **You should see:** the card disappears. The node goes back to the queue, and your allocation stops being charged.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the card's Delete button</summary>
 
 *Screenshot to come.*
@@ -135,14 +135,14 @@ Close the desktop's browser tab. Then, on **My Interactive Sessions**, click **D
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>You close the browser tab of a running session and go to lunch. What happens, and what should you have done?</summary>
 
 The session keeps running, and keeps using time, until its time limit ends. Closing the tab only closes your view of it. Delete the session on **My Interactive Sessions** when you're done.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Your session sits in "Queued" for twenty minutes. Name two changes to the form that would probably help.</summary>
 
 Ask for less: fewer cores, less memory, or fewer hours make it easier to find room (see [backfill](../../../reference/glossary.md#backfill)). Or choose a queue that shares nodes, or one meant for short tests: <mark>Kitsune queue names and their limits</mark>.

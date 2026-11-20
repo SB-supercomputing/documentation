@@ -17,17 +17,28 @@ break, so CI refuses to ship one.
 from __future__ import annotations
 
 import argparse
+import json
 import pathlib
 import re
+import socket
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 UA = {"User-Agent": "Mozilla/5.0 (compatible; sbsc-docs-linkcheck/1.0)"}
+# Some sites answer a script with 404 or 5xx and a browser with the page;
+# an address is called broken only after it fails a browser's request too.
+BROWSER = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+           "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"}
 SKIPPED = ("mailto:", "tel:", "data:", "javascript:")
+# Hosts reachable only from inside the hospital network (ClinWulf's
+# portal, linked from the ported RCI pages); from anywhere else they
+# never answer, so the check reports them instead of failing on them.
+PRIVATE = (".uhmc.sbuh.stonybrook.edu",)
 
 
 class Collector(HTMLParser):
@@ -62,7 +73,7 @@ def file_for(site: pathlib.Path, base: pathlib.Path, value: str):
     """The file an address lands on, directory URLs and all, resolved
     from base (the page's own directory, or the site root for absolute
     tails). None when it leaves the build or matches nothing."""
-    tail = value.split("#", 1)[0].split("?", 1)[0].lstrip("/")
+    tail = urllib.parse.unquote(value.split("#", 1)[0].split("?", 1)[0]).lstrip("/")
     if not tail:
         return None
     path = (base / tail).resolve()
@@ -75,11 +86,35 @@ def file_for(site: pathlib.Path, base: pathlib.Path, value: str):
     return path if path.is_file() else None
 
 
-def fetch(url):
+def resolves_locally(host):
+    try:
+        socket.getaddrinfo(host, 443)
+        return True
+    except OSError:
+        return False
+
+
+def resolves_publicly(host):
+    """Whether public DNS (Cloudflare, over HTTPS) knows the host. Some
+    networks filter DNS, so a name this machine cannot look up may still
+    be a working site everywhere else."""
+    query = urllib.parse.urlencode({"name": host, "type": "A"})
+    req = urllib.request.Request(f"https://cloudflare-dns.com/dns-query?{query}",
+                                 headers={"Accept": "application/dns-json", **UA})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            answer = json.load(resp)
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        return False
+    return answer.get("Status") == 0 and any(
+        rec.get("type") in (1, 28) for rec in answer.get("Answer", []))
+
+
+def fetch(url, headers=UA, methods=("HEAD", "GET")):
     """One address's status, HEAD first and GET when refused. None when
     the network never answers, which is a retry, not a verdict."""
-    for method in ("HEAD", "GET"):
-        req = urllib.request.Request(url, headers=UA, method=method)
+    for method in methods:
+        req = urllib.request.Request(url, headers=headers, method=method)
         try:
             with urllib.request.urlopen(req, timeout=20) as resp:
                 return resp.status
@@ -161,19 +196,46 @@ def main():
                 seen_external[url] = None
 
     checked = 0
-    refused = []
+    refused, signin, private, down, filtered = [], [], [], [], []
     for url in sorted(seen_external):
+        host = urllib.parse.urlsplit(url).hostname or ""
+        if host.endswith(PRIVATE):
+            private.append(url)
+            continue
         status = None
         for attempt in (1, 2):
             status = fetch(url)
             if status is not None and status < 500 and status != 429:
                 break
             time.sleep(2 * attempt)
+        if status is None or (status >= 400 and status not in (401, 403)):
+            status = fetch(url, BROWSER, ("GET",)) or status
         checked += 1
-        # Some sites (MathWorks among them) answer 403 to any scripted
-        # client, live or dead alike; that is a refusal to say, not a no.
-        if status in (403, 999):
+        # No answer because this machine's DNS cannot find the host, while
+        # public DNS can: the network here filters it (a router's DNS
+        # filter, say), and the link is not shown to be broken. A domain
+        # that is truly gone fails public DNS too, and still fails here.
+        host = urllib.parse.urlsplit(url).hostname or ""
+        if status is None and host and not resolves_locally(host) \
+                and resolves_publicly(host):
+            filtered.append(url)
+            continue
+        # Some sites (MathWorks, ACM, and the journal publishers among
+        # them) turn away any scripted client, live or dead alike, with
+        # 403, 405, or 429, and IEEE Xplore answers CI's servers with 418;
+        # that is a refusal to say, not a no.
+        if status in (403, 405, 418, 429, 999):
             refused.append(url)
+        # A portal behind a sign-in (the OnDemand sites) answers 401: the
+        # server is there and the address is its own, which is all a link
+        # can promise a reader who is not signed in yet.
+        elif status == 401:
+            signin.append(url)
+        # 503 is HTTP's "temporarily unavailable": a site down for
+        # maintenance, which a later run will see back. A site that is
+        # gone answers 404 or 410, or not at all, and those still fail.
+        elif status == 503:
+            down.append(url)
         elif status is None or status >= 400:
             broken.append((None, f"external address answers {status}: {url}"))
 
@@ -188,6 +250,14 @@ def main():
         print(f"check_links: BROKEN {where}: {why}")
     for url in refused:
         print(f"check_links: not machine-checkable (server refuses scripts): {url}")
+    for url in signin:
+        print(f"check_links: not machine-checkable (sign-in required): {url}")
+    for url in private:
+        print(f"check_links: not machine-checkable (private network): {url}")
+    for url in filtered:
+        print(f"check_links: not machine-checkable (local DNS blocks this host): {url}")
+    for url in down:
+        print(f"check_links: temporarily unavailable (503, try again later): {url}")
     print(f"check_links: {len(pages)} pages, {len(feeds)} feeds, "
           f"{checked} external addresses checked, {len(broken)} broken")
     sys.exit(1 if broken else 0)

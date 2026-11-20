@@ -2,93 +2,777 @@
 pages:
 - title: Documentation
   pages:
-  - title: System Guide
-    pages:
-    - title: Introduction
-      source: guide/introduction.md
-    - title: System Architecture
-      source: guide/system-architecture.md
-    - title: Accessing the System
-      source: guide/accessing-the-system.md
-    - title: Account Administration
-      source: guide/account-administration.md
-    - title: Managing Your Files
-      source: guide/managing-your-files.md
-    - title: Running Jobs
-      source: guide/running-jobs.md
-    - title: Launching Applications
-      source: guide/launching-applications.md
-    - title: Building Software
-      source: guide/building-software.md
-    - title: Job Scripts
-      source: guide/job-scripts.md
-    - title: Job Management
-      source: guide/job-management.md
-    - title: Programming and Performance
-      source: guide/programming-and-performance.md
-    - title: Machine Learning
-      source: guide/machine-learning.md
-    - title: Python
-      source: guide/python.md
-    - title: Help Desk
-      source: guide/help-desk.md
-    - title: References
-      source: guide/references.md
-  - title: Tutorials
-    source: tutorials/README.md
+  # Kitsune opens on its System Information page. The guide pages follow
+  # in TACC user-guide order, grouped like the SeaWulf and NVwulf sections.
+  - title: Kitsune
+    source: systems/kitsune.md
+    menu: Kitsune
+    label: System Information
     pages:
     - group: Getting started
       pages:
-      - title: Start an OnDemand session
-        source: tutorials/visualization/start/ondemand-session.md
+      - title: Introduction
+        source: guide/introduction.md
+      - title: System Architecture
+        source: guide/system-architecture.md
+      - title: Accessing the System
+        source: guide/accessing-the-system.md
+      - link: tutorials/visualization/start/ondemand-session.md
+        menu: Start an OnDemand session
+    - group: Jobs and SLURM
+      pages:
+      - title: Running Jobs
+        source: guide/running-jobs.md
+      - title: Launching Applications
+        source: guide/launching-applications.md
+      - title: Job Scripts
+        source: guide/job-scripts.md
+      - title: Job Management
+        source: guide/job-management.md
+    - group: Storage and transfer
+      pages:
+      - title: Managing Your Files
+        source: guide/managing-your-files.md
+    - group: Software environment
+      pages:
+      - title: Account Administration
+        source: guide/account-administration.md
+      - title: Building Software
+        source: guide/building-software.md
+      - title: Programming and Performance
+        source: guide/programming-and-performance.md
+      - title: Machine Learning
+        source: guide/machine-learning.md
+      - title: Python
+        source: guide/python.md
+    - group: Open OnDemand
+      pages:
+      - link: tutorials/visualization/start/ondemand-session.md
         menu: Start a session
-      - title: Get your data where the app can see it
-        source: tutorials/visualization/start/your-data.md
+      - link: tutorials/visualization/start/your-data.md
         menu: Get your data
-    - title: ParaView lessons
-      source: tutorials/visualization/maps/paraview.md
-      menu: ParaView
+    - group: Help and references
       pages:
-      - title: Start ParaView on OnDemand
-        source: tutorials/visualization/tools/paraview.md
-        menu: Start ParaView
-      - title: Draw streamlines in ParaView
-        source: tutorials/visualization/vectors/streamlines/paraview.md
-        menu: Streamlines
-      - title: See orbitals and electron density in ParaView
-        source: tutorials/visualization/densities/orbitals-and-density/paraview.md
-        menu: Orbitals and electron density
-    - group: Topics
+      - title: Help Desk
+        source: guide/help-desk.md
+      - title: References
+        source: guide/references.md
+    - title: Tutorials
+      source: tutorials/README.md
       pages:
-      - title: Draw streamlines through a flow field
-        source: tutorials/visualization/vectors/streamlines/README.md
-        menu: Streamlines (all programs)
-      - title: See orbitals and electron density from a cube file
-        source: tutorials/visualization/densities/orbitals-and-density/README.md
-        menu: Orbitals (all programs)
-    - title: Curriculum
-      source: modules/README.md
-      pages:
-      - group: A. Onboarding
+      - group: Getting started
         pages:
-        - group: Open OnDemand
-          pages:
-          - link: tutorials/visualization/start/ondemand-session.md
-            menu: Start a session
-          - link: tutorials/visualization/start/your-data.md
-            menu: Get your data
-      - group: B. Productivity & Data
+        - title: Start an OnDemand session
+          source: tutorials/visualization/start/ondemand-session.md
+          menu: Start a session
+        - title: Get your data where the app can see it
+          source: tutorials/visualization/start/your-data.md
+          menu: Get your data
+      - title: ParaView lessons
+        source: tutorials/visualization/maps/paraview.md
+        menu: ParaView
         pages:
-        - title: 'B5: Visualization'
-          source: modules/B5-visualization.md
-          menu: Visualization
+        - title: Start ParaView on OnDemand
+          source: tutorials/visualization/tools/paraview.md
+          menu: Start ParaView
+        - title: Draw streamlines in ParaView
+          source: tutorials/visualization/vectors/streamlines/paraview.md
+          menu: Streamlines
+        - title: See orbitals and electron density in ParaView
+          source: tutorials/visualization/densities/orbitals-and-density/paraview.md
+          menu: Orbitals and electron density
+      - group: Topics
+        pages:
+        - title: Draw streamlines through a flow field
+          source: tutorials/visualization/vectors/streamlines/README.md
+          menu: Streamlines (all programs)
+        - title: See orbitals and electron density from a cube file
+          source: tutorials/visualization/densities/orbitals-and-density/README.md
+          menu: Orbitals (all programs)
+      - title: Curriculum
+        source: modules/README.md
+        pages:
+        - group: A. Onboarding
           pages:
-          - link: tutorials/visualization/tools/paraview.md
-            menu: Start ParaView
-          - link: tutorials/visualization/vectors/streamlines/paraview.md
-            menu: Streamlines
-          - link: tutorials/visualization/densities/orbitals-and-density/paraview.md
-            menu: Orbitals and electron density
+          - group: Open OnDemand
+            pages:
+            - link: tutorials/visualization/start/ondemand-session.md
+              menu: Start a session
+            - link: tutorials/visualization/start/your-data.md
+              menu: Get your data
+        - group: B. Productivity & Data
+          pages:
+          - title: 'B5: Visualization'
+            source: modules/B5-visualization.md
+            menu: Visualization
+            pages:
+            - link: tutorials/visualization/tools/paraview.md
+              menu: Start ParaView
+            - link: tutorials/visualization/vectors/streamlines/paraview.md
+              menu: Streamlines
+            - link: tutorials/visualization/densities/orbitals-and-density/paraview.md
+              menu: Orbitals and electron density
+  # SeaWulf and NVwulf: written by tools/port_rci.py --nav; rerun it
+  # and paste its output here rather than editing these by hand.
+  - title: SeaWulf
+    source: systems/seawulf.md
+    menu: SeaWulf
+    label: System Information
+    pages:
+    - group: Getting started
+      pages:
+      - title: SeaWulf
+        source: seawulf/README.md
+        menu: Cluster overview
+      - title: Requesting accounts & project numbers
+        source: shared/requesting-accounts-project-numbers.md
+      - title: Connecting to the cluster
+        source: shared/connecting-cluster.md
+      - title: Quick Start Guide
+        source: seawulf/quick-start-guide.md
+      - title: OnDemand overview
+        source: shared/ondemand-overview.md
+    - group: Connecting and accounts
+      pages:
+      - title: DUO authentication
+        source: shared/duo-authentication.md
+      - title: Passwordless SSH
+        source: shared/passwordless-ssh.md
+      - title: X11 forwarding
+        source: seawulf/x11-forwarding.md
+    - group: Jobs and SLURM
+      pages:
+      - title: SLURM overview & commands
+        source: shared/slurm-overview-commands.md
+      - title: Writing job scripts
+        source: shared/writing-job-scripts.md
+      - title: Interactive jobs
+        source: shared/interactive-jobs.md
+      - title: Example jobs
+        source: seawulf/example-jobs.md
+      - title: Managing jobs
+        source: shared/managing-jobs.md
+      - title: Queue selection guide
+        source: seawulf/queue-selection-guide.md
+      - title: Shared nodes
+        source: seawulf/shared-nodes.md
+      - title: Guide to embarrassingly parallel workflows
+        source: seawulf/guide-embarrassingly-parallel-workflows.md
+      - title: Guide to using OpenMP and MPI
+        source: seawulf/guide-using-openmp-and-mpi.md
+      - title: Choosing a time limit
+        source: shared/choosing-time-limits.md
+      - title: Why did my job fail?
+        source: shared/job-failures.md
+    - group: Storage and transfer
+      pages:
+      - title: Storage layout & policies
+        source: seawulf/storage-layout-policies.md
+      - title: Checking storage quotas
+        source: seawulf/checking-storage-quotas.md
+      - title: File transfer from the CLI
+        source: shared/file-transfer-cli.md
+      - title: Globus file transfer
+        source: seawulf/globus-file-transfer.md
+      - title: Backing up with rclone
+        source: seawulf/backing-rclone.md
+      - title: CIFS & SSHFS access
+        source: seawulf/cifs-sshfs-access.md
+      - title: Accessing RPX project space via CIFS
+        source: seawulf/accessing-project-space-cifs.md
+    - group: Software environment
+      pages:
+      - title: Using modules
+        source: shared/using-modules.md
+      - title: Conda environments
+        source: shared/conda-environments.md
+      - title: Python package management
+        source: shared/python-package-management.md
+      - title: Managing custom software
+        source: shared/managing-custom-software.md
+      - title: Installing from source
+        source: seawulf/installing-source.md
+    - group: Open OnDemand
+      pages:
+      - title: Jupyter notebooks
+        source: shared/jupyter-notebooks.md
+      - title: RStudio
+        source: shared/rstudio.md
+      - title: MATLAB (Open OnDemand)
+        source: seawulf/matlab-open-ondemand.md
+        menu: MATLAB
+      - title: Code Server
+        source: shared/code-server.md
+      - title: WolfieHPCDesktop
+        source: shared/seawulf-desktop.md
+      - title: Job Composer
+        source: seawulf/job-composer.md
+      - title: Open OnDemand apps on SeaWulf
+        source: seawulf/seawulf-ondemand-apps.md
+      - group: Apps
+        pages:
+        - title: Coot (Open OnDemand)
+          source: seawulf/ondemand-coot.md
+          menu: Coot
+        - title: Galaxy (Open OnDemand)
+          source: seawulf/ondemand-galaxy.md
+          menu: Galaxy
+        - title: Gaussian and GaussView (Open OnDemand)
+          source: seawulf/ondemand-gaussview.md
+          menu: Gaussian and GaussView
+        - title: GNU Octave (Open OnDemand)
+          source: seawulf/ondemand-octave.md
+          menu: GNU Octave
+        - title: IGV (Open OnDemand)
+          source: seawulf/ondemand-igv.md
+          menu: IGV
+        - title: JupyterLab (Open OnDemand)
+          source: seawulf/ondemand-jupyterlab.md
+          menu: JupyterLab
+        - title: Mathematica (Open OnDemand)
+          source: seawulf/ondemand-mathematica.md
+          menu: Mathematica
+        - title: MOE (Open OnDemand)
+          source: shared/ondemand-moe.md
+          menu: MOE
+        - title: ParaView (Open OnDemand)
+          source: shared/ondemand-paraview.md
+          menu: ParaView
+        - title: Phenix (Open OnDemand)
+          source: seawulf/ondemand-phenix.md
+          menu: Phenix
+        - title: PyMOL (Open OnDemand)
+          source: seawulf/ondemand-pymol.md
+          menu: PyMOL
+        - title: TensorBoard (Open OnDemand)
+          source: seawulf/ondemand-tensorboard.md
+          menu: TensorBoard
+        - title: UCSF ChimeraX (Open OnDemand)
+          source: seawulf/ondemand-chimerax.md
+          menu: UCSF ChimeraX
+    - group: Policies and fair use
+      pages:
+      - title: Login node etiquette
+        source: shared/login-node-etiquette.md
+      - title: Node utilization
+        source: shared/node-utilization.md
+      - title: Fairshare & job priority
+        source: shared/fairshare-job-priority.md
+      - title: When to ask for help
+        source: shared/when-ask-help.md
+      - title: HPC cheat sheet
+        source: shared/hpc-cheat-sheet.md
+      - title: Good conduct on the RCI clusters
+        source: shared/hpc-good-conduct.md
+    - title: Software catalog
+      source: software/README.md
+      pages:
+      - group: Compilers
+        pages:
+        - title: GCC
+          source: software/gcc.md
+        - title: Intel oneAPI
+          source: software/intel-oneapi.md
+        - title: AOCC
+          source: software/aocc.md
+        - title: NVHPC
+          source: software/nvhpc.md
+        - title: LLVM
+          source: software/llvm.md
+      - group: MPI implementations
+        pages:
+        - title: Intel MPI
+          source: software/intel-mpi.md
+        - title: MVAPICH
+          source: software/mvapich.md
+        - title: OpenMPI
+          source: software/openmpi.md
+        - title: mpi4py
+          source: software/mpi4py.md
+      - group: Bioinformatics
+        pages:
+        - title: Bowtie2
+          source: software/bowtie2.md
+        - title: hts
+          source: software/hts.md
+        - title: genome_assembly
+          source: software/genomeassembly.md
+        - title: genome_annotation
+          source: software/genomeannotation.md
+        - title: metagenomics
+          source: software/metagenomics.md
+        - title: diffexp
+          source: software/diffexp.md
+        - title: singlecell
+          source: software/singlecell.md
+        - title: popgen
+          source: software/popgen.md
+        - title: GWAS
+          source: software/gwas.md
+        - title: phylo
+          source: software/phylo.md
+        - title: structural-variant
+          source: software/structural-variant.md
+        - title: bioconvert
+          source: software/bioconvert.md
+        - title: QIIME
+          source: software/qiime.md
+      - group: Neuroimaging
+        pages:
+        - title: Freesurfer
+          source: software/freesurfer.md
+        - title: FSL
+          source: software/fsl.md
+      - group: Molecular dynamics & chemistry
+        pages:
+        - title: GROMACS
+          source: software/gromacs.md
+        - title: NAMD
+          source: software/namd.md
+        - title: LAMMPS
+          source: software/lammps.md
+        - title: AmberMD
+          source: software/ambermd.md
+        - title: VASP
+          source: software/vasp.md
+      - group: Mathematics & statistics
+        pages:
+        - title: AOCL
+          source: software/aocl.md
+        - title: Intel MKL
+          source: software/intel-mkl.md
+        - title: OpenBLAS
+          source: software/openblas.md
+        - title: PETSc
+          source: software/petsc.md
+        - title: MPFR
+          source: software/mpfr.md
+        - title: Mathematica
+          source: software/mathematica.md
+        - title: MATLAB
+          source: software/matlab.md
+      - group: Data processing
+        pages:
+        - title: FFTW3
+          source: software/fftw3.md
+        - title: HDF5
+          source: software/hdf5.md
+        - title: NetCDF
+          source: software/netcdf.md
+      - group: Machine learning & AI
+        pages:
+        - title: PyTorch
+          source: software/pytorch.md
+        - title: TensorFlow
+          source: software/tensorflow.md
+        - title: Scikit-learn
+          source: software/scikit-learn.md
+        - title: Ollama
+          source: software/ollama.md
+      - group: Visualization & analysis
+        pages:
+        - title: ParaView
+          source: software/paraview.md
+        - title: VMD
+          source: software/vmd.md
+        - title: Matplotlib
+          source: software/matplotlib.md
+        - title: Jupyter
+          source: software/jupyter.md
+      - group: Development
+        pages:
+        - title: GNU Parallel
+          source: software/gnu-parallel.md
+        - title: CMake
+          source: software/cmake.md
+        - title: Git
+          source: software/git.md
+        - title: Singularity
+          source: software/singularity.md
+        - title: Anaconda
+          source: software/anaconda.md
+      - group: Monitoring & debugging
+        pages:
+        - title: htop
+          source: software/htop.md
+        - title: Valgrind
+          source: software/valgrind.md
+        - title: Linaro Forge
+          source: software/linaro-forge.md
+      - group: Programming languages
+        pages:
+        - title: Python
+          source: software/python.md
+        - title: R
+          source: software/r.md
+  - title: NVwulf
+    source: systems/nvwulf.md
+    menu: NVwulf
+    label: System Information
+    pages:
+    - group: Getting started
+      pages:
+      - title: NVwulf
+        source: nvwulf/README.md
+        menu: Cluster overview
+      - title: Getting access to NVwulf
+        source: nvwulf/getting-access-nvwulf.md
+      - title: Getting started on NVwulf
+        source: nvwulf/getting-started-nvwulf.md
+      - link: shared/connecting-cluster.md
+        menu: Connecting to the cluster
+      - link: shared/ondemand-overview.md
+        menu: OnDemand overview
+    - group: Connecting and accounts
+      pages:
+      - link: shared/requesting-accounts-project-numbers.md
+        menu: Requesting accounts & project numbers
+      - link: shared/duo-authentication.md
+        menu: DUO authentication
+      - link: shared/passwordless-ssh.md
+        menu: Passwordless SSH
+    - group: Jobs and SLURM
+      pages:
+      - link: shared/slurm-overview-commands.md
+        menu: SLURM overview & commands
+      - link: shared/writing-job-scripts.md
+        menu: Writing job scripts
+      - link: shared/interactive-jobs.md
+        menu: Interactive jobs
+      - link: shared/managing-jobs.md
+        menu: Managing jobs
+      - link: shared/choosing-time-limits.md
+        menu: Choosing a time limit
+      - title: GPU interactive sessions on NVwulf
+        source: nvwulf/gpu-interactive-sessions.md
+      - title: NVwulf queues
+        source: nvwulf/nvwulf-queues.md
+      - link: shared/job-failures.md
+        menu: Why did my job fail?
+    - group: Storage and transfer
+      pages:
+      - link: shared/file-transfer-cli.md
+        menu: File transfer from the CLI
+    - group: Software environment
+      pages:
+      - link: shared/using-modules.md
+        menu: Using modules
+      - link: shared/conda-environments.md
+        menu: Conda environments
+      - link: shared/python-package-management.md
+        menu: Python package management
+      - link: shared/managing-custom-software.md
+        menu: Managing custom software
+    - group: Open OnDemand
+      pages:
+      - link: shared/jupyter-notebooks.md
+        menu: Jupyter notebooks
+      - link: shared/rstudio.md
+        menu: RStudio
+      - link: shared/code-server.md
+        menu: Code Server
+      - link: shared/seawulf-desktop.md
+        menu: WolfieHPCDesktop
+      - title: Open OnDemand apps on NVwulf
+        source: nvwulf/nvwulf-ondemand-apps.md
+      - group: Apps
+        pages:
+        - title: 3D CT Scan (Open OnDemand)
+          source: nvwulf/ondemand-3d-ct-scan.md
+          menu: 3D CT Scan
+        - title: CellProfiler (Open OnDemand)
+          source: nvwulf/ondemand-cellprofiler.md
+          menu: CellProfiler
+        - title: CryoSPARC (Open OnDemand)
+          source: nvwulf/ondemand-cryosparc.md
+          menu: CryoSPARC
+        - title: CyLinter (Open OnDemand)
+          source: nvwulf/ondemand-cylinter.md
+          menu: CyLinter
+        - title: LLM Chat with llama.cpp (Open OnDemand)
+          source: nvwulf/ondemand-llm-chat.md
+          menu: LLM Chat with llama.cpp
+        - title: Minerva Author (Open OnDemand)
+          source: nvwulf/ondemand-minerva-author.md
+          menu: Minerva Author
+        - link: shared/ondemand-moe.md
+          menu: MOE
+        - title: Napari (Open OnDemand)
+          source: nvwulf/ondemand-napari.md
+          menu: Napari
+        - title: Ollama with Open WebUI (Open OnDemand)
+          source: nvwulf/ondemand-ollama.md
+          menu: Ollama with Open WebUI
+        - link: shared/ondemand-paraview.md
+          menu: ParaView
+        - title: Protein Prediction (Open OnDemand)
+          source: nvwulf/ondemand-protein-prediction.md
+          menu: Protein Prediction
+        - title: QuPath (Open OnDemand)
+          source: nvwulf/ondemand-qupath.md
+          menu: QuPath
+        - title: RELION (Open OnDemand)
+          source: nvwulf/ondemand-relion.md
+          menu: RELION
+        - title: vLLM with Open WebUI (Open OnDemand)
+          source: nvwulf/ondemand-vllm.md
+          menu: vLLM with Open WebUI
+    - group: Policies and fair use
+      pages:
+      - link: shared/login-node-etiquette.md
+        menu: Login node etiquette
+      - link: shared/node-utilization.md
+        menu: Node utilization
+      - link: shared/fairshare-job-priority.md
+        menu: Fairshare & job priority
+      - link: shared/when-ask-help.md
+        menu: When to ask for help
+      - link: shared/hpc-cheat-sheet.md
+        menu: HPC cheat sheet
+      - link: shared/hpc-good-conduct.md
+        menu: Good conduct on the RCI clusters
+    - group: Software catalog
+      pages:
+      - link: software/README.md
+        menu: All software
+      - group: Compilers
+        pages:
+        - link: software/gcc.md
+          menu: GCC
+        - link: software/nvhpc.md
+          menu: NVHPC
+        - link: software/llvm.md
+          menu: LLVM
+      - group: MPI implementations
+        pages:
+        - link: software/mvapich.md
+          menu: MVAPICH
+        - link: software/openmpi.md
+          menu: OpenMPI
+        - link: software/mpi4py.md
+          menu: mpi4py
+      - group: Bioinformatics
+        pages:
+        - link: software/singlecell.md
+          menu: singlecell
+      - group: Molecular dynamics & chemistry
+        pages:
+        - link: software/gromacs.md
+          menu: GROMACS
+        - link: software/namd.md
+          menu: NAMD
+        - link: software/lammps.md
+          menu: LAMMPS
+        - link: software/ambermd.md
+          menu: AmberMD
+      - group: Mathematics & statistics
+        pages:
+        - link: software/openblas.md
+          menu: OpenBLAS
+        - link: software/petsc.md
+          menu: PETSc
+        - link: software/mpfr.md
+          menu: MPFR
+      - group: Data processing
+        pages:
+        - link: software/fftw3.md
+          menu: FFTW3
+        - link: software/hdf5.md
+          menu: HDF5
+        - link: software/netcdf.md
+          menu: NetCDF
+      - group: Machine learning & AI
+        pages:
+        - link: software/pytorch.md
+          menu: PyTorch
+        - link: software/tensorflow.md
+          menu: TensorFlow
+        - link: software/scikit-learn.md
+          menu: Scikit-learn
+        - link: software/ollama.md
+          menu: Ollama
+      - group: Visualization & analysis
+        pages:
+        - link: software/matplotlib.md
+          menu: Matplotlib
+        - link: software/jupyter.md
+          menu: Jupyter
+      - group: Development
+        pages:
+        - link: software/gnu-parallel.md
+          menu: GNU Parallel
+        - link: software/cmake.md
+          menu: CMake
+        - link: software/git.md
+          menu: Git
+        - link: software/singularity.md
+          menu: Singularity
+        - link: software/anaconda.md
+          menu: Anaconda
+      - group: Monitoring & debugging
+        pages:
+        - link: software/htop.md
+          menu: htop
+        - link: software/linaro-forge.md
+          menu: Linaro Forge
+      - group: Programming languages
+        pages:
+        - link: software/python.md
+          menu: Python
+  # End of the tools/port_rci.py --nav output.
+  # Ookami (retired): written by tools/port_ookami.py --nav; rerun it
+  # and paste its output here rather than editing these by hand.
+  - title: Ookami
+    source: systems/ookami.md
+    menu: Ookami
+    label: System Information
+    pages:
+    - group: Support
+      pages:
+      - title: Support
+        source: ookami/support/README.md
+      - title: Documentation
+        source: ookami/support/index_links_and_docs.md
+      - title: Frequently Asked Questions
+        source: ookami/support/faq/README.md
+        menu: FAQ
+        pages:
+        - title: What is Ookami?
+          source: ookami/support/faq/what_is_ookami.md
+        - title: How do I request an Ookami account?
+          source: ookami/support/faq/ookami-account-request.md
+        - title: How do I get a project on Ookami?
+          source: ookami/support/faq/getting-a-project-on-ookami.md
+        - title: How do I log into Ookami?
+          source: ookami/support/faq/logging-into-ookami.md
+        - title: How do I enroll in DUO Security?
+          source: ookami/support/faq/enroll-in-duo-security.md
+        - title: Getting Started Guide
+          source: ookami/support/faq/getting-started-guide.md
+        - title: Example Slurm Job Script
+          source: ookami/support/faq/example-slurm-script.md
+        - title: Using Slurm to manage resources on Ookami
+          source: ookami/support/faq/core-thread-control-ookami.md
+        - title: Using MPI options to manage resources on Ookami
+          source: ookami/support/faq/core-thread-control-mpi-flags.md
+        - title: this FAQ section is currently under development
+          source: ookami/support/faq/thread_binding.md
+        - title: How to submit, delete, and check the status of Slurm job
+          source: ookami/support/faq/submit-delete-check-slurm-jobs.md
+        - title: Handling job output
+          source: ookami/support/faq/handling-job-output.md
+        - title: Interactive Sessions
+          source: ookami/support/faq/interactive_slurm_session.md
+        - title: Understanding the Login Nodes
+          source: ookami/support/faq/understanding_login_nodes.md
+        - title: Understanding Modules
+          source: ookami/support/faq/what_are_modules.md
+        - title: Ookami Queues / Partitions
+          source: ookami/support/faq/queues_on_ookami.md
+        - title: Software installed on Ookami
+          source: ookami/support/faq/software_on_ookami.md
+        - title: How Do I Access Ookami with Open OnDemand?
+          source: ookami/support/faq/open_ondemand.md
+        - title: Using the ARM compilers on Ookami
+          source: ookami/support/faq/ookami-arm-compilers.md
+        - title: Using the Cray compilers on Ookami
+          source: ookami/support/faq/ookami-cray-compilers.md
+        - title: Using the GCC compilers on Ookami
+          source: ookami/support/faq/ookami-gcc-compilers.md
+        - title: Using the AMD compilers on Ookami
+          source: ookami/support/faq/ookami-amd-compilers.md
+        - title: Using the NVIDIA HPC SDK compilers on Ookami
+          source: ookami/support/faq/ookami-nvidia-compilers.md
+        - title: Using the Fujitsu compilers on Ookami
+          source: ookami/support/faq/ookami-fujitsu-compilers.md
+        - title: Ookami storage policies
+          source: ookami/support/faq/ookami_storage_options.md
+        - title: Setting Permissions in Project Spaces
+          source: ookami/support/faq/project_space_permissions.md
+        - title: Vectorization Flags
+          source: ookami/support/faq/vectorization_flags.md
+        - title: "Note that this article contains results of the Fujitsu compiler, which is not available\n                        anymore on Ookami"
+          source: ookami/support/faq/vectorization_example.md
+        - title: Profilers on Ookami
+          source: ookami/support/faq/profilers.md
+        - title: Acknowledging Ookami in Publications
+          source: ookami/support/faq/iacs_acknowledgement.md
+        - title: Processing HIPAA Data on Ookami
+          source: ookami/support/faq/hipaa_concerns.md
+        - title: How to Reset Your Ookami Password
+          source: ookami/support/faq/resetting_ookami_password.md
+        - title: Setting Up Passwordless SSH
+          source: ookami/support/faq/passwordless_ssh.md
+        - title: Transferring Files to and from Ookami
+          source: ookami/support/faq/transferring_data_to_ookami.md
+        - title: How to Fix Common Login Issues
+          source: ookami/support/faq/fixing_common_login_issues.md
+        - title: DUO and LD_LIBRARY_PATH
+          source: ookami/support/faq/warning_modshare_library_path_duo.md
+        - title: Remote Assistance Procedure
+          source: ookami/support/faq/remote_troubleshooting.md
+        - title: How can I monitor Ookami's usage?
+          source: ookami/support/faq/xdmod.md
+        - title: Monitoring Power Usage
+          source: ookami/support/faq/power_usage.md
+        - title: Math libraries on Ookami
+          source: ookami/support/faq/available_math_libraries.md
+        - title: Compiling-for-performance checklist on Ookami
+          source: ookami/support/faq/compiling.md
+        - title: Conditional Compilation by Architecture
+          source: ookami/support/faq/conditional_compilation_by_architecture.md
+        - title: Debugging tools
+          source: ookami/support/faq/debugging_tools.md
+        - title: Ookami's Infiniband Topology
+          source: ookami/support/faq/infiniband_topology.md
+        - title: Using Ookami's NVIDIA Grace CPUs
+          source: ookami/support/faq/nvidia-grace-cpus.md
+    - group: About Ookami
+      pages:
+      - title: A NEW PATH TO EXASCALE COMPUTING
+        source: ookami/README.md
+        menu: Archived home page
+      - title: About Ookami
+        source: ookami/about.md
+      - title: People
+        source: ookami/people.md
+      - title: Projects
+        source: ookami/projects.md
+      - title: Publications
+        source: ookami/publications.md
+      - title: Announcements
+        source: ookami/announcements.md
+      - title: Calendar
+        source: ookami/calendar.md
+      - title: System Status
+        source: ookami/system_status.md
+      - title: 'Cybertraining:'
+        source: ookami/byteboost.md
+    - title: Science Stories
+      source: ookami/science_stories/README.md
+      menu: Science stories
+      pages:
+      - title: "Cracking the Code of Supersonic Jets: The Science Behind Jet Expansion and Turbulence\n                        in Extreme Conditions"
+        source: ookami/science_stories/tumuklu.md
+      - title: 'The Quest for the Fastest Code: A Heat Equation Adventure'
+        source: ookami/science_stories/diehl.md
+      - title: 'The Dielectric Dance Party: When Charges Break the Rules'
+        source: ookami/science_stories/fernandez-serra.md
+      - title: Penguins and their diets
+        source: ookami/science_stories/gallagher.md
+      - title: 'The Quest for Faster Computing: A High-Performance Adventure'
+        source: ookami/science_stories/krysl.md
+      - title: The correlation between where we spend our time and political segregation
+        source: ookami/science_stories/zhang.md
+      - title: Using social media to analyze Sinophobia during the pandemic
+        source: ookami/science_stories/zhang2.md
+    - title: User Group Meeting
+      source: ookami/user_meeting/README.md
+      menu: User meetings
+      pages:
+      - title: Ookami
+        source: ookami/user_meeting/ugm2023.md
+  # End of the tools/port_ookami.py --nav output.
   - title: Reference
     pages:
     - title: Glossary

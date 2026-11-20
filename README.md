@@ -1,8 +1,22 @@
-# Kitsune documentation
+# SBSC documentation
 
-The documentation for Kitsune, built with MkDocs. The Markdown files are
+The documentation for the Stony Brook Supercomputing Center's systems,
+Kitsune, SeaWulf, and NVwulf, built with MkDocs. The Markdown files are
 the pages; `site.yaml` says what publishes and in what order, and
 `tools/build_docs.py` builds the site under `docs-site/`.
+
+In `site.yaml`, a page publishes from its `source:` entry, once. A
+`link:` entry lists the same page in one more place in the navigation,
+which is how the pages SeaWulf and NVwulf share appear under both. The
+page keeps the breadcrumb, tab, and previous and next links of its
+`source:` entry wherever a reader finds it.
+
+Each system's tab opens on its System Information page in `systems/`,
+which lists the system's specifications and where each figure comes
+from. The `label:` key in `site.yaml` sets that page's name in the
+sidebar, so it shows as "System Information" under "SeaWulf" instead of
+repeating "SeaWulf". When a published figure changes, update the page
+and its "checked" date.
 
 To work on the pages, clone the repository, set up a Python 3.9-or-newer
 environment of your choosing (venv, conda, or your system Python), and with
@@ -46,12 +60,41 @@ runs that as well. The axe-core script ships
 vendored as `tools/axe.min.js`, so only the browser driver is a
 dependency.
 
+The SeaWulf and NVwulf pages come from the guide Research Computing and
+Informatics keeps at rci.stonybrook.edu, and each one says so at the
+bottom. `tools/port_rci.py` copies them: the pages land under
+`shared/` (what applies to both clusters), `seawulf/`, `nvwulf/`, and
+`software/`, and their pictures under `assets/rci/`. Edit those pages at
+the source rather than here, then bring the change over:
+
+    pip install -r requirements-port.txt
+    python tools/port_rci.py --nav port-nav.yaml
+
+The run rewrites every ported page. `port-nav.yaml` holds the SeaWulf
+and NVwulf branches of the navigation; paste it over the marked block
+in `site.yaml` when RCI adds, removes, or renames a page.
+
+Ookami reached end of life at the end of 2025, and its website is kept
+here as an archive under `ookami/`, with its linked documents under
+`ookami/files/` and its pictures under `assets/ookami/`. The pages keep
+the old site's wording exactly: `tools/port_ookami.py` builds them from
+the copy of the site saved on November 5, 2026 (the `ookami-archive`
+folder, kept outside this repository). Each page opens with
+a note that it is archived and closes with the address it came from.
+Past recordings, webinars, and seminar videos are not uploaded; their
+titles stay on the pages without links, and the note on those pages
+says so. Links to pages that no longer exist keep their words and lose
+the link. Don't edit these pages by hand; to rebuild them:
+
+    python tools/port_ookami.py --archive ../ookami-archive --nav ookami-nav.yaml
+
 Announcements (maintenance windows, software changes, service notices)
+cover all three systems, and each names its system in its title. They
 are one file each under `announcements/`, named `YYYY-MM-DD-slug.md`,
 with the title and date in the frontmatter:
 
     ---
-    title: Scheduled maintenance on the login nodes
+    title: Scheduled maintenance on the Kitsune login nodes
     date: 2026-11-24
     ---
 

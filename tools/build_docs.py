@@ -18,11 +18,13 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import json
 import pathlib
 import re
 import shutil
 import subprocess
 import sys
+import urllib.parse
 from email.utils import format_datetime
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
@@ -35,16 +37,25 @@ EASTERN = ZoneInfo("America/New_York")
 HOME_LABEL = "Home"
 SBSC_HOME = "https://sbsc.stonybrook.edu/"
 SUPPORT = "https://sbsc.stonybrook.edu/contact"
+# Retired systems whose old website is archived here. Their pages are
+# left out of the page feeds.
+ARCHIVED = {"ookami"}
 ALERTS = {"NOTE": "note", "TIP": "tip", "IMPORTANT": "info", "WARNING": "warning", "CAUTION": "danger"}
 ALERT_RE = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n((?:>[^\n]*\n?)+)")
 LINK_RE = re.compile(r"(?<!\!)\[([^\]]+)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 
 
 class Node:
-    """A page, or a heading over the pages under it (rel is None)."""
+    """A page, a heading over the pages under it (rel is None), or a
+    second listing of a page published elsewhere in the tree (link)."""
 
-    def __init__(self, title, menu, rel, children):
+    def __init__(self, title, menu, rel, children, link=None, label=None):
         self.title, self.menu, self.rel, self.children = title, menu, rel, children
+        self.link = link
+        # The sidebar name for a section's own page, such as "System
+        # Information" under "SeaWulf". Without it the page repeats the
+        # section's name.
+        self.label = label
 
 
 def read_tree():
@@ -58,11 +69,17 @@ def read_tree():
         for entry in entries or []:
             if "group" in entry:
                 nodes.append(Node(entry["group"], entry["group"], None, walk(entry.get("pages"))))
-            elif "link" not in entry:
+            elif "link" in entry:
+                # The page publishes from its source: entry; this is one
+                # more place the navigation lists it.
+                menu = entry.get("menu") or entry.get("title") or entry["link"]
+                nodes.append(Node(menu, menu, None, [],
+                                  pathlib.PurePosixPath(entry["link"])))
+            else:
                 source = entry.get("source")
                 nodes.append(Node(entry["title"], entry.get("menu") or entry["title"],
                                   pathlib.PurePosixPath(source) if source else None,
-                                  walk(entry.get("pages"))))
+                                  walk(entry.get("pages")), label=entry.get("label")))
         return nodes
 
     return site, walk(site.get("pages"))
@@ -201,7 +218,7 @@ def de_dead_links(text, page_rel, docs):
         label, target = m.group(1), m.group(2)
         if target.startswith(("http://", "https://", "mailto:", "#")):
             return m.group(0)
-        path = target.split("#", 1)[0]
+        path = urllib.parse.unquote(target.split("#", 1)[0])
         if not path:
             return m.group(0)
         resolved = (here.parent / path).resolve()
@@ -214,15 +231,88 @@ def de_dead_links(text, page_rel, docs):
     return LINK_RE.sub(repl, text)
 
 
-def nav_entry(node):
+def nav_entry(node, home, chain=()):
+    """The node's navigation entry. A page's home is the chain of section
+    names above its source: entry, recorded in home, so a page the tree
+    also lists elsewhere (link:) keeps its breadcrumb, tab, and neighbors
+    from where it lives."""
+    if node.link is not None:
+        return {node.menu: "/".join(node.link.parts)}
     if node.rel is None:
-        kids = [k for k in (nav_entry(c) for c in node.children) if k]
+        kids = [k for k in (nav_entry(c, home, chain + (node.menu,))
+                            for c in node.children) if k]
         return {node.menu: kids} if kids else None
     dest = "/".join(node.rel.parts)
     if node.children:
-        kids = [k for k in (nav_entry(c) for c in node.children) if k]
-        return {node.menu: [{node.menu: dest}] + kids}
+        inner = chain + (node.menu,)
+        home[dest] = inner
+        kids = [k for k in (nav_entry(c, home, inner) for c in node.children) if k]
+        return {node.menu: [{node.label or node.menu: dest}] + kids}
+    home[dest] = chain
     return {node.menu: dest}
+
+
+def all_links(nodes):
+    for node in nodes:
+        if node.link is not None:
+            yield node
+        yield from all_links(node.children)
+
+
+# mkdocs lists a page twice when the navigation names it twice, and takes
+# its parent and its previous and next pages from the last listing. This
+# hook puts each such page back under the sections of its home (the
+# chain of names above its source: entry) and orders the previous and
+# next links by that listing alone.
+NAV_HOOK = '''\
+# Built by tools/build_docs.py: a page listed twice keeps its home.
+HOME = @@HOME@@
+
+
+def on_nav(nav, config, files):
+    places = {}
+
+    def walk(items, chain, parent):
+        for item in items:
+            if item.is_section:
+                walk(item.children, chain + (item.title,), item)
+            elif item.is_page:
+                places.setdefault(item.file.src_uri, []).append((chain, parent, item))
+
+    walk(nav.items, (), None)
+    # Each page's one place: the listing under its home, else its first.
+    keep = {}
+    for uri, found in places.items():
+        home = tuple(HOME.get(uri, ()))
+        keep[uri] = next((f for f in found if f[0] == home), found[0])
+        if len(found) > 1:
+            keep[uri][2].parent = keep[uri][1]
+
+    order = []
+
+    def collect(items, chain):
+        for item in items:
+            if item.is_section:
+                collect(item.children, chain + (item.title,))
+            elif item.is_page and keep[item.file.src_uri][0] == chain \\
+                    and item not in order:
+                order.append(item)
+
+    collect(nav.items, ())
+    for i, page in enumerate(order):
+        page.previous_page = order[i - 1] if i else None
+        page.next_page = order[i + 1] if i + 1 < len(order) else None
+    nav.pages = order
+    return nav
+'''
+
+
+def yaml_key(text):
+    """A nav title as a YAML key: quoted when a colon, quote, or other
+    YAML mark in it would otherwise change what the line means."""
+    if re.search(r"""[:#\[\]{},&*!|>'"%@`]|^[-?\s]|\s$""", text):
+        return json.dumps(text, ensure_ascii=False)
+    return text
 
 
 def yaml_list(items, indent=0):
@@ -230,6 +320,7 @@ def yaml_list(items, indent=0):
     for item in items:
         if isinstance(item, dict):
             for k, v in item.items():
+                k = yaml_key(k)
                 if isinstance(v, list):
                     out += f"{pad}- {k}:\n" + yaml_list(v, indent + 1)
                 else:
@@ -282,60 +373,40 @@ def is_reference(node):
 
 
 def landing(roots, notices):
-    """The site's front page, from the tree: what the guide covers, a line
-    per tutorial, and the reference pages, with the recent notices on
-    top. Everything links to the page it names, and the build regenerates
-    it, so the list never goes stale."""
+    """The site's front page, built from the tree: one line per system
+    (the first sentence of its System Information page), the latest
+    announcements, and the reference pages. Specifications stay on each
+    system's own page and are not repeated here."""
     hub = roots[0]
-    guide, subsections, reference = [], [], []
+    line = lambda p: f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}"
+    out = ["# SBSC documentation", "",
+           "Documentation for Stony Brook's research computing systems.",
+           "Each system's page lists its specifications, and its guides are",
+           "in the navigation.", "",
+           "## Systems", ""]
+    reference = []
     for child in hub.children:
+        if child.link is not None:
+            continue
         if child.rel is None:
-            # A section of nothing but reference pages lists under
-            # Reference; anything else is a section in its own right.
             if is_reference(child):
                 reference.extend(leaf_pages(child))
-            else:
-                subsections.append(child)
             continue
-        if child.children:
-            subsections.append(child)
-        elif child.rel.parts[0] == "reference":
+        if child.rel.parts[0] == "reference":
             reference.append(child)
-        else:
-            guide.append(child)
-    out = ["# Kitsune documentation", "",
-           "Documentation for Kitsune, the Stony Brook Supercomputing Center's",
-           "computing system. The guide sections are outlines; they fill in as",
-           "Kitsune is deployed.", "",
-           '<dl class="sbsc-specs">',
-           "  <dt>Compute nodes</dt><dd>162</dd>",
-           "  <dt>Processors</dt><dd>2x AMD EPYC 9965 per node</dd>",
-           "  <dt>Cores</dt><dd>60,000+</dd>",
-           "  <dt>Peak performance</dt><dd>6.7 PFLOPS, double precision</dd>",
-           "  <dt>Storage</dt><dd>6 PB usable GPFS</dd>",
-           "  <dt>Coming online</dt><dd>Q1 2027</dd>",
-           "</dl>",
-           "",
-           "Funded by the National Science Foundation under award OAC-2505376.",
-           ""]
+            continue
+        out.append(f"- **[{child.menu}]({'/'.join(child.rel.parts)})**: "
+                   f"{summary(child.rel)}")
+    out.append("")
     if notices:
         out += ["## Announcements", ""]
         for it in notices[:5]:
             rel = pathlib.PurePosixPath(f"announcements/{it['stem']}.md")
             out.append(f"- [{it['title']}]({'/'.join(rel.parts)}): {summary(rel)}")
         out += ["", "[All announcements](announcements/index.md)", ""]
-    if guide:
-        out += ["## System Guide", ""]
-        out += [f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}" for p in guide]
-        out.append("")
-    for section in subsections:
-        out += [f"## {section.menu}", ""]
-        for leaf in leaf_pages(section):
-            out.append(f"- [{leaf.menu}]({'/'.join(leaf.rel.parts)}): {summary(leaf.rel)}")
-        out.append("")
     if reference:
         out += ["## Reference", ""]
-        out += [f"- [{p.menu}]({'/'.join(p.rel.parts)}): {summary(p.rel)}" for p in reference]
+        out += [line(p) for p in reference]
         out.append("")
     return "\n".join(out)
 
@@ -347,7 +418,7 @@ def announcements_section(notices):
                  pathlib.PurePosixPath(f"announcements/{it['stem']}.md"), [])
             for it in notices[:10]]
     return nav_entry(Node("Announcements", "Announcements",
-                          pathlib.PurePosixPath("announcements/index.md"), kids))
+                          pathlib.PurePosixPath("announcements/index.md"), kids), {})
 
 
 def announcements_index(notices):
@@ -356,7 +427,8 @@ def announcements_index(notices):
     the recent ones."""
     out = ["# Announcements", "",
            "Scheduled maintenance, changes to queues or storage, and known",
-           "problems land here, newest first. If the cluster behaves",
+           "problems on Kitsune, SeaWulf, and NVwulf land here, newest first;",
+           "each notice names its system in its title. If a cluster behaves",
            "differently than these pages describe, check here before",
            "anything else.", ""]
     for it in notices:
@@ -374,10 +446,10 @@ def announcements_feed(notices, site_url, docs):
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
            "<channel>",
-           "  <title>Kitsune announcements</title>",
+           "  <title>SBSC announcements</title>",
            f"  <link>{escape(base + '/')}</link>",
            "  <description>Maintenance windows, software updates, and "
-           "service notices for Kitsune.</description>",
+           "service notices for Kitsune, SeaWulf, and NVwulf.</description>",
            f'  <atom:link href="{escape(base)}/feed_rss_announcements.xml" '
            'rel="self" type="application/rss+xml"/>',
            "  <language>en</language>",
@@ -426,6 +498,21 @@ def main():
         Node(it["title"], it["title"],
              pathlib.PurePosixPath(f"announcements/{it['stem']}.md"), [])
         for it in notices]
+    published = {str(page.rel) for page in pages}
+    for node in all_links(roots):
+        if str(node.link) not in published:
+            sys.exit(f"build_docs: site.yaml lists link: {node.link}, "
+                     "which no source: entry publishes")
+    # Whatever else sits in the folders the pages come from (pictures,
+    # chiefly) rides along at the same path, so a page's relative image
+    # links resolve on the site as they do in the repository.
+    for top in sorted({page.rel.parts[0] for page in pages if len(page.rel.parts) > 1}):
+        for src in sorted((ROOT / top).rglob("*")):
+            rel = src.relative_to(ROOT)
+            if (src.is_file() and src.suffix != ".md"
+                    and not any(part.startswith(".") for part in rel.parts)):
+                (docs / rel).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src, docs / rel)
     for page in pages:
         target = docs / pathlib.PurePosixPath(*page.rel.parts)
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -464,7 +551,7 @@ def main():
         (docs / "announcements" / "index.md").write_text(
             with_dates(announcements_index(notices), [newest, newest],
                        "Maintenance windows, software updates, and service "
-                       "notices for Kitsune, newest first."),
+                       "notices for Kitsune, SeaWulf, and NVwulf, newest first."),
             encoding="utf-8")
 
     # The front page is the site's home: its link, then its sections beside
@@ -474,20 +561,23 @@ def main():
     # itself is a step away through the logo and the footer.
     hub = roots[0]
     nav = [{HOME_LABEL: "index.md"}]
+    home = {}
     pending = announcements_section(notices) if notices else None
     for child in hub.children:
         if pending and child.rel is None and is_reference(child):
             nav.append(pending)
             pending = None
-        sub = nav_entry(child)
+        sub = nav_entry(child, home)
         if sub:
             nav.append(sub)
     if pending:
         nav.append(pending)
     for root in roots[1:]:
-        entry = nav_entry(root)
+        entry = nav_entry(root, home)
         if entry:
             nav.append(entry)
+    (OUT / "hooks.py").write_text(
+        NAV_HOOK.replace("@@HOME@@", repr(home)), encoding="utf-8")
 
     # The site's address arrives with the deployment (--site_url), never
     # hard-coded. The RSS feed needs an absolute address, so the plugin is
@@ -509,16 +599,20 @@ def main():
                  '        datetime_format: "%Y-%m-%dT%H:%M:%S%z"\n'
                  '        default_time: 00:00\n'
                  '        default_timezone: America/New_York\n'
+                 # The archived systems' pages are old news, not new pages.
+                 '      match_path: "^(?!(' + "|".join(sorted(ARCHIVED)) + ')/).*"\n'
                  f'      image: {site_url.rstrip("/")}/assets/sbsc-shield.svg\n'
                  '      pretty_print: true\n'
                  '      length: 40') if site_url else ""
     (OUT / "mkdocs.yml").write_text(f"""\
 # Built by tools/build_docs.py from site.yaml: edit the tree there, not here.
 site_name: SBSC Documentation
-site_description: Documentation for Kitsune at the Stony Brook Supercomputing Center.
+site_description: Documentation for Kitsune, SeaWulf, and NVwulf at the Stony Brook Supercomputing Center.
 {url_line}
 use_directory_urls: true
 strict: true
+hooks:
+  - hooks.py
 copyright: '{copyright}'
 nav:
 {yaml_list(nav).rstrip()}
@@ -705,7 +799,7 @@ feed reader.</p>
                .replace("@@BLURB@@", ""), encoding="utf-8")
         (docs / "announcements.xsl").write_text(
             xsl.replace("@@WHAT@@", "This page is a feed: announcements for "
-                               "Kitsune, newest first: maintenance windows, "
+                               "Kitsune, SeaWulf, and NVwulf, newest first: maintenance windows, "
                                "software updates, and service notices.")
                .replace("@@BLURB_CSS@@", "\n.blurb { margin: 0 0 0.6rem; }")
                .replace("@@BLURB@@", "\n    <p class=\"blurb\">"

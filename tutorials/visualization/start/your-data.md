@@ -47,7 +47,7 @@ ln -s /path/to/scratch/$USER ~/scratch
 
 **You should see:** no output. In the **Files** app, your home directory now has a `scratch` folder that leads to your scratch space. An app that opens in your home directory can now reach scratch through it.
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Files app, with the scratch folder in your home</summary>
 
 *Screenshot to come.*
@@ -75,7 +75,7 @@ In the **Files** app, open `scratch`, click **Upload** and choose a small file f
 
 **You should see:** your file listed in `scratch`. For anything over a few gigabytes, use Globus instead of the browser (see module [B3](../../../modules/B3-data-transfer.md)).
 
-<details>
+<details markdown="1">
 <summary>Screenshot: the Files app's Upload button</summary>
 
 *Screenshot to come.*
@@ -95,7 +95,7 @@ quota-command $USER-scratch
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>Your simulation writes 5 GB of results you'll visualize next week and want to keep for a paper. Where should they live?</summary>
 
 Write them to scratch, which is fast and large, and visualize them from there. Then copy the results you need to keep to project space, or somewhere backed up, before the purge can delete them.

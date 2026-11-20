@@ -180,7 +180,7 @@ Three things make it solid enough for a batch job:
 
 To run it in a batch job, load ParaView (<mark>Kitsune ParaView module</mark>) and run `pvbatch --opengl-window-backend OSMesa streamlines.py disk_out_ref.ex2 out.png`. Older ParaView builds can fail here: their [offscreen rendering](../reference/glossary.md#offscreen-rendering) needs OSMesa support, which not every build has.
 
-<details>
+<details markdown="1">
 <summary>What you should see</summary>
 
 ![Streamline tubes in the outlined flow domain: a dome over the heated disk, yellow near the disk, dark purple higher up where the air is cooler](../tutorials/visualization/img/results/streamlines-paraview.png)
@@ -190,21 +190,21 @@ To run it in a batch job, load ParaView (<mark>Kitsune ParaView module</mark>) a
 
 ## Check your understanding
 
-<details>
+<details markdown="1">
 <summary>A colleague has a folder of cryo-EM maps and wants figures for a paper. Which program would you suggest, and which kind of picture?</summary>
 
 ChimeraX: it opens a map from a file or straight from a public cryo-EM archive. A common picture is an isosurface at a chosen threshold, with the fitted atomic model shown inside it.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Why is a rainbow color map a poor choice for a temperature field?</summary>
 
 Its bright bands (yellow, cyan) create boundaries that aren't in the data, and colorblind readers can't order its colors. A sequential map such as Viridis changes evenly in lightness, so equal steps in temperature look like equal steps in color.
 
 </details>
 
-<details>
+<details markdown="1">
 <summary>Your batch job's pvbatch script fails with an error about opening a display. What's wrong, and what are two ways around it?</summary>
 
 Compute nodes have no screen, so draw in memory instead: load ParaView (<mark>Kitsune ParaView module</mark>), then run `pvbatch --opengl-window-backend OSMesa`. Or run the script in a terminal inside a desktop session, which has a display.
@@ -284,7 +284,7 @@ Lesson data:
 | Cornell CVW | [ParaView](https://cvw.cac.cornell.edu/ParaView); [Large Data Visualization](https://cvw.cac.cornell.edu/large-data-vis); [Bokeh](https://cvw.cac.cornell.edu/bokeh) | Self-paced | © Cornell, all rights reserved | `LINK` | Undated | Remote ParaView on cluster nodes; parallel pipeline concepts |
 | ANL ATPESC | [Data Analysis & Visualization track](https://extremecomputingtraining.anl.gov/) (VisIt; Ascent in situ) | Lecture PDFs + hands-on | Not stated | `LINK` | 2025 slides; ATPESC 2026 Jul 26–Aug 7 | Advanced/in situ pointers (site blocks automated checks) |
 | TACC | [TACC Analysis Portal](https://docs.tacc.utexas.edu/tutorials/TAP/); [ParaView](https://docs.tacc.utexas.edu/software/paraview/) and [VisIt](https://docs.tacc.utexas.edu/software/visit/) at TACC; [Remote Desktop Access](https://docs.tacc.utexas.edu/tutorials/remotedesktopaccess/) | User documentation (MkDocs; source in the TACC-Docs GitHub repository) | No license file | `LINK` | TAP updated Jun 16, 2025 | The style model: form fields with their Slurm equivalents, troubleshooting by symptom, labeled commands, minimal scripts first |
-| UCSF RBVI | [ChimeraX user guide](https://www.cgl.ucsf.edu/chimerax/docs/user/index.html) and tutorials | Docs + tutorials | Program free for non-commercial use; docs license not stated | `LINK` | 2026 | Command reference; the cryo-EM tutorial pair EMD-25428 / 7STH |
+| UCSF RBVI | [ChimeraX user guide](https://web.archive.org/web/20261029001502/https://www.cgl.ucsf.edu/chimerax/docs/user/index.html) and tutorials | Docs + tutorials | Program free for non-commercial use; docs license not stated | `LINK` | 2026 | Command reference; the cryo-EM tutorial pair EMD-25428 / 7STH |
 | PyMOL community | [PyMOL Wiki](https://pymolwiki.org/) | Wiki | Not checked | `LINK` | Active | `isosurface`, `ramp_new`, the mutagenesis wizard |
 | IGV team (Broad Institute / UC San Diego) | [IGV desktop documentation](https://igv.org/doc/desktop/) | Docs | IGV software MIT; docs not stated | `LINK` | 2026 | Batch commands; genome name aliases |
 | Gaussian, Inc. | [cubegen](https://gaussian.com/cubegen/), [formchk](https://gaussian.com/formchk/) | Reference | Proprietary | `LINK` | n/a | Exact cube-file syntax |
